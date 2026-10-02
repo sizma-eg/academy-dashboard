@@ -1063,6 +1063,18 @@ tr:last-child td{
    المعاملات
   </button>
 
+  <button data-view="subscriptionRequests">
+   <span class="nav-icon">📩</span>
+   طلبات الاشتراك
+   <span
+    id="subscriptionPendingBadge"
+    class="badge yellow"
+    style="margin-right:auto;display:none"
+   >
+    0
+   </span>
+  </button>
+
  </nav>
 
  <div class="nav-title">النظام</div>
@@ -1331,6 +1343,7 @@ tr:last-child td{
    >
     أضف وعدّل مواد Mathix
    </p>
+
   </div>
 
   <button
@@ -1364,6 +1377,7 @@ tr:last-child td{
    >
     إنشاء وإدارة الحصص التعليمية
    </p>
+
   </div>
 
   <button
@@ -1397,6 +1411,7 @@ tr:last-child td{
    >
     إدارة المدرسين والحصص الخاصة بهم
    </p>
+
   </div>
 
   <button
@@ -1449,6 +1464,7 @@ tr:last-child td{
    >
     إدارة أرصدة الطلاب
    </p>
+
   </div>
 
  </div>
@@ -1494,6 +1510,7 @@ tr:last-child td{
    >
     سجل كل عمليات المحافظ
    </p>
+
   </div>
 
   <button
@@ -1522,6 +1539,81 @@ tr:last-child td{
     </thead>
 
     <tbody id="transactionsTable"></tbody>
+
+   </table>
+
+  </div>
+
+ </div>
+
+</section>
+
+<!-- =========================
+     طلبات الاشتراك
+========================= -->
+
+<section class="view" id="view-subscriptionRequests">
+
+ <div class="toolbar">
+
+  <div>
+   <h3 style="font-size:15px">
+    طلبات الاشتراك
+   </h3>
+
+   <p
+    class="muted"
+    style="font-size:11px;margin-top:3px"
+   >
+    مراجعة طلبات الاشتراك والمدفوعات
+   </p>
+  </div>
+
+  <span
+   id="subscriptionPagePendingCount"
+   class="badge yellow"
+  >
+   0 طلب قيد المراجعة
+  </span>
+
+ </div>
+
+ <div class="card">
+
+  <div class="card-head">
+
+   <h3>
+    جميع طلبات الاشتراك
+   </h3>
+
+   <span id="subscriptionRequestCount">
+    0 طلب
+   </span>
+
+  </div>
+
+  <div class="table-wrap">
+
+   <table>
+
+    <thead>
+
+     <tr>
+      <th>الطالب</th>
+      <th>البريد</th>
+      <th>الباقة</th>
+      <th>المبلغ</th>
+      <th>رقم المرسل</th>
+      <th>Vodafone Cash</th>
+      <th>الملاحظة</th>
+      <th>التاريخ</th>
+      <th>الحالة</th>
+      <th>الإجراءات</th>
+     </tr>
+
+    </thead>
+
+    <tbody id="subscriptionRequestsTable"></tbody>
 
    </table>
 
@@ -2179,7 +2271,8 @@ import {
  serverTimestamp,
  runTransaction,
  getDoc,
- setDoc
+ setDoc,
+ Timestamp
 }
 from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
@@ -2261,6 +2354,7 @@ let subjects=[];
 let teachers=[];
 let classes=[];
 let transactions=[];
+let subscriptionRequests=[];
 
 let unsubscribers=[];
 let toastTimer;
@@ -2305,6 +2399,11 @@ const titles={
  transactions:[
   "المعاملات",
   "السجل المالي للمنصة"
+ ],
+
+ subscriptionRequests:[
+  "طلبات الاشتراك",
+  "مراجعة طلبات الاشتراك والمدفوعات"
  ],
 
  settings:[
@@ -2870,6 +2969,14 @@ function startListeners(){
   }
  );
 
+
+ listen(
+  "subscriptionRequests",
+  data=>{
+   subscriptionRequests=data;
+  }
+ );
+
 }
 
 
@@ -3159,6 +3266,16 @@ window.addStudent=
     createdUser.uid;
 
 
+   const now=
+    Date.now();
+
+   const trialEnd=
+    Timestamp.fromMillis(
+     now+
+     7*24*60*60*1000
+    );
+
+
    /*
     إنشاء Document الطالب باستخدام UID
     بدل ID عشوائي.
@@ -3179,6 +3296,23 @@ window.addStudent=
      wallet:0,
      active:true,
      authCreated:true,
+
+     subscriptionPlan:
+      "trial",
+
+     subscriptionStatus:
+      "active",
+
+     subscriptionStart:
+      Timestamp.fromMillis(now),
+
+     subscriptionEnd:
+      trialEnd,
+
+     trialUsed:true,
+
+     canPurchase:true,
+
      createdAt:
       serverTimestamp()
     }
@@ -4941,6 +5075,804 @@ window.renderTransactions=
 
 
 /* =========================
+   SUBSCRIPTION REQUESTS
+========================= */
+
+function subscriptionRequestDate(request){
+
+ if(request.createdAt?.toDate)
+  return request.createdAt
+   .toDate()
+   .toLocaleString("ar-EG");
+
+ if(request.createdAt?.seconds)
+  return new Date(
+   request.createdAt.seconds*1000
+  ).toLocaleString("ar-EG");
+
+ return "—";
+
+}
+
+
+function subscriptionPlanLabel(plan){
+
+ if(plan==="weekly")
+  return "أسبوعية";
+
+ if(plan==="monthly")
+  return "شهرية";
+
+ if(plan==="trial")
+  return "تجريبية";
+
+ return "غير محددة";
+
+}
+
+
+function subscriptionAmount(request){
+
+ if(request.plan==="weekly")
+  return 80;
+
+ if(request.plan==="monthly")
+  return 250;
+
+ return Number(
+  request.amount||
+  0
+ );
+
+}
+
+
+function subscriptionStatusLabel(status){
+
+ if(status==="pending")
+  return "قيد المراجعة";
+
+ if(status==="approved")
+  return "مقبول";
+
+ if(status==="rejected")
+  return "مرفوض";
+
+ return status||
+  "غير محدد";
+
+}
+
+
+function subscriptionStatusClass(status){
+
+ if(status==="approved")
+  return "green";
+
+ if(status==="rejected")
+  return "red";
+
+ if(status==="pending")
+  return "yellow";
+
+ return "purple";
+
+}
+
+
+window.renderSubscriptionRequests=
+ ()=>{
+
+  const tbody=
+   $("subscriptionRequestsTable");
+
+  if(!tbody)
+   return;
+
+
+  const sorted=
+   [...subscriptionRequests]
+    .sort(
+     (a,b)=>
+      getTimestampValue(
+       b.createdAt
+      )-
+      getTimestampValue(
+       a.createdAt
+      )
+    );
+
+
+  const pendingCount=
+   sorted.filter(
+    x=>x.status==="pending"
+   ).length;
+
+
+  const badge=
+   $("subscriptionPendingBadge");
+
+
+  if(badge){
+
+   badge.textContent=
+    pendingCount;
+
+   badge.style.display=
+    pendingCount
+    ?"inline-flex"
+    :"none";
+
+  }
+
+
+  const pageCount=
+   $("subscriptionPagePendingCount");
+
+
+  if(pageCount){
+
+   pageCount.textContent=
+    `${pendingCount} طلب قيد المراجعة`;
+
+  }
+
+
+  const total=
+   $("subscriptionRequestCount");
+
+
+  if(total){
+
+   total.textContent=
+    `${sorted.length} طلب`;
+
+  }
+
+
+  if(!sorted.length){
+
+   tbody.innerHTML=
+    emptyRow(
+     10,
+     "لا توجد طلبات اشتراك حاليًا"
+    );
+
+   return;
+
+  }
+
+
+  tbody.innerHTML=
+   sorted.map(
+    request=>{
+
+     const plan=
+      subscriptionPlanLabel(
+       request.plan
+      );
+
+     const amount=
+      subscriptionAmount(
+       request
+      );
+
+
+     const status=
+      request.status||
+      "pending";
+
+
+     const actions=
+      status==="pending"
+
+      ?
+
+      `
+      <div
+       style="
+        display:flex;
+        gap:6px;
+        align-items:center
+       "
+      >
+
+       <button
+        class="success"
+        onclick="approveSubscription('${request.id}')"
+       >
+        ✅ موافقة
+       </button>
+
+       <button
+        class="danger"
+        onclick="rejectSubscription('${request.id}')"
+       >
+        ❌ رفض
+       </button>
+
+      </div>
+      `
+
+      :
+
+      `
+      <span class="muted">
+       تمت المعالجة
+      </span>
+      `;
+
+
+     return `
+
+      <tr>
+
+       <td>
+
+        <div class="student-name">
+
+         <div class="student-avatar">
+          ${escapeHTML(
+           (request.studentName||"?")
+            .charAt(0)
+          )}
+         </div>
+
+         <strong>
+          ${escapeHTML(
+           request.studentName||
+           "بدون اسم"
+          )}
+         </strong>
+
+        </div>
+
+       </td>
+
+       <td>
+        ${escapeHTML(
+         request.email||
+         "—"
+        )}
+       </td>
+
+       <td>
+
+        <span class="badge purple">
+         ${escapeHTML(plan)}
+        </span>
+
+       </td>
+
+       <td
+        style="font-weight:800"
+       >
+        ${amount.toLocaleString("ar-EG")}
+        ج.م
+       </td>
+
+       <td>
+        ${escapeHTML(
+         request.senderPhone||
+         "—"
+        )}
+       </td>
+
+       <td>
+        ${escapeHTML(
+         request.vodafoneCashNumber||
+         "01037500636"
+        )}
+       </td>
+
+       <td
+        style="
+         white-space:normal;
+         max-width:220px
+        "
+       >
+        ${escapeHTML(
+         request.note||
+         "—"
+        )}
+       </td>
+
+       <td class="muted">
+        ${escapeHTML(
+         subscriptionRequestDate(
+          request
+         )
+        )}
+       </td>
+
+       <td>
+
+        <span
+         class="badge ${
+          subscriptionStatusClass(
+           status
+          )
+         }"
+        >
+         ${escapeHTML(
+          subscriptionStatusLabel(
+           status
+          )
+         )}
+        </span>
+
+       </td>
+
+       <td>
+        ${actions}
+       </td>
+
+      </tr>
+
+     `;
+
+    }
+   ).join("");
+
+ };
+
+
+/* =========================
+   APPROVE SUBSCRIPTION
+========================= */
+
+window.approveSubscription=
+ async requestId=>{
+
+  const request=
+   subscriptionRequests.find(
+    x=>x.id===requestId
+   );
+
+
+  if(!request){
+
+   showToast(
+    "طلب الاشتراك غير موجود"
+   );
+
+   return;
+
+  }
+
+
+  if(request.status!=="pending"){
+
+   showToast(
+    "تمت معالجة هذا الطلب بالفعل"
+   );
+
+   return;
+
+  }
+
+
+  const studentId=
+   request.studentId||
+   request.uid;
+
+
+  if(!studentId){
+
+   showToast(
+    "الطلب لا يحتوي على UID للطالب"
+   );
+
+   return;
+
+  }
+
+
+  let durationDays;
+
+
+  if(request.plan==="weekly"){
+
+   durationDays=7;
+
+  }else if(request.plan==="monthly"){
+
+   durationDays=30;
+
+  }else{
+
+   showToast(
+    "نوع الاشتراك غير صحيح"
+   );
+
+   return;
+
+  }
+
+
+  const amount=
+   subscriptionAmount(
+    request
+   );
+
+
+  const expectedAmount=
+   request.plan==="weekly"
+   ?80
+   :250;
+
+
+  if(amount!==expectedAmount){
+
+   showToast(
+    "قيمة الطلب غير صحيحة"
+   );
+
+   return;
+
+  }
+
+
+  if(
+   !confirm(
+    `هل تريد الموافقة على اشتراك ${subscriptionPlanLabel(request.plan)} للطالب ${request.studentName||""}؟`
+   )
+  )
+   return;
+
+
+  try{
+
+   const requestRef=
+    doc(
+     db,
+     "subscriptionRequests",
+     requestId
+    );
+
+
+   const studentRef=
+    doc(
+     db,
+     "students",
+     studentId
+    );
+
+
+   const now=
+    Date.now();
+
+
+   const durationMs=
+    durationDays*
+    24*
+    60*
+    60*
+    1000;
+
+
+   await runTransaction(
+    db,
+    async tx=>{
+
+     const requestSnap=
+      await tx.get(
+       requestRef
+      );
+
+
+     if(!requestSnap.exists()){
+
+      throw new Error(
+       "طلب الاشتراك غير موجود"
+      );
+
+     }
+
+
+     const requestData=
+      requestSnap.data();
+
+
+     if(requestData.status!=="pending"){
+
+      throw new Error(
+       "تمت معالجة هذا الطلب بالفعل"
+      );
+
+     }
+
+
+     if(
+      requestData.plan!=="weekly" &&
+      requestData.plan!=="monthly"
+     ){
+
+      throw new Error(
+       "نوع الاشتراك غير صحيح"
+      );
+
+     }
+
+
+     const studentSnap=
+      await tx.get(
+       studentRef
+      );
+
+
+     if(!studentSnap.exists()){
+
+      throw new Error(
+       "الطالب غير موجود"
+      );
+
+     }
+
+
+     const studentData=
+      studentSnap.data();
+
+
+     let startMs=
+      now;
+
+
+     const currentEnd=
+      studentData.subscriptionEnd;
+
+
+     let currentEndMs=
+      0;
+
+
+     if(currentEnd?.toMillis){
+
+      currentEndMs=
+       currentEnd.toMillis();
+
+     }else if(currentEnd?.seconds){
+
+      currentEndMs=
+       currentEnd.seconds*
+       1000;
+
+     }
+
+
+     /*
+      لو الاشتراك الحالي ما زال فعالًا،
+      يبدأ الاشتراك الجديد بعد انتهائه.
+     */
+
+     if(
+      studentData.subscriptionStatus==="active" &&
+      currentEndMs>now
+     ){
+
+      startMs=
+       currentEndMs;
+
+     }
+
+
+     const endMs=
+      startMs+
+      durationMs;
+
+
+     tx.update(
+      studentRef,
+      {
+
+       subscriptionPlan:
+        requestData.plan,
+
+       subscriptionStatus:
+        "active",
+
+       subscriptionStart:
+        Timestamp.fromMillis(
+         startMs
+        ),
+
+       subscriptionEnd:
+        Timestamp.fromMillis(
+         endMs
+        ),
+
+       canPurchase:true
+
+      }
+     );
+
+
+     tx.update(
+      requestRef,
+      {
+
+       status:
+        "approved",
+
+       approvedAt:
+        serverTimestamp(),
+
+       approvedBy:
+        auth.currentUser.uid
+
+      }
+     );
+
+    }
+   );
+
+
+   showToast(
+    "تمت الموافقة وتفعيل الاشتراك بنجاح"
+   );
+
+
+  }catch(err){
+
+   console.error(
+    "Approve subscription:",
+    err
+   );
+
+
+   showToast(
+    err.message||
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+/* =========================
+   REJECT SUBSCRIPTION
+========================= */
+
+window.rejectSubscription=
+ async requestId=>{
+
+  const request=
+   subscriptionRequests.find(
+    x=>x.id===requestId
+   );
+
+
+  if(!request){
+
+   showToast(
+    "طلب الاشتراك غير موجود"
+   );
+
+   return;
+
+  }
+
+
+  if(request.status!=="pending"){
+
+   showToast(
+    "تمت معالجة هذا الطلب بالفعل"
+   );
+
+   return;
+
+  }
+
+
+  const reason=
+   prompt(
+    "سبب الرفض (اختياري):",
+    ""
+   );
+
+
+  if(reason===null)
+   return;
+
+
+  if(
+   !confirm(
+    `هل تريد رفض طلب اشتراك ${request.studentName||""}؟`
+   )
+  )
+   return;
+
+
+  try{
+
+   const requestRef=
+    doc(
+     db,
+     "subscriptionRequests",
+     requestId
+    );
+
+
+   await runTransaction(
+    db,
+    async tx=>{
+
+     const requestSnap=
+      await tx.get(
+       requestRef
+      );
+
+
+     if(!requestSnap.exists()){
+
+      throw new Error(
+       "طلب الاشتراك غير موجود"
+      );
+
+     }
+
+
+     const data=
+      requestSnap.data();
+
+
+     if(data.status!=="pending"){
+
+      throw new Error(
+       "تمت معالجة هذا الطلب بالفعل"
+      );
+
+     }
+
+
+     tx.update(
+      requestRef,
+      {
+
+       status:
+        "rejected",
+
+       rejectedAt:
+        serverTimestamp(),
+
+       rejectedBy:
+        auth.currentUser.uid,
+
+       rejectionReason:
+        reason.trim()
+
+      }
+     );
+
+    }
+   );
+
+
+   showToast(
+    "تم رفض طلب الاشتراك"
+   );
+
+
+  }catch(err){
+
+   console.error(
+    "Reject subscription:",
+    err
+   );
+
+
+   showToast(
+    err.message||
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+/* =========================
    DASHBOARD
 ========================= */
 
@@ -5176,6 +6108,8 @@ function renderAll(){
  renderWallets();
 
  renderTransactions();
+
+ renderSubscriptionRequests();
 
  renderDashboard();
 
