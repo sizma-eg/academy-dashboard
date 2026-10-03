@@ -1942,6 +1942,56 @@ tr:last-child td{
 
 </section>
 
+<!-- =====================================================
+     PURCHASE REQUESTS
+===================================================== -->
+
+<section class="section-card">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2>طلبات شراء الدروس</h2>
+
+      <p>
+        طلبات الطلاب لشراء الدروس المدفوعة
+      </p>
+
+    </div>
+
+    <span
+      class="badge purple"
+      id="purchaseRequestsCount"
+    >
+      0 طلب
+    </span>
+
+  </div>
+
+
+  <div
+    id="purchaseRequestsGrid"
+    class="content-grid"
+  >
+
+    <div class="card">
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          🛒
+        </div>
+
+        لا توجد طلبات شراء حاليًا
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 <!-- =========================
      TRANSACTIONS
 ========================= -->
@@ -3703,74 +3753,1029 @@ tr:last-child td{
  class="toast"
  id="toast"
 ></div>
-
 <script type="module">
 
+/* =========================================================
+   FIREBASE IMPORTS
+========================================================= */
+
 import {
- initializeApp
+  initializeApp
 }
 from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
+
 import {
- getFirestore,
- collection,
- addDoc,
- updateDoc,
- deleteDoc,
- doc,
- onSnapshot,
- serverTimestamp,
- runTransaction,
- getDoc,
- setDoc,
- Timestamp
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  runTransaction,
+  getDoc,
+  setDoc,
+  Timestamp,
+  query,
+  orderBy
 }
 from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+
 import {
- getAuth,
- onAuthStateChanged,
- signInWithEmailAndPassword,
- signOut,
- sendPasswordResetEmail,
- createUserWithEmailAndPassword,
- deleteUser
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+  createUserWithEmailAndPassword,
+  deleteUser
 }
 from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 
-/* =========================
-   FIREBASE
-========================= */
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
 
-const firebaseConfig={
+const firebaseConfig = {
 
- apiKey:
-  "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+  apiKey:
+    "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
 
- authDomain:
-  "mathix-88811.firebaseapp.com",
+  authDomain:
+    "mathix-88811.firebaseapp.com",
 
- projectId:
-  "mathix-88811",
+  projectId:
+    "mathix-88811",
 
- storageBucket:
-  "mathix-88811.firebasestorage.app",
+  storageBucket:
+    "mathix-88811.firebasestorage.app",
 
- messagingSenderId:
-  "1043867239139",
+  messagingSenderId:
+    "1043867239139",
 
- appId:
-  "1:1043867239139:web:da19abef81f052682bbbd6",
+  appId:
+    "1:1043867239139:web:da19abef81f052682bbbd6",
 
- measurementId:
-  "G-T17ZDVBLM2"
+  measurementId:
+    "G-T17ZDVBLM2"
 
 };
 
+
+/* =========================================================
+   FIREBASE INITIALIZATION
+========================================================= */
+
+const app =
+  initializeApp(firebaseConfig);
+
+
+const db =
+  getFirestore(app);
+
+
+const auth =
+  getAuth(app);
+
+
+/* =========================================================
+   PURCHASE REQUESTS VARIABLES
+========================================================= */
+
+let purchaseRequests = [];
+
+let purchaseRequestsUnsubscribe = null;
+
+
+/* =========================================================
+   SETUP PURCHASE REQUESTS
+========================================================= */
+
+function setupPurchaseRequests(){
+
+  if(purchaseRequestsUnsubscribe){
+
+    purchaseRequestsUnsubscribe();
+
+    purchaseRequestsUnsubscribe = null;
+
+  }
+
+
+  const q =
+    query(
+
+      collection(
+        db,
+        "purchaseRequests"
+      ),
+
+      orderBy(
+        "createdAt",
+        "desc"
+      )
+
+    );
+
+
+  purchaseRequestsUnsubscribe =
+    onSnapshot(
+
+      q,
+
+      snapshot => {
+
+        purchaseRequests =
+          snapshot.docs.map(
+            docSnap => ({
+
+              id:
+                docSnap.id,
+
+              ...docSnap.data()
+
+            })
+          );
+
+
+        renderPurchaseRequests();
+
+      },
+
+
+      err => {
+
+        console.error(
+          "Purchase requests error:",
+          err
+        );
+
+
+        showToast(
+          "تعذر تحميل طلبات الشراء"
+        );
+
+      }
+
+    );
+
+}
+
+
+/* =========================================================
+   RENDER PURCHASE REQUESTS
+========================================================= */
+
+window.renderPurchaseRequests =
+function(){
+
+  const grid =
+    document.getElementById(
+      "purchaseRequestsGrid"
+    );
+
+
+  const count =
+    document.getElementById(
+      "purchaseRequestsCount"
+    );
+
+
+  if(!grid)
+    return;
+
+
+  const pending =
+    purchaseRequests.filter(
+      r =>
+        r.status === "pending"
+    );
+
+
+  if(count){
+
+    count.textContent =
+      `${pending.length} طلب`;
+
+  }
+
+
+  if(!purchaseRequests.length){
+
+    grid.innerHTML = `
+
+      <div
+        class="card"
+        style="grid-column:1/-1"
+      >
+
+        <div class="empty">
+
+          <div class="empty-icon">
+            🛒
+          </div>
+
+          لا توجد طلبات شراء حاليًا
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    purchaseRequests.map(
+      r => {
+
+        const status =
+          r.status || "pending";
+
+
+        const statusText =
+          status === "pending"
+
+            ? "قيد المراجعة"
+
+            : status === "approved"
+
+              ? "تمت الموافقة"
+
+              : "مرفوض";
+
+
+        const statusClass =
+          status === "pending"
+
+            ? "purple"
+
+            : status === "approved"
+
+              ? "green"
+
+              : "red";
+
+
+        const date =
+          r.createdAt?.toDate
+
+            ? r.createdAt
+                .toDate()
+                .toLocaleString(
+                  "ar-EG"
+                )
+
+            : "—";
+
+
+        return `
+
+          <div class="content-card">
+
+            <div class="content-top">
+
+              <div>
+
+                <h3>
+
+                  ${escapeHTML(
+                    r.lessonTitle ||
+                    "درس بدون عنوان"
+                  )}
+
+                </h3>
+
+
+                <p>
+
+                  الطالب:
+
+                  ${escapeHTML(
+                    r.studentName ||
+                    r.uid ||
+                    "غير معروف"
+                  )}
+
+                </p>
+
+              </div>
+
+
+              <span
+                class="badge ${statusClass}"
+              >
+
+                ${statusText}
+
+              </span>
+
+            </div>
+
+
+            <div class="content-meta">
+
+              <span class="badge blue">
+
+                السعر:
+
+                ${Number(
+                  r.price || 0
+                )}
+
+                جنيه
+
+              </span>
+
+
+              <span class="badge purple">
+
+                ${date}
+
+              </span>
+
+            </div>
+
+
+            <div
+              style="
+                margin-top:12px;
+                font-size:13px;
+                opacity:.75;
+                direction:ltr;
+                text-align:left;
+                word-break:break-all;
+              "
+            >
+
+              UID:
+
+              ${escapeHTML(
+                r.uid || ""
+              )}
+
+            </div>
+
+
+            ${
+              status === "pending"
+
+              ? `
+
+                <div
+                  class="content-actions"
+                  style="margin-top:16px"
+                >
+
+                  <button
+                    class="success"
+                    onclick="
+                      approvePurchaseRequest(
+                        '${r.id}'
+                      )
+                    "
+                  >
+
+                    ✓ اعتماد الشراء
+
+                  </button>
+
+
+                  <button
+                    class="danger"
+                    onclick="
+                      rejectPurchaseRequest(
+                        '${r.id}'
+                      )
+                    "
+                  >
+
+                    رفض
+
+                  </button>
+
+                </div>
+
+              `
+
+              : ""
+
+            }
+
+          </div>
+
+        `;
+
+      }
+
+    ).join("");
+
+};
+
+
+/* =========================================================
+   APPROVE PURCHASE REQUEST
+========================================================= */
+
+window.approvePurchaseRequest =
+async function(requestId){
+
+  const request =
+    purchaseRequests.find(
+      r =>
+        r.id === requestId
+    );
+
+
+  if(!request){
+
+    showToast(
+      "طلب الشراء غير موجود"
+    );
+
+    return;
+
+  }
+
+
+  if(request.status !== "pending"){
+
+    showToast(
+      "هذا الطلب تمت معالجته بالفعل"
+    );
+
+    return;
+
+  }
+
+
+  if(!request.uid){
+
+    showToast(
+      "معرّف الطالب غير موجود"
+    );
+
+    return;
+
+  }
+
+
+  if(!request.lessonId){
+
+    showToast(
+      "معرّف الدرس غير موجود"
+    );
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      `اعتماد شراء "${request.lessonTitle || "الدرس"}"؟`
+    );
+
+
+  if(!confirmed)
+    return;
+
+
+  try{
+
+    const studentRef =
+      doc(
+        db,
+        "students",
+        request.uid
+      );
+
+
+    const requestRef =
+      doc(
+        db,
+        "purchaseRequests",
+        requestId
+      );
+
+
+    const lessonRef =
+      doc(
+        db,
+        "curriculumLessons",
+        request.lessonId
+      );
+
+
+    const purchaseId =
+      `${request.uid}_${request.lessonId}`;
+
+
+    const purchaseRef =
+      doc(
+        db,
+        "purchases",
+        purchaseId
+      );
+
+
+    const transactionRef =
+      doc(
+        collection(
+          db,
+          "transactions"
+        )
+      );
+
+
+    const walletTransactionRef =
+      doc(
+        collection(
+          db,
+          "walletTransactions"
+        )
+      );
+
+
+    await runTransaction(
+
+      db,
+
+      async transaction => {
+
+        /* =================================================
+           READS
+        ================================================= */
+
+
+        const studentSnap =
+          await transaction.get(
+            studentRef
+          );
+
+
+        const requestSnap =
+          await transaction.get(
+            requestRef
+          );
+
+
+        const lessonSnap =
+          await transaction.get(
+            lessonRef
+          );
+
+
+        const purchaseSnap =
+          await transaction.get(
+            purchaseRef
+          );
+
+
+        /* =================================================
+           VALIDATION
+        ================================================= */
+
+        if(!studentSnap.exists()){
+
+          throw new Error(
+            "الطالب غير موجود"
+          );
+
+        }
+
+
+        if(!requestSnap.exists()){
+
+          throw new Error(
+            "طلب الشراء غير موجود"
+          );
+
+        }
+
+
+        if(!lessonSnap.exists()){
+
+          throw new Error(
+            "الدرس غير موجود"
+          );
+
+        }
+
+
+        const requestData =
+          requestSnap.data();
+
+
+        if(
+          requestData.status !==
+          "pending"
+        ){
+
+          throw new Error(
+            "تمت معالجة الطلب بالفعل"
+          );
+
+        }
+
+
+        if(purchaseSnap.exists()){
+
+          throw new Error(
+            "الدرس مملوك للطالب بالفعل"
+          );
+
+        }
+
+
+        const lessonData =
+          lessonSnap.data();
+
+
+        /* =================================================
+           GET REAL PRICE FROM CURRICULUM
+        ================================================= */
+
+        const price =
+          Number(
+            lessonData.price || 0
+          );
+
+
+        if(price <= 0){
+
+          throw new Error(
+            "سعر الدرس غير صحيح"
+          );
+
+        }
+
+
+        const studentData =
+          studentSnap.data();
+
+
+        const oldBalance =
+          Number(
+            studentData.balance ??
+            studentData.wallet ??
+            0
+          );
+
+
+        if(oldBalance < price){
+
+          throw new Error(
+            `رصيد الطالب غير كافٍ. الرصيد الحالي: ${oldBalance} جنيه`
+          );
+
+        }
+
+
+        const newBalance =
+          oldBalance - price;
+
+
+        /* =================================================
+           UPDATE STUDENT BALANCE
+        ================================================= */
+
+        transaction.update(
+
+          studentRef,
+
+          {
+
+            balance:
+              newBalance,
+
+            wallet:
+              newBalance
+
+          }
+
+        );
+
+
+        /* =================================================
+           CREATE PURCHASE
+        ================================================= */
+
+        transaction.set(
+
+          purchaseRef,
+
+          {
+
+            uid:
+              request.uid,
+
+            lessonId:
+              request.lessonId,
+
+            lessonTitle:
+              lessonData.title ||
+              request.lessonTitle ||
+              "",
+
+            price,
+
+            status:
+              "completed",
+
+            approvedAt:
+              serverTimestamp(),
+
+            approvedBy:
+              auth.currentUser.uid
+
+          }
+
+        );
+
+
+        /* =================================================
+           UPDATE PURCHASE REQUEST
+        ================================================= */
+
+        transaction.update(
+
+          requestRef,
+
+          {
+
+            status:
+              "approved",
+
+            approvedAt:
+              serverTimestamp(),
+
+            approvedBy:
+              auth.currentUser.uid,
+
+            approvedPrice:
+              price
+
+          }
+
+        );
+
+
+        /* =================================================
+           TRANSACTION LOG
+        ================================================= */
+
+        transaction.set(
+
+          transactionRef,
+
+          {
+
+            studentId:
+              request.uid,
+
+            student:
+              studentData.name ||
+              "",
+
+            type:
+              "lesson_purchase",
+
+            amount:
+              -price,
+
+            reason:
+              `شراء درس: ${
+                lessonData.title ||
+                request.lessonTitle ||
+                ""
+              }`,
+
+            lessonId:
+              request.lessonId,
+
+            purchaseId,
+
+            oldBalance,
+
+            newBalance,
+
+            createdAt:
+              serverTimestamp(),
+
+            createdBy:
+              auth.currentUser.uid
+
+          }
+
+        );
+
+
+        /* =================================================
+           WALLET TRANSACTION LOG
+        ================================================= */
+
+        transaction.set(
+
+          walletTransactionRef,
+
+          {
+
+            uid:
+              request.uid,
+
+            studentId:
+              request.uid,
+
+            type:
+              "lesson_purchase",
+
+            amount:
+              -price,
+
+            reason:
+              `شراء درس: ${
+                lessonData.title ||
+                request.lessonTitle ||
+                ""
+              }`,
+
+            lessonId:
+              request.lessonId,
+
+            purchaseId,
+
+            oldBalance,
+
+            newBalance,
+
+            createdAt:
+              serverTimestamp(),
+
+            createdBy:
+              auth.currentUser.uid
+
+          }
+
+        );
+
+      }
+
+    );
+
+
+    showToast(
+      "تم اعتماد شراء الدرس وخصم الرصيد بنجاح"
+    );
+
+  }
+
+
+  catch(err){
+
+    console.error(
+      "Approve purchase error:",
+      err
+    );
+
+
+    showToast(
+      err.message ||
+      "فشل اعتماد عملية الشراء"
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   REJECT PURCHASE REQUEST
+========================================================= */
+
+window.rejectPurchaseRequest =
+async function(requestId){
+
+  const request =
+    purchaseRequests.find(
+      r =>
+        r.id === requestId
+    );
+
+
+  if(!request){
+
+    showToast(
+      "طلب الشراء غير موجود"
+    );
+
+    return;
+
+  }
+
+
+  if(request.status !== "pending"){
+
+    showToast(
+      "هذا الطلب تمت معالجته بالفعل"
+    );
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      `رفض طلب شراء "${request.lessonTitle || "الدرس"}"؟`
+    );
+
+
+  if(!confirmed)
+    return;
+
+
+  try{
+
+    await updateDoc(
+
+      doc(
+        db,
+        "purchaseRequests",
+        requestId
+      ),
+
+      {
+
+        status:
+          "rejected",
+
+        rejectedAt:
+          serverTimestamp(),
+
+        rejectedBy:
+          auth.currentUser.uid
+
+      }
+
+    );
+
+
+    showToast(
+      "تم رفض طلب الشراء"
+    );
+
+  }
+
+
+  catch(err){
+
+    console.error(
+      "Reject purchase error:",
+      err
+    );
+
+
+    showToast(
+      err.message ||
+      "حدث خطأ أثناء رفض الطلب"
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   START PURCHASE REQUESTS
+========================================================= */
+
+/*
+   ملاحظة:
+   لو عندك بالفعل مكان في الكود يستدعي
+   setupPurchaseRequests()
+   بعد تسجيل دخول الـAdmin،
+   لا تستدعِها هنا مرة ثانية.
+*/
+
+setupPurchaseRequests();
+
+
+/* =========================================================
+   باقي كود الـADMIN يأتي هنا
+========================================================= */
+
+</script>
 
 /* =========================
    APP
@@ -3822,6 +4827,9 @@ let teachers=[];
 let classes=[];
 let transactions=[];
 let subscriptionRequests=[];
+
+let purchaseRequests = [];
+let purchaseRequestsUnsubscribe = null;
 
 let curriculumLessons=[];
 let trainings=[];
