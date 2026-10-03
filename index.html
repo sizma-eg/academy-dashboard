@@ -66,7 +66,8 @@ button{
  border-left:1px solid var(--border);
  backdrop-filter:blur(20px);
  z-index:100;
- transition:.3s
+ transition:.3s;
+ overflow-y:auto
 }
 
 .logo{
@@ -150,10 +151,11 @@ button{
 }
 
 .sidebar-bottom{
- position:absolute;
+ position:sticky;
  left:16px;
  right:16px;
- bottom:18px
+ bottom:18px;
+ margin-top:20px
 }
 
 .admin-card{
@@ -266,6 +268,14 @@ button{
  border:0;
  background:rgba(34,197,94,.12);
  color:#4ade80;
+ padding:9px 13px;
+ border-radius:10px
+}
+
+.blue{
+ border:0;
+ background:rgba(59,130,246,.12);
+ color:#60a5fa;
  padding:9px 13px;
  border-radius:10px
 }
@@ -456,6 +466,11 @@ tr:last-child td{
  background:rgba(139,92,246,.12)
 }
 
+.badge.blue{
+ color:#60a5fa;
+ background:rgba(59,130,246,.1)
+}
+
 .activity{
  display:flex;
  flex-direction:column
@@ -528,7 +543,8 @@ tr:last-child td{
 
 .toolbar-right{
  display:flex;
- gap:8px
+ gap:8px;
+ flex-wrap:wrap
 }
 
 .cards{
@@ -577,7 +593,8 @@ tr:last-child td{
 .card-actions{
  display:flex;
  gap:7px;
- margin-top:14px
+ margin-top:14px;
+ flex-wrap:wrap
 }
 
 .class-grid{
@@ -632,6 +649,67 @@ tr:last-child td{
  font-size:11px
 }
 
+.content-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:16px
+}
+
+.content-card{
+ background:rgba(255,255,255,.025);
+ border:1px solid var(--border);
+ border-radius:17px;
+ padding:18px
+}
+
+.content-card h3{
+ font-size:14px;
+ margin-bottom:6px
+}
+
+.content-card p{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.8
+}
+
+.content-top{
+ display:flex;
+ align-items:flex-start;
+ justify-content:space-between;
+ gap:10px;
+ margin-bottom:13px
+}
+
+.content-meta{
+ display:flex;
+ gap:6px;
+ flex-wrap:wrap;
+ margin-top:12px
+}
+
+.content-actions{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+ margin-top:15px
+}
+
+.question-preview{
+ background:rgba(255,255,255,.035);
+ border:1px solid var(--border);
+ border-radius:12px;
+ padding:12px;
+ margin-top:12px;
+ font-size:11px;
+ line-height:1.8
+}
+
+.option-preview{
+ margin-top:5px;
+ color:#aaa5b7
+}
+
 .empty{
  text-align:center;
  padding:55px 20px;
@@ -660,13 +738,17 @@ tr:last-child td{
 }
 
 .modal{
- width:min(550px,100%);
+ width:min(620px,100%);
  max-height:90vh;
  overflow:auto;
  background:#111019;
  border:1px solid var(--border);
  border-radius:22px;
  box-shadow:0 30px 100px rgba(0,0,0,.5)
+}
+
+.modal.large{
+ width:min(800px,100%)
 }
 
 .modal-head{
@@ -729,11 +811,50 @@ tr:last-child td{
  gap:10px
 }
 
+.form-row-3{
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:10px
+}
+
+.checkbox-field{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ background:rgba(255,255,255,.035);
+ border:1px solid var(--border);
+ padding:11px;
+ border-radius:11px;
+ margin-bottom:14px
+}
+
+.checkbox-field input{
+ width:17px;
+ height:17px
+}
+
+.checkbox-field label{
+ margin:0;
+ font-size:11px;
+ color:#aaa5b7
+}
+
 .modal-footer{
  display:flex;
  gap:8px;
  justify-content:flex-start;
  padding-top:5px
+}
+
+.form-note{
+ background:rgba(139,92,246,.07);
+ border:1px solid rgba(139,92,246,.14);
+ color:#b9a8e9;
+ padding:10px 12px;
+ border-radius:11px;
+ font-size:10px;
+ line-height:1.8;
+ margin-bottom:14px
 }
 
 .toast{
@@ -849,20 +970,24 @@ tr:last-child td{
 }
 
 @media(max-width:1100px){
+
  .stats{
   grid-template-columns:repeat(2,1fr)
  }
 
- .cards{
+ .cards,
+ .content-grid{
   grid-template-columns:repeat(2,1fr)
  }
 
  .grid-2{
   grid-template-columns:1fr
  }
+
 }
 
 @media(max-width:800px){
+
  .sidebar{
   transform:translateX(100%)
  }
@@ -919,9 +1044,11 @@ tr:last-child td{
  .class-grid{
   grid-template-columns:1fr
  }
+
 }
 
 @media(max-width:600px){
+
  .stats{
   grid-template-columns:1fr 1fr;
   gap:9px
@@ -935,17 +1062,20 @@ tr:last-child td{
   font-size:20px
  }
 
- .cards{
+ .cards,
+ .content-grid{
   grid-template-columns:1fr
  }
 
- .form-row{
+ .form-row,
+ .form-row-3{
   grid-template-columns:1fr
  }
 
  .page-title h1{
   font-size:21px
  }
+
 }
 </style>
 </head>
@@ -961,15 +1091,18 @@ tr:last-child td{
 </div>
 
 <div class="login-screen" id="loginScreen">
+
  <div class="login-box">
 
   <div class="login-logo">
+
    <div class="logo-mark">M</div>
 
    <div class="logo-text">
     <strong>Mathix</strong>
     <span>ADMIN PANEL</span>
    </div>
+
   </div>
 
   <h2>تسجيل دخول الإدارة</h2>
@@ -978,12 +1111,16 @@ tr:last-child td{
    سجّل الدخول بحساب الأدمن للوصول إلى لوحة التحكم.
   </p>
 
-  <div class="login-error" id="loginError"></div>
+  <div
+   class="login-error"
+   id="loginError"
+  ></div>
 
   <form id="loginForm">
 
    <div class="field">
     <label>البريد الإلكتروني</label>
+
     <input
      type="email"
      id="loginEmail"
@@ -993,42 +1130,62 @@ tr:last-child td{
    </div>
 
    <div class="field">
+
     <label>كلمة المرور</label>
+
     <input
      type="password"
      id="loginPassword"
      autocomplete="current-password"
      required
     >
+
    </div>
 
-   <button class="primary" style="width:100%">
+   <button
+    class="primary"
+    style="width:100%"
+   >
     دخول
    </button>
 
   </form>
 
  </div>
+
 </div>
 
-<div class="app" id="app">
+<div
+ class="app"
+ id="app"
+>
 
-<aside class="sidebar" id="sidebar">
+<aside
+ class="sidebar"
+ id="sidebar"
+>
 
  <div class="logo">
+
   <div class="logo-mark">M</div>
 
   <div class="logo-text">
    <strong>Mathix</strong>
    <span>ADMIN PANEL</span>
   </div>
+
  </div>
 
- <div class="nav-title">الإدارة</div>
+ <div class="nav-title">
+  الإدارة
+ </div>
 
  <nav class="nav">
 
-  <button class="active" data-view="dashboard">
+  <button
+   class="active"
+   data-view="dashboard"
+  >
    <span class="nav-icon">📊</span>
    الرئيسية
   </button>
@@ -1041,6 +1198,26 @@ tr:last-child td{
   <button data-view="subjects">
    <span class="nav-icon">📚</span>
    المواد
+  </button>
+
+  <button data-view="curriculum">
+   <span class="nav-icon">📖</span>
+   دروس المنهج
+  </button>
+
+  <button data-view="trainings">
+   <span class="nav-icon">📝</span>
+   التدريبات
+  </button>
+
+  <button data-view="exams">
+   <span class="nav-icon">🧪</span>
+   الامتحانات
+  </button>
+
+  <button data-view="attempts">
+   <span class="nav-icon">📊</span>
+   النتائج
   </button>
 
   <button data-view="classes">
@@ -1064,8 +1241,11 @@ tr:last-child td{
   </button>
 
   <button data-view="subscriptionRequests">
+
    <span class="nav-icon">📩</span>
+
    طلبات الاشتراك
+
    <span
     id="subscriptionPendingBadge"
     class="badge yellow"
@@ -1073,11 +1253,14 @@ tr:last-child td{
    >
     0
    </span>
+
   </button>
 
  </nav>
 
- <div class="nav-title">النظام</div>
+ <div class="nav-title">
+  النظام
+ </div>
 
  <nav class="nav">
 
@@ -1095,8 +1278,13 @@ tr:last-child td{
    <div class="avatar">A</div>
 
    <div>
-    <strong id="adminName">Mathix Admin</strong>
-    <span id="adminEmail">Administrator</span>
+    <strong id="adminName">
+     Mathix Admin
+    </strong>
+
+    <span id="adminEmail">
+     Administrator
+    </span>
    </div>
 
   </div>
@@ -1107,7 +1295,10 @@ tr:last-child td{
 
 <div class="mobile-top">
 
- <button class="menu" id="menuBtn">
+ <button
+  class="menu"
+  id="menuBtn"
+ >
   ☰
  </button>
 
@@ -1124,11 +1315,15 @@ tr:last-child td{
 <div class="topbar">
 
  <div class="page-title">
-  <h1 id="pageTitle">الرئيسية</h1>
+
+  <h1 id="pageTitle">
+   الرئيسية
+  </h1>
 
   <p id="pageSubtitle">
    نظرة عامة على منصة Mathix
   </p>
+
  </div>
 
  <div class="top-actions">
@@ -1158,11 +1353,19 @@ tr:last-child td{
 
 </div>
 
-<section class="view active" id="view-dashboard">
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<section
+ class="view active"
+ id="view-dashboard"
+>
 
  <div class="stats">
 
   <div class="stat">
+
    <div class="stat-top">
     <small>إجمالي الطلاب</small>
     <div class="stat-icon">👨‍🎓</div>
@@ -1173,9 +1376,11 @@ tr:last-child td{
    <div class="stat-change">
     بيانات حقيقية من Firebase
    </div>
+
   </div>
 
   <div class="stat">
+
    <div class="stat-top">
     <small>المواد</small>
     <div class="stat-icon">📚</div>
@@ -1186,34 +1391,37 @@ tr:last-child td{
    <div class="stat-change">
     بيانات حقيقية من Firebase
    </div>
+
   </div>
 
   <div class="stat">
+
    <div class="stat-top">
-    <small>الحصص</small>
-    <div class="stat-icon">🎓</div>
+    <small>دروس المنهج</small>
+    <div class="stat-icon">📖</div>
    </div>
 
-   <h2 id="statClasses">0</h2>
+   <h2 id="statCurriculum">0</h2>
 
    <div class="stat-change">
     بيانات حقيقية من Firebase
    </div>
+
   </div>
 
   <div class="stat">
+
    <div class="stat-top">
-    <small>أرصدة المحافظ</small>
-    <div class="stat-icon">💰</div>
+    <small>الامتحانات</small>
+    <div class="stat-icon">🧪</div>
    </div>
 
-   <h2 id="statBalance">
-    0 <small>ج.م</small>
-   </h2>
+   <h2 id="statExams">0</h2>
 
    <div class="stat-change">
     بيانات حقيقية من Firebase
    </div>
+
   </div>
 
  </div>
@@ -1232,11 +1440,13 @@ tr:last-child td{
     <table>
 
      <thead>
+
       <tr>
        <th>الطالب</th>
        <th>الكود</th>
        <th>الرصيد</th>
       </tr>
+
      </thead>
 
      <tbody id="recentStudents"></tbody>
@@ -1255,10 +1465,12 @@ tr:last-child td{
    </div>
 
    <div class="card-body">
+
     <div
      class="activity"
      id="recentActivity"
     ></div>
+
    </div>
 
   </div>
@@ -1267,7 +1479,14 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-students">
+<!-- =========================
+     STUDENTS
+========================= -->
+
+<section
+ class="view"
+ id="view-students"
+>
 
  <div class="toolbar">
 
@@ -1299,8 +1518,15 @@ tr:last-child td{
  <div class="card">
 
   <div class="card-head">
-   <h3>جميع الطلاب</h3>
-   <span id="studentCount">0 طالب</span>
+
+   <h3>
+    جميع الطلاب
+   </h3>
+
+   <span id="studentCount">
+    0 طالب
+   </span>
+
   </div>
 
   <div class="table-wrap">
@@ -1308,6 +1534,7 @@ tr:last-child td{
    <table>
 
     <thead>
+
      <tr>
       <th>الطالب</th>
       <th>الكود</th>
@@ -1316,6 +1543,7 @@ tr:last-child td{
       <th>الحالة</th>
       <th>الإجراءات</th>
      </tr>
+
     </thead>
 
     <tbody id="studentsTable"></tbody>
@@ -1328,11 +1556,19 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-subjects">
+<!-- =========================
+     SUBJECTS
+========================= -->
+
+<section
+ class="view"
+ id="view-subjects"
+>
 
  <div class="toolbar">
 
   <div>
+
    <h3 style="font-size:15px">
     إدارة المواد
    </h3>
@@ -1341,7 +1577,7 @@ tr:last-child td{
     class="muted"
     style="font-size:11px;margin-top:3px"
    >
-    أضف وعدّل مواد Mathix
+    المواد التي سيظهر تحتها المنهج والتدريبات والامتحانات
    </p>
 
   </div>
@@ -1362,11 +1598,202 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-classes">
+<!-- =========================
+     CURRICULUM
+========================= -->
+
+<section
+ class="view"
+ id="view-curriculum"
+>
 
  <div class="toolbar">
 
   <div>
+
+   <h3 style="font-size:15px">
+    دروس المنهج
+   </h3>
+
+   <p
+    class="muted"
+    style="font-size:11px;margin-top:3px"
+   >
+    إنشاء الدروس التي تظهر للطالب داخل المادة
+   </p>
+
+  </div>
+
+  <button
+   class="primary"
+   onclick="openCurriculumModal()"
+  >
+   ＋ إضافة درس
+  </button>
+
+ </div>
+
+ <div
+  class="content-grid"
+  id="curriculumGrid"
+ ></div>
+
+</section>
+
+<!-- =========================
+     TRAININGS
+========================= -->
+
+<section
+ class="view"
+ id="view-trainings"
+>
+
+ <div class="toolbar">
+
+  <div>
+
+   <h3 style="font-size:15px">
+    التدريبات
+   </h3>
+
+   <p
+    class="muted"
+    style="font-size:11px;margin-top:3px"
+   >
+    إضافة أسئلة تدريبية مرتبطة بالمادة والدرس
+   </p>
+
+  </div>
+
+  <button
+   class="primary"
+   onclick="openTrainingModal()"
+  >
+   ＋ إضافة تدريب
+  </button>
+
+ </div>
+
+ <div
+  class="content-grid"
+  id="trainingsGrid"
+ ></div>
+
+</section>
+
+<!-- =========================
+     EXAMS
+========================= -->
+
+<section
+ class="view"
+ id="view-exams"
+>
+
+ <div class="toolbar">
+
+  <div>
+
+   <h3 style="font-size:15px">
+    الامتحانات
+   </h3>
+
+   <p
+    class="muted"
+    style="font-size:11px;margin-top:3px"
+   >
+    إنشاء الامتحان ثم إضافة الأسئلة الخاصة به
+   </p>
+
+  </div>
+
+  <button
+   class="primary"
+   onclick="openExamModal()"
+  >
+   ＋ إنشاء امتحان
+  </button>
+
+ </div>
+
+ <div
+  class="content-grid"
+  id="examsGrid"
+ ></div>
+
+</section>
+
+<!-- =========================
+     ATTEMPTS
+========================= -->
+
+<section
+ class="view"
+ id="view-attempts"
+>
+
+ <div class="toolbar">
+
+  <div>
+
+   <h3 style="font-size:15px">
+    نتائج الطلاب
+   </h3>
+
+   <p
+    class="muted"
+    style="font-size:11px;margin-top:3px"
+   >
+    جميع محاولات الامتحانات والتدريبات
+   </p>
+
+  </div>
+
+ </div>
+
+ <div class="card">
+
+  <div class="table-wrap">
+
+   <table>
+
+    <thead>
+
+     <tr>
+      <th>الطالب</th>
+      <th>النوع</th>
+      <th>المحتوى</th>
+      <th>النتيجة</th>
+      <th>النسبة</th>
+      <th>التاريخ</th>
+     </tr>
+
+    </thead>
+
+    <tbody id="attemptsTable"></tbody>
+
+   </table>
+
+  </div>
+
+ </div>
+
+</section>
+
+<!-- =========================
+     CLASSES
+========================= -->
+
+<section
+ class="view"
+ id="view-classes"
+>
+
+ <div class="toolbar">
+
+  <div>
+
    <h3 style="font-size:15px">
     إدارة الحصص
    </h3>
@@ -1375,7 +1802,7 @@ tr:last-child td{
     class="muted"
     style="font-size:11px;margin-top:3px"
    >
-    إنشاء وإدارة الحصص التعليمية
+    إنشاء وإدارة الحصص التعليمية المباشرة
    </p>
 
   </div>
@@ -1396,11 +1823,19 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-teachers">
+<!-- =========================
+     TEACHERS
+========================= -->
+
+<section
+ class="view"
+ id="view-teachers"
+>
 
  <div class="toolbar">
 
   <div>
+
    <h3 style="font-size:15px">
     المدرسين
    </h3>
@@ -1430,6 +1865,7 @@ tr:last-child td{
    <table>
 
     <thead>
+
      <tr>
       <th>المدرس</th>
       <th>المادة</th>
@@ -1437,6 +1873,7 @@ tr:last-child td{
       <th>الحالة</th>
       <th>الإجراءات</th>
      </tr>
+
     </thead>
 
     <tbody id="teachersTable"></tbody>
@@ -1449,11 +1886,19 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-wallets">
+<!-- =========================
+     WALLETS
+========================= -->
+
+<section
+ class="view"
+ id="view-wallets"
+>
 
  <div class="toolbar">
 
   <div>
+
    <h3 style="font-size:15px">
     محافظ الطلاب
    </h3>
@@ -1476,6 +1921,7 @@ tr:last-child td{
    <table>
 
     <thead>
+
      <tr>
       <th>الطالب</th>
       <th>الكود</th>
@@ -1483,6 +1929,7 @@ tr:last-child td{
       <th>آخر عملية</th>
       <th>الإجراءات</th>
      </tr>
+
     </thead>
 
     <tbody id="walletsTable"></tbody>
@@ -1495,11 +1942,19 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-transactions">
+<!-- =========================
+     TRANSACTIONS
+========================= -->
+
+<section
+ class="view"
+ id="view-transactions"
+>
 
  <div class="toolbar">
 
   <div>
+
    <h3 style="font-size:15px">
     المعاملات المالية
    </h3>
@@ -1529,6 +1984,7 @@ tr:last-child td{
    <table>
 
     <thead>
+
      <tr>
       <th>الطالب</th>
       <th>النوع</th>
@@ -1536,6 +1992,7 @@ tr:last-child td{
       <th>السبب</th>
       <th>التاريخ</th>
      </tr>
+
     </thead>
 
     <tbody id="transactionsTable"></tbody>
@@ -1549,14 +2006,18 @@ tr:last-child td{
 </section>
 
 <!-- =========================
-     طلبات الاشتراك
+     SUBSCRIPTIONS
 ========================= -->
 
-<section class="view" id="view-subscriptionRequests">
+<section
+ class="view"
+ id="view-subscriptionRequests"
+>
 
  <div class="toolbar">
 
   <div>
+
    <h3 style="font-size:15px">
     طلبات الاشتراك
    </h3>
@@ -1567,6 +2028,7 @@ tr:last-child td{
    >
     مراجعة طلبات الاشتراك والمدفوعات
    </p>
+
   </div>
 
   <span
@@ -1623,7 +2085,14 @@ tr:last-child td{
 
 </section>
 
-<section class="view" id="view-settings">
+<!-- =========================
+     SETTINGS
+========================= -->
+
+<section
+ class="view"
+ id="view-settings"
+>
 
  <div class="card">
 
@@ -1634,19 +2103,25 @@ tr:last-child td{
   <div class="card-body">
 
    <div class="field">
+
     <label>اسم المنصة</label>
+
     <input
      value="Mathix"
      disabled
     >
+
    </div>
 
    <div class="field">
+
     <label>البريد الحالي</label>
+
     <input
      id="settingsAdminEmail"
      disabled
     >
+
    </div>
 
    <button
@@ -1665,7 +2140,10 @@ tr:last-child td{
 </main>
 </div>
 
-<!-- إضافة طالب -->
+<!-- =========================
+     STUDENT MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="studentModal"
@@ -1674,7 +2152,10 @@ tr:last-child td{
  <div class="modal">
 
   <div class="modal-head">
-   <h3>إضافة طالب</h3>
+
+   <h3>
+    إضافة طالب
+   </h3>
 
    <button
     class="close"
@@ -1682,6 +2163,7 @@ tr:last-child td{
    >
     ×
    </button>
+
   </div>
 
   <form
@@ -1692,36 +2174,53 @@ tr:last-child td{
    <div class="form-row">
 
     <div class="field">
-     <label>اسم الطالب</label>
+
+     <label>
+      اسم الطالب
+     </label>
+
      <input
       id="newStudentName"
       required
      >
+
     </div>
 
     <div class="field">
-     <label>كود الطالب</label>
+
+     <label>
+      كود الطالب
+     </label>
+
      <input
       id="newStudentCode"
       placeholder="MX0000"
       required
      >
+
     </div>
 
    </div>
 
    <div class="field">
-    <label>البريد الإلكتروني</label>
+
+    <label>
+     البريد الإلكتروني
+    </label>
 
     <input
      type="email"
      id="newStudentEmail"
      required
     >
+
    </div>
 
    <div class="field">
-    <label>كلمة المرور الأولية</label>
+
+    <label>
+     كلمة المرور الأولية
+    </label>
 
     <input
      type="password"
@@ -1729,6 +2228,7 @@ tr:last-child td{
      minlength="6"
      required
     >
+
    </div>
 
    <p
@@ -1760,7 +2260,10 @@ tr:last-child td{
 
 </div>
 
-<!-- كلمة المرور -->
+<!-- =========================
+     PASSWORD MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="passwordModal"
@@ -1794,21 +2297,25 @@ tr:last-child td{
    >
 
    <div class="field">
+
     <label>الطالب</label>
 
     <input
      id="passwordStudentName"
      disabled
     >
+
    </div>
 
    <div class="field">
+
     <label>البريد</label>
 
     <input
      id="passwordStudentEmail"
      disabled
     >
+
    </div>
 
    <p
@@ -1840,7 +2347,10 @@ tr:last-child td{
 
 </div>
 
-<!-- المحفظة -->
+<!-- =========================
+     WALLET MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="walletModal"
@@ -1874,21 +2384,25 @@ tr:last-child td{
    >
 
    <div class="field">
+
     <label>الطالب</label>
 
     <input
      id="walletStudentName"
      disabled
     >
+
    </div>
 
    <div class="field">
+
     <label>الرصيد الحالي</label>
 
     <input
      id="walletCurrent"
      disabled
     >
+
    </div>
 
    <div class="form-row">
@@ -1898,6 +2412,7 @@ tr:last-child td{
      <label>العملية</label>
 
      <select id="walletType">
+
       <option value="add">
        إضافة رصيد
       </option>
@@ -1905,6 +2420,7 @@ tr:last-child td{
       <option value="subtract">
        خصم رصيد
       </option>
+
      </select>
 
     </div>
@@ -1926,12 +2442,14 @@ tr:last-child td{
    </div>
 
    <div class="field">
+
     <label>السبب</label>
 
     <input
      id="walletReason"
      placeholder="مثال: شحن يدوي"
     >
+
    </div>
 
    <div class="modal-footer">
@@ -1956,7 +2474,10 @@ tr:last-child td{
 
 </div>
 
-<!-- المادة -->
+<!-- =========================
+     SUBJECT MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="subjectModal"
@@ -1966,7 +2487,9 @@ tr:last-child td{
 
   <div class="modal-head">
 
-   <h3>إضافة مادة</h3>
+   <h3>
+    إضافة مادة
+   </h3>
 
    <button
     class="close"
@@ -1985,33 +2508,75 @@ tr:last-child td{
    <div class="form-row">
 
     <div class="field">
-     <label>اسم المادة</label>
+
+     <label>
+      اسم المادة
+     </label>
 
      <input
       id="subjectName"
       required
      >
+
     </div>
 
     <div class="field">
-     <label>الأيقونة</label>
+
+     <label>
+      الأيقونة
+     </label>
 
      <input
       id="subjectIcon"
       placeholder="📚"
      >
+
     </div>
 
    </div>
 
    <div class="field">
 
-    <label>الوصف</label>
+    <label>
+     الوصف
+    </label>
 
     <textarea
      id="subjectDescription"
      placeholder="وصف مختصر للمادة"
     ></textarea>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      الترتيب
+     </label>
+
+     <input
+      type="number"
+      id="subjectOrder"
+      value="0"
+     >
+
+    </div>
+
+    <div class="checkbox-field">
+
+     <input
+      type="checkbox"
+      id="subjectActive"
+      checked
+     >
+
+     <label>
+      المادة منشورة للطلاب
+     </label>
+
+    </div>
 
    </div>
 
@@ -2037,7 +2602,805 @@ tr:last-child td{
 
 </div>
 
-<!-- الحصة -->
+<!-- =========================
+     CURRICULUM MODAL
+========================= -->
+
+<div
+ class="modal-overlay"
+ id="curriculumModal"
+>
+
+ <div class="modal large">
+
+  <div class="modal-head">
+
+   <h3 id="curriculumModalTitle">
+    إضافة درس منهج
+   </h3>
+
+   <button
+    class="close"
+    onclick="closeModal('curriculumModal')"
+   >
+    ×
+   </button>
+
+  </div>
+
+  <form
+   class="form"
+   onsubmit="saveCurriculumLesson(event)"
+  >
+
+   <input
+    type="hidden"
+    id="curriculumEditId"
+   >
+
+   <div class="form-note">
+    هذا القسم خاص بدروس المنهج فقط، وليس الحصص المباشرة.
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      المادة
+     </label>
+
+     <select
+      id="curriculumSubject"
+      required
+     ></select>
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      ترتيب الدرس
+     </label>
+
+     <input
+      type="number"
+      id="curriculumOrder"
+      value="0"
+     >
+
+    </div>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     عنوان الدرس
+    </label>
+
+    <input
+     id="curriculumTitle"
+     placeholder="مثال: مقدمة في التفاضل"
+     required
+    >
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     وصف مختصر
+    </label>
+
+    <textarea
+     id="curriculumDescription"
+     placeholder="وصف يظهر للطالب قبل فتح الدرس"
+    ></textarea>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     شرح الدرس
+    </label>
+
+    <textarea
+     id="curriculumContent"
+     style="min-height:220px"
+     placeholder="اكتب شرح الدرس كاملًا هنا..."
+     required
+    ></textarea>
+
+   </div>
+
+   <div class="checkbox-field">
+
+    <input
+     type="checkbox"
+     id="curriculumActive"
+     checked
+    >
+
+    <label>
+     نشر الدرس للطلاب
+    </label>
+
+   </div>
+
+   <div class="modal-footer">
+
+    <button
+     class="primary"
+     id="curriculumSubmitBtn"
+    >
+     حفظ الدرس
+    </button>
+
+    <button
+     type="button"
+     class="secondary"
+     onclick="closeModal('curriculumModal')"
+    >
+     إلغاء
+    </button>
+
+   </div>
+
+  </form>
+
+ </div>
+
+</div>
+
+<!-- =========================
+     TRAINING MODAL
+========================= -->
+
+<div
+ class="modal-overlay"
+ id="trainingModal"
+>
+
+ <div class="modal large">
+
+  <div class="modal-head">
+
+   <h3 id="trainingModalTitle">
+    إضافة تدريب
+   </h3>
+
+   <button
+    class="close"
+    onclick="closeModal('trainingModal')"
+   >
+    ×
+   </button>
+
+  </div>
+
+  <form
+   class="form"
+   onsubmit="saveTraining(event)"
+  >
+
+   <input
+    type="hidden"
+    id="trainingEditId"
+   >
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      عنوان التدريب
+     </label>
+
+     <input
+      id="trainingTitle"
+      placeholder="مثال: تدريب على المشتقات"
+      required
+     >
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      المادة
+     </label>
+
+     <select
+      id="trainingSubject"
+      onchange="populateTrainingLessons()"
+      required
+     ></select>
+
+    </div>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      الدرس
+     </label>
+
+     <select
+      id="trainingLesson"
+     ></select>
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      مستوى الصعوبة
+     </label>
+
+     <select id="trainingDifficulty">
+
+      <option value="easy">
+       سهل
+      </option>
+
+      <option value="medium" selected>
+       متوسط
+      </option>
+
+      <option value="hard">
+       صعب
+      </option>
+
+     </select>
+
+    </div>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     السؤال
+    </label>
+
+    <textarea
+     id="trainingQuestion"
+     style="min-height:120px"
+     placeholder="اكتب السؤال..."
+     required
+    ></textarea>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+     <label>الاختيار A</label>
+     <input id="trainingOptionA" required>
+    </div>
+
+    <div class="field">
+     <label>الاختيار B</label>
+     <input id="trainingOptionB" required>
+    </div>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+     <label>الاختيار C</label>
+     <input id="trainingOptionC" required>
+    </div>
+
+    <div class="field">
+     <label>الاختيار D</label>
+     <input id="trainingOptionD" required>
+    </div>
+
+   </div>
+
+   <div class="form-row-3">
+
+    <div class="field">
+
+     <label>
+      الإجابة الصحيحة
+     </label>
+
+     <select
+      id="trainingCorrectAnswer"
+      required
+     >
+
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+
+     </select>
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الدرجة
+     </label>
+
+     <input
+      type="number"
+      id="trainingPoints"
+      value="1"
+      min="1"
+      required
+     >
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الترتيب
+     </label>
+
+     <input
+      type="number"
+      id="trainingOrder"
+      value="0"
+     >
+
+    </div>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     شرح الإجابة
+    </label>
+
+    <textarea
+     id="trainingExplanation"
+     placeholder="شرح يظهر بعد الحل..."
+    ></textarea>
+
+   </div>
+
+   <div class="checkbox-field">
+
+    <input
+     type="checkbox"
+     id="trainingActive"
+     checked
+    >
+
+    <label>
+     نشر التدريب للطلاب
+    </label>
+
+   </div>
+
+   <div class="modal-footer">
+
+    <button
+     class="primary"
+     id="trainingSubmitBtn"
+    >
+     حفظ التدريب
+    </button>
+
+    <button
+     type="button"
+     class="secondary"
+     onclick="closeModal('trainingModal')"
+    >
+     إلغاء
+    </button>
+
+   </div>
+
+  </form>
+
+ </div>
+
+</div>
+
+<!-- =========================
+     EXAM MODAL
+========================= -->
+
+<div
+ class="modal-overlay"
+ id="examModal"
+>
+
+ <div class="modal">
+
+  <div class="modal-head">
+
+   <h3 id="examModalTitle">
+    إنشاء امتحان
+   </h3>
+
+   <button
+    class="close"
+    onclick="closeModal('examModal')"
+   >
+    ×
+   </button>
+
+  </div>
+
+  <form
+   class="form"
+   onsubmit="saveExam(event)"
+  >
+
+   <input
+    type="hidden"
+    id="examEditId"
+   >
+
+   <div class="field">
+
+    <label>
+     اسم الامتحان
+    </label>
+
+    <input
+     id="examTitle"
+     placeholder="مثال: امتحان التفاضل الأول"
+     required
+    >
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      المادة
+     </label>
+
+     <select
+      id="examSubject"
+      required
+     ></select>
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      مدة الامتحان بالدقائق
+     </label>
+
+     <input
+      type="number"
+      id="examDuration"
+      min="1"
+      value="30"
+      required
+     >
+
+    </div>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     وصف الامتحان
+    </label>
+
+    <textarea
+     id="examDescription"
+     placeholder="وصف مختصر للامتحان..."
+    ></textarea>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     الدرجة الكلية
+    </label>
+
+    <input
+     type="number"
+     id="examTotalMarks"
+     min="1"
+     value="10"
+     required
+    >
+
+   </div>
+
+   <div class="checkbox-field">
+
+    <input
+     type="checkbox"
+     id="examActive"
+     checked
+    >
+
+    <label>
+     نشر الامتحان للطلاب
+    </label>
+
+   </div>
+
+   <div class="modal-footer">
+
+    <button
+     class="primary"
+     id="examSubmitBtn"
+    >
+     حفظ الامتحان
+    </button>
+
+    <button
+     type="button"
+     class="secondary"
+     onclick="closeModal('examModal')"
+    >
+     إلغاء
+    </button>
+
+   </div>
+
+  </form>
+
+ </div>
+
+</div>
+
+<!-- =========================
+     EXAM QUESTION MODAL
+========================= -->
+
+<div
+ class="modal-overlay"
+ id="examQuestionModal"
+>
+
+ <div class="modal large">
+
+  <div class="modal-head">
+
+   <h3 id="examQuestionModalTitle">
+    إضافة سؤال للامتحان
+   </h3>
+
+   <button
+    class="close"
+    onclick="closeModal('examQuestionModal')"
+   >
+    ×
+   </button>
+
+  </div>
+
+  <form
+   class="form"
+   onsubmit="saveExamQuestion(event)"
+  >
+
+   <input
+    type="hidden"
+    id="examQuestionEditId"
+   >
+
+   <input
+    type="hidden"
+    id="examQuestionExamId"
+   >
+
+   <div class="field">
+
+    <label>
+     الامتحان
+    </label>
+
+    <input
+     id="examQuestionExamName"
+     disabled
+    >
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     السؤال
+    </label>
+
+    <textarea
+     id="examQuestionText"
+     style="min-height:120px"
+     required
+    ></textarea>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      الاختيار A
+     </label>
+
+     <input
+      id="examOptionA"
+      required
+     >
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الاختيار B
+     </label>
+
+     <input
+      id="examOptionB"
+      required
+     >
+
+    </div>
+
+   </div>
+
+   <div class="form-row">
+
+    <div class="field">
+
+     <label>
+      الاختيار C
+     </label>
+
+     <input
+      id="examOptionC"
+      required
+     >
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الاختيار D
+     </label>
+
+     <input
+      id="examOptionD"
+      required
+     >
+
+    </div>
+
+   </div>
+
+   <div class="form-row-3">
+
+    <div class="field">
+
+     <label>
+      الإجابة الصحيحة
+     </label>
+
+     <select
+      id="examCorrectAnswer"
+      required
+     >
+
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+
+     </select>
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الدرجة
+     </label>
+
+     <input
+      type="number"
+      id="examQuestionPoints"
+      min="1"
+      value="1"
+      required
+     >
+
+    </div>
+
+    <div class="field">
+
+     <label>
+      الترتيب
+     </label>
+
+     <input
+      type="number"
+      id="examQuestionOrder"
+      min="0"
+      value="0"
+     >
+
+    </div>
+
+   </div>
+
+   <div class="field">
+
+    <label>
+     شرح الإجابة
+    </label>
+
+    <textarea
+     id="examQuestionExplanation"
+     placeholder="شرح الإجابة..."
+    ></textarea>
+
+   </div>
+
+   <div class="checkbox-field">
+
+    <input
+     type="checkbox"
+     id="examQuestionActive"
+     checked
+    >
+
+    <label>
+     السؤال فعال
+    </label>
+
+   </div>
+
+   <div class="modal-footer">
+
+    <button
+     class="primary"
+     id="examQuestionSubmitBtn"
+    >
+     حفظ السؤال
+    </button>
+
+    <button
+     type="button"
+     class="secondary"
+     onclick="closeModal('examQuestionModal')"
+    >
+     إلغاء
+    </button>
+
+   </div>
+
+  </form>
+
+ </div>
+
+</div>
+
+<!-- =========================
+     CLASS MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="classModal"
@@ -2047,7 +3410,9 @@ tr:last-child td{
 
   <div class="modal-head">
 
-   <h3>فتح حصة جديدة</h3>
+   <h3>
+    فتح حصة جديدة
+   </h3>
 
    <button
     class="close"
@@ -2065,7 +3430,9 @@ tr:last-child td{
 
    <div class="field">
 
-    <label>اسم الحصة</label>
+    <label>
+     اسم الحصة
+    </label>
 
     <input
      id="className"
@@ -2079,7 +3446,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>المادة</label>
+     <label>
+      المادة
+     </label>
 
      <select
       id="classSubject"
@@ -2090,7 +3459,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>المدرس</label>
+     <label>
+      المدرس
+     </label>
 
      <select
       id="classTeacher"
@@ -2105,7 +3476,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>التاريخ</label>
+     <label>
+      التاريخ
+     </label>
 
      <input
       type="date"
@@ -2117,7 +3490,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>الوقت</label>
+     <label>
+      الوقت
+     </label>
 
      <input
       type="time"
@@ -2133,7 +3508,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>السعر</label>
+     <label>
+      السعر
+     </label>
 
      <input
       type="number"
@@ -2147,7 +3524,9 @@ tr:last-child td{
 
     <div class="field">
 
-     <label>رابط الحصة</label>
+     <label>
+      رابط الحصة
+     </label>
 
      <input
       id="classLink"
@@ -2180,7 +3559,10 @@ tr:last-child td{
 
 </div>
 
-<!-- المدرس -->
+<!-- =========================
+     TEACHER MODAL
+========================= -->
+
 <div
  class="modal-overlay"
  id="teacherModal"
@@ -2190,7 +3572,9 @@ tr:last-child td{
 
   <div class="modal-head">
 
-   <h3>إضافة مدرس</h3>
+   <h3>
+    إضافة مدرس
+   </h3>
 
    <button
     class="close"
@@ -2208,7 +3592,9 @@ tr:last-child td{
 
    <div class="field">
 
-    <label>اسم المدرس</label>
+    <label>
+     اسم المدرس
+    </label>
 
     <input
      id="teacherName"
@@ -2219,7 +3605,9 @@ tr:last-child td{
 
    <div class="field">
 
-    <label>المادة</label>
+    <label>
+     المادة
+    </label>
 
     <select
      id="teacherSubject"
@@ -2257,7 +3645,10 @@ tr:last-child td{
 
 <script type="module">
 
-import { initializeApp } from
+import {
+ initializeApp
+}
+from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
 import {
@@ -2295,22 +3686,39 @@ from
 ========================= */
 
 const firebaseConfig={
- apiKey:"AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
- authDomain:"mathix-88811.firebaseapp.com",
- projectId:"mathix-88811",
- storageBucket:"mathix-88811.firebasestorage.app",
- messagingSenderId:"1043867239139",
- appId:"1:1043867239139:web:da19abef81f052682bbbd6",
- measurementId:"G-T17ZDVBLM2"
+
+ apiKey:
+  "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+
+ authDomain:
+  "mathix-88811.firebaseapp.com",
+
+ projectId:
+  "mathix-88811",
+
+ storageBucket:
+  "mathix-88811.firebasestorage.app",
+
+ messagingSenderId:
+  "1043867239139",
+
+ appId:
+  "1:1043867239139:web:da19abef81f052682bbbd6",
+
+ measurementId:
+  "G-T17ZDVBLM2"
+
 };
 
 
 /* =========================
-   MAIN APP
+   APP
 ========================= */
 
 const app=
- initializeApp(firebaseConfig);
+ initializeApp(
+  firebaseConfig
+ );
 
 const db=
  getFirestore(app);
@@ -2321,8 +3729,6 @@ const auth=
 
 /* =========================
    SECONDARY AUTH
-   لإنشاء حسابات الطلاب
-   بدون Logout للأدمن
 ========================= */
 
 const studentCreatorApp=
@@ -2356,6 +3762,12 @@ let classes=[];
 let transactions=[];
 let subscriptionRequests=[];
 
+let curriculumLessons=[];
+let trainings=[];
+let exams=[];
+let examQuestions=[];
+let attempts=[];
+
 let unsubscribers=[];
 let toastTimer;
 
@@ -2379,6 +3791,26 @@ const titles={
  subjects:[
   "المواد",
   "إدارة المواد التعليمية"
+ ],
+
+ curriculum:[
+  "دروس المنهج",
+  "إدارة محتوى المنهج"
+ ],
+
+ trainings:[
+  "التدريبات",
+  "إدارة الأسئلة التدريبية"
+ ],
+
+ exams:[
+  "الامتحانات",
+  "إدارة الامتحانات والأسئلة"
+ ],
+
+ attempts:[
+  "النتائج",
+  "نتائج ومحاولات الطلاب"
  ],
 
  classes:[
@@ -2441,6 +3873,7 @@ function emptyRow(
 
  return `
  <tr>
+
   <td
    colspan="${columns}"
    style="
@@ -2449,9 +3882,49 @@ function emptyRow(
     color:#9995a8
    "
   >
+
    ${escapeHTML(msg)}
+
   </td>
- </tr>`;
+
+ </tr>
+ `;
+
+}
+
+
+function getTimestampValue(value){
+
+ if(!value)
+  return 0;
+
+ if(typeof value.seconds==="number")
+  return value.seconds;
+
+ if(value.toDate)
+  return Math.floor(
+   value.toDate().getTime()/1000
+  );
+
+ return 0;
+
+}
+
+
+function transactionDate(t){
+
+ if(t.createdAt?.toDate)
+  return t.createdAt
+   .toDate()
+   .toLocaleString("ar-EG");
+
+ if(t.createdAt?.seconds)
+  return new Date(
+   t.createdAt.seconds*1000
+  ).toLocaleString("ar-EG");
+
+ return t.date||
+  "—";
 
 }
 
@@ -2514,8 +3987,10 @@ function firebaseError(error){
  };
 
  return map[error?.code]
-  ||error?.message
-  ||"حدث خطأ غير معروف";
+  ||
+  error?.message
+  ||
+  "حدث خطأ غير معروف";
 
 }
 
@@ -2524,74 +3999,95 @@ function firebaseError(error){
    TOAST
 ========================= */
 
-window.showToast=message=>{
+window.showToast=
+ message=>{
 
- const toast=
-  $("toast");
+  const toast=
+   $("toast");
 
- toast.textContent=
-  message;
+  toast.textContent=
+   message;
 
- toast.classList.add("show");
-
- clearTimeout(toastTimer);
-
- toastTimer=
-  setTimeout(
-   ()=>{
-    toast.classList.remove("show");
-   },
-   3000
+  toast.classList.add(
+   "show"
   );
 
-};
+  clearTimeout(
+   toastTimer
+  );
+
+  toastTimer=
+   setTimeout(
+    ()=>{
+     toast.classList.remove(
+      "show"
+     );
+    },
+    3000
+   );
+
+ };
 
 
 /* =========================
    MODALS
 ========================= */
 
-window.openModal=id=>{
+window.openModal=
+ id=>{
 
- const m=$(id);
+  const m=
+   $(id);
 
- if(m)
-  m.classList.add("open");
+  if(m)
+   m.classList.add(
+    "open"
+   );
 
- if(id==="classModal")
-  populateClassSelects();
+  if(id==="classModal")
+   populateClassSelects();
 
- if(id==="teacherModal")
-  populateTeacherSubject();
+  if(id==="teacherModal")
+   populateTeacherSubject();
 
-};
+ };
 
 
-window.closeModal=id=>{
+window.closeModal=
+ id=>{
 
- const m=$(id);
+  const m=
+   $(id);
 
- if(m)
-  m.classList.remove("open");
+  if(m)
+   m.classList.remove(
+    "open"
+   );
 
-};
+ };
 
 
 document
- .querySelectorAll(".modal-overlay")
- .forEach(x=>{
+ .querySelectorAll(
+  ".modal-overlay"
+ )
+ .forEach(
+  x=>{
 
-  x.addEventListener(
-   "click",
-   e=>{
+   x.addEventListener(
+    "click",
+    e=>{
 
-    if(e.target===x)
-     x.classList.remove("open");
+     if(e.target===x)
+      x.classList.remove(
+       "open"
+      );
 
-   }
-  );
+    }
+   );
 
- });
+  }
+ );
 
 
 /* =========================
@@ -2599,97 +4095,127 @@ document
 ========================= */
 
 document
- .querySelectorAll(".nav button")
- .forEach(btn=>{
+ .querySelectorAll(
+  ".nav button"
+ )
+ .forEach(
+  btn=>{
 
-  btn.addEventListener(
-   "click",
-   ()=>{
+   btn.addEventListener(
+    "click",
+    ()=>{
 
-    const view=
-     btn.dataset.view;
+     const view=
+      btn.dataset.view;
 
-    document
-     .querySelectorAll(".nav button")
-     .forEach(
-      x=>x.classList.remove("active")
+     document
+      .querySelectorAll(
+       ".nav button"
+      )
+      .forEach(
+       x=>
+        x.classList.remove(
+         "active"
+        )
+      );
+
+     btn.classList.add(
+      "active"
      );
 
-    btn.classList.add("active");
+     document
+      .querySelectorAll(
+       ".view"
+      )
+      .forEach(
+       x=>
+        x.classList.remove(
+         "active"
+        )
+      );
 
-    document
-     .querySelectorAll(".view")
-     .forEach(
-      x=>x.classList.remove("active")
-     );
+     $("view-"+view)
+      ?.classList.add(
+       "active"
+      );
 
-    $("view-"+view)
-     ?.classList.add("active");
+     if(titles[view]){
 
-    if(titles[view]){
+      $("pageTitle")
+       .textContent=
+       titles[view][0];
 
-     $("pageTitle").textContent=
-      titles[view][0];
+      $("pageSubtitle")
+       .textContent=
+       titles[view][1];
 
-     $("pageSubtitle").textContent=
-      titles[view][1];
+     }
+
+     $("sidebar")
+      .classList.remove(
+       "open"
+      );
 
     }
+   );
 
-    $("sidebar")
-     .classList.remove("open");
-
-   }
-  );
-
- });
+  }
+ );
 
 
 $("menuBtn").addEventListener(
  "click",
  ()=>{
   $("sidebar")
-   .classList.toggle("open");
+   .classList.toggle(
+    "open"
+   );
  }
 );
 
 
 /* =========================
-   ADMIN LOGIN
+   LOGIN
 ========================= */
 
-$("loginForm").addEventListener(
- "submit",
- async e=>{
+$("loginForm")
+ .addEventListener(
+  "submit",
+  async e=>{
 
-  e.preventDefault();
+   e.preventDefault();
 
-  const errorBox=
-   $("loginError");
+   const errorBox=
+    $("loginError");
 
-  errorBox.classList.remove("show");
-
-  try{
-
-   await signInWithEmailAndPassword(
-    auth,
-    $("loginEmail")
-     .value
-     .trim(),
-    $("loginPassword")
-     .value
+   errorBox.classList.remove(
+    "show"
    );
 
-  }catch(err){
+   try{
 
-   errorBox.textContent=
-    firebaseError(err);
+    await signInWithEmailAndPassword(
+     auth,
+     $("loginEmail")
+      .value
+      .trim(),
+     $("loginPassword")
+      .value
+    );
 
-   errorBox.classList.add("show");
+   }catch(err){
+
+    errorBox.textContent=
+     firebaseError(err);
+
+    errorBox.classList.add(
+     "show"
+    );
+
+   }
 
   }
-
- });
+ );
 
 
 /* =========================
@@ -2701,7 +4227,9 @@ window.logoutAdmin=
 
   try{
 
-   await signOut(auth);
+   await signOut(
+    auth
+   );
 
   }catch(e){
 
@@ -2736,7 +4264,9 @@ async function isAdmin(user){
    );
 
   const snap=
-   await getDoc(adminRef);
+   await getDoc(
+    adminRef
+   );
 
   if(!snap.exists())
    return false;
@@ -2744,7 +4274,7 @@ async function isAdmin(user){
   const data=
    snap.data();
 
-  return (
+  return(
    data.role==="admin" &&
    data.active===true
   );
@@ -2773,7 +4303,9 @@ onAuthStateChanged(
 
   $("loadingScreen")
    .classList
-   .remove("hidden");
+   .remove(
+    "hidden"
+   );
 
   if(!user){
 
@@ -2784,57 +4316,66 @@ onAuthStateChanged(
 
    $("loginScreen")
     .classList
-    .add("open");
+    .add(
+     "open"
+    );
 
    $("loadingScreen")
     .classList
-    .add("hidden");
+    .add(
+     "hidden"
+    );
 
    return;
 
   }
 
-
   const allowed=
-   await isAdmin(user);
-
+   await isAdmin(
+    user
+   );
 
   if(!allowed){
 
    stopListeners();
 
-   await signOut(auth);
+   await signOut(
+    auth
+   );
 
    $("app").style.display=
     "none";
 
    $("loginScreen")
     .classList
-    .add("open");
+    .add(
+     "open"
+    );
 
    $("loginError").textContent=
     "هذا الحساب ليس لديه صلاحية Admin.";
 
    $("loginError")
     .classList
-    .add("show");
+    .add(
+     "show"
+    );
 
    $("loadingScreen")
     .classList
-    .add("hidden");
+    .add(
+     "hidden"
+    );
 
    return;
 
   }
 
-
-  /* =====================
-     ADMIN
-  ===================== */
-
   $("loginScreen")
    .classList
-   .remove("open");
+   .remove(
+    "open"
+   );
 
   $("app").style.display=
    "flex";
@@ -2851,18 +4392,19 @@ onAuthStateChanged(
    user.email||
    "";
 
-
   startListeners();
 
   $("loadingScreen")
    .classList
-   .add("hidden");
+   .add(
+    "hidden"
+   );
 
  });
 
 
 /* =========================
-   FIRESTORE LISTENERS
+   LISTENERS
 ========================= */
 
 function stopListeners(){
@@ -2893,7 +4435,10 @@ function startListeners(){
 
    const unsub=
     onSnapshot(
-     collection(db,name),
+     collection(
+      db,
+      name
+     ),
 
      snap=>{
 
@@ -2905,7 +4450,9 @@ function startListeners(){
         })
        );
 
-      setter(data);
+      setter(
+       data
+      );
 
       renderAll();
 
@@ -2925,7 +4472,9 @@ function startListeners(){
      }
     );
 
-   unsubscribers.push(unsub);
+   unsubscribers.push(
+    unsub
+   );
 
   };
 
@@ -2937,14 +4486,12 @@ function startListeners(){
   }
  );
 
-
  listen(
   "subjects",
   data=>{
    subjects=data;
   }
  );
-
 
  listen(
   "teachers",
@@ -2953,14 +4500,12 @@ function startListeners(){
   }
  );
 
-
  listen(
   "lessons",
   data=>{
    classes=data;
   }
  );
-
 
  listen(
   "transactions",
@@ -2969,7 +4514,6 @@ function startListeners(){
   }
  );
 
-
  listen(
   "subscriptionRequests",
   data=>{
@@ -2977,207 +4521,261 @@ function startListeners(){
   }
  );
 
+ listen(
+  "curriculumLessons",
+  data=>{
+   curriculumLessons=data;
+  }
+ );
+
+ listen(
+  "trainings",
+  data=>{
+   trainings=data;
+  }
+ );
+
+ listen(
+  "exams",
+  data=>{
+   exams=data;
+  }
+ );
+
+ listen(
+  "examQuestions",
+  data=>{
+   examQuestions=data;
+  }
+ );
+
+ listen(
+  "attempts",
+  data=>{
+   attempts=data;
+  }
+ );
+
 }
 
 
-window.refreshData=()=>{
+window.refreshData=
+ ()=>{
 
- renderAll();
+  renderAll();
 
- showToast(
-  "تم تحديث البيانات المعروضة"
- );
+  showToast(
+   "تم تحديث البيانات المعروضة"
+  );
 
-};
+ };
 
 
 /* =========================
    STUDENTS
 ========================= */
 
-window.renderStudents=()=>{
+window.renderStudents=
+ ()=>{
 
- const tbody=
-  $("studentsTable");
+  const tbody=
+   $("studentsTable");
 
- const search=
-  ($("studentSearch")
-   .value||"")
-   .trim()
-   .toLowerCase();
+  const search=
+   ($("studentSearch")
+    .value||"")
+    .trim()
+    .toLowerCase();
 
+  const filtered=
+   students.filter(
+    s=>
 
- const filtered=
-  students.filter(
-   s=>
+     String(
+      s.name||""
+     )
+      .toLowerCase()
+      .includes(search)
 
-    String(s.name||"")
-     .toLowerCase()
-     .includes(search)
+     ||
 
-    ||
+     String(
+      s.code||
+      s.studentCode||
+      ""
+     )
+      .toLowerCase()
+      .includes(search)
 
-    String(
-     s.code||
-     s.studentCode||
-     ""
-    )
-     .toLowerCase()
-     .includes(search)
+     ||
 
-    ||
-
-    String(s.email||"")
-     .toLowerCase()
-     .includes(search)
-  );
-
-
- $("studentCount").textContent=
-  `${filtered.length} طالب`;
-
-
- if(!filtered.length){
-
-  tbody.innerHTML=
-   emptyRow(
-    6,
-    "لا يوجد طلاب حاليًا"
+     String(
+      s.email||
+      ""
+     )
+      .toLowerCase()
+      .includes(search)
    );
 
-  return;
+  $("studentCount")
+   .textContent=
+   `${filtered.length} طالب`;
 
- }
+  if(!filtered.length){
 
+   tbody.innerHTML=
+    emptyRow(
+     6,
+     "لا يوجد طلاب حاليًا"
+    );
 
- tbody.innerHTML=
-  filtered.map(
-   s=>{
+   return;
 
-    const bal=
-     Number(
-      s.balance??
-      s.wallet??
-      0
-     );
+  }
 
+  tbody.innerHTML=
+   filtered.map(
+    s=>{
 
-    return `
-    <tr>
+     const bal=
+      Number(
+       s.balance??
+       s.wallet??
+       0
+      );
 
-     <td>
+     return `
 
-      <div class="student-name">
+     <tr>
 
-       <div class="student-avatar">
-        ${escapeHTML(
-         (s.name||"?").charAt(0)
-        )}
-       </div>
+      <td>
 
-       <div>
+       <div class="student-name">
 
-        <strong>
+        <div class="student-avatar">
+
          ${escapeHTML(
-          s.name||
-          "بدون اسم"
+          (s.name||"?")
+           .charAt(0)
          )}
-        </strong>
 
-        <div class="muted">
-         ${escapeHTML(
-          s.email||
-          ""
-         )}
+        </div>
+
+        <div>
+
+         <strong>
+          ${escapeHTML(
+           s.name||
+           "بدون اسم"
+          )}
+         </strong>
+
+         <div class="muted">
+          ${escapeHTML(
+           s.email||
+           ""
+          )}
+         </div>
+
         </div>
 
        </div>
 
-      </div>
+      </td>
 
-     </td>
+      <td>
+       ${escapeHTML(
+        s.code||
+        s.studentCode||
+        "—"
+       )}
+      </td>
 
-     <td>
-      ${escapeHTML(
-       s.code||
-       s.studentCode||
-       "—"
-      )}
-     </td>
+      <td>
+       ${escapeHTML(
+        s.email||
+        "—"
+       )}
+      </td>
 
-     <td>
-      ${escapeHTML(
-       s.email||
-       "—"
-      )}
-     </td>
+      <td>
 
-     <td class="balance">
-      ${bal.toLocaleString("ar-EG")}
-      ج.م
-     </td>
+       ${bal.toLocaleString(
+        "ar-EG"
+       )}
 
-     <td>
+       ج.م
 
-      <span class="badge ${
-       s.active!==false
-       ?"green"
-       :"red"
-      }">
+      </td>
 
-       ${
-        s.active!==false
-        ?"نشط"
-        :"موقوف"
-       }
+      <td>
 
-      </span>
+       <span
+        class="badge ${
+         s.active!==false
+         ?"green"
+         :"red"
+        }"
+       >
 
-     </td>
+        ${
+         s.active!==false
+         ?"نشط"
+         :"موقوف"
+        }
 
-     <td>
+       </span>
 
-      <button
-       class="secondary"
-       onclick="openPasswordModal('${s.id}')"
-      >
-       🔐
-      </button>
+      </td>
 
-      <button
-       class="secondary"
-       onclick="openWalletModal('${s.id}')"
-      >
-       💰
-      </button>
+      <td>
 
-      <button
-       class="${
-        s.active!==false
-        ?"danger"
-        :"success"
-       }"
-       onclick="toggleStudent(
-        '${s.id}',
-        ${s.active!==false}
-       )"
-      >
-       ${
-        s.active!==false
-        ?"إيقاف"
-        :"تفعيل"
-       }
-      </button>
+       <button
+        class="secondary"
+        onclick="openPasswordModal('${s.id}')"
+       >
+        🔐
+       </button>
 
-     </td>
+       <button
+        class="secondary"
+        onclick="openWalletModal('${s.id}')"
+       >
+        💰
+       </button>
 
-    </tr>
-    `;
+       <button
+        class="${
+         s.active!==false
+         ?"danger"
+         :"success"
+        }"
+        onclick="
+         toggleStudent(
+          '${s.id}',
+          ${s.active!==false}
+         )
+        "
+       >
 
-   }
-  ).join("");
+        ${
+         s.active!==false
+         ?"إيقاف"
+         :"تفعيل"
+        }
 
-};
+       </button>
+
+      </td>
+
+     </tr>
+
+     `;
+
+    }
+   ).join("");
+
+ };
 
 
 /* =========================
@@ -3188,7 +4786,6 @@ window.addStudent=
  async e=>{
 
   e.preventDefault();
-
 
   const name=
    $("newStudentName")
@@ -3210,7 +4807,6 @@ window.addStudent=
    $("newStudentPassword")
     .value;
 
-
   if(password.length<6){
 
    showToast(
@@ -3221,13 +4817,11 @@ window.addStudent=
 
   }
 
-
   const submitBtn=
    e.submitter||
    e.target.querySelector(
     "button.primary"
    );
-
 
   if(submitBtn){
 
@@ -3238,17 +4832,9 @@ window.addStudent=
 
   }
 
-
   let createdUser=null;
 
-
   try{
-
-   /*
-    إنشاء الحساب في Firebase Auth
-    باستخدام Auth منفصل.
-    ده لا يؤثر على جلسة الأدمن.
-   */
 
    const credential=
     await createUserWithEmailAndPassword(
@@ -3257,14 +4843,11 @@ window.addStudent=
      password
     );
 
-
    createdUser=
     credential.user;
 
-
    const studentUID=
     createdUser.uid;
-
 
    const now=
     Date.now();
@@ -3274,12 +4857,6 @@ window.addStudent=
      now+
      7*24*60*60*1000
     );
-
-
-   /*
-    إنشاء Document الطالب باستخدام UID
-    بدل ID عشوائي.
-   */
 
    await setDoc(
     doc(
@@ -3291,6 +4868,7 @@ window.addStudent=
      uid:studentUID,
      name,
      code,
+     studentCode:code,
      email,
      balance:0,
      wallet:0,
@@ -3304,7 +4882,9 @@ window.addStudent=
       "active",
 
      subscriptionStart:
-      Timestamp.fromMillis(now),
+      Timestamp.fromMillis(
+       now
+      ),
 
      subscriptionEnd:
       trialEnd,
@@ -3318,16 +4898,9 @@ window.addStudent=
     }
    );
 
-
-   /*
-    إنهاء جلسة Auth الثانوية فقط.
-    جلسة الأدمن الرئيسية تظل كما هي.
-   */
-
    await signOut(
     studentAuth
    );
-
 
    closeModal(
     "studentModal"
@@ -3339,13 +4912,7 @@ window.addStudent=
     "تم إنشاء حساب الطالب بنجاح"
    );
 
-
   }catch(err){
-
-   /*
-    لو اتعمل Auth لكن Firestore فشل،
-    نحاول نحذف حساب الطالب الذي أنشأناه.
-   */
 
    if(createdUser){
 
@@ -3366,7 +4933,6 @@ window.addStudent=
 
    }
 
-
    try{
 
     await signOut(
@@ -3375,11 +4941,9 @@ window.addStudent=
 
    }catch{}
 
-
    showToast(
     firebaseError(err)
    );
-
 
   }finally{
 
@@ -3394,7 +4958,7 @@ window.addStudent=
 
   }
 
-};
+ };
 
 
 /* =========================
@@ -3484,7 +5048,6 @@ window.changePassword=
     x=>x.id===id
    );
 
-
   if(!s?.email){
 
    showToast(
@@ -3495,19 +5058,12 @@ window.changePassword=
 
   }
 
-
   try{
-
-   /*
-    إرسال Reset Password من Auth الأدمن
-    لا يغير جلسة الأدمن.
-   */
 
    await sendPasswordResetEmail(
     auth,
     s.email
    );
-
 
    closeModal(
     "passwordModal"
@@ -3516,7 +5072,6 @@ window.changePassword=
    showToast(
     "تم إرسال رابط إعادة تعيين كلمة المرور"
    );
-
 
   }catch(err){
 
@@ -3543,7 +5098,6 @@ window.openWalletModal=
 
   if(!s)
    return;
-
 
   $("walletStudentId").value=
    id;
@@ -3577,7 +5131,6 @@ window.walletAction=
 
   e.preventDefault();
 
-
   const id=
    $("walletStudentId")
     .value;
@@ -3599,7 +5152,6 @@ window.walletAction=
    ||
    "تعديل يدوي";
 
-
   if(!amount||amount<=0){
 
    showToast(
@@ -3610,7 +5162,6 @@ window.walletAction=
 
   }
 
-
   try{
 
    const studentRef=
@@ -3619,7 +5170,6 @@ window.walletAction=
      "students",
      id
     );
-
 
    await runTransaction(
     db,
@@ -3630,16 +5180,13 @@ window.walletAction=
        studentRef
       );
 
-
      if(!snap.exists())
       throw new Error(
        "الطالب غير موجود"
       );
 
-
      const data=
       snap.data();
-
 
      const oldBalance=
       Number(
@@ -3647,7 +5194,6 @@ window.walletAction=
        data.wallet??
        0
       );
-
 
      if(
       type==="subtract" &&
@@ -3660,12 +5206,10 @@ window.walletAction=
 
      }
 
-
      const newBalance=
       type==="add"
       ?oldBalance+amount
       :oldBalance-amount;
-
 
      tx.update(
       studentRef,
@@ -3675,7 +5219,6 @@ window.walletAction=
       }
      );
 
-
      const trRef=
       doc(
        collection(
@@ -3684,10 +5227,10 @@ window.walletAction=
        )
       );
 
-
      tx.set(
       trRef,
       {
+
        studentId:id,
 
        student:
@@ -3709,12 +5252,12 @@ window.walletAction=
 
        createdAt:
         serverTimestamp()
+
       }
      );
 
     }
    );
-
 
    closeModal(
     "walletModal"
@@ -3727,7 +5270,6 @@ window.walletAction=
     ?"تم إضافة الرصيد"
     :"تم خصم الرصيد"
    );
-
 
   }catch(err){
 
@@ -3752,95 +5294,146 @@ window.renderSubjects=
   const grid=
    $("subjectsGrid");
 
-
   if(!subjects.length){
 
    grid.innerHTML=`
+
     <div
      class="card"
      style="grid-column:1/-1"
     >
+
      <div class="empty">
-      <div class="empty-icon">📚</div>
+
+      <div class="empty-icon">
+       📚
+      </div>
+
       لا توجد مواد حاليًا
+
      </div>
+
     </div>
+
    `;
 
    return;
 
   }
 
-
   grid.innerHTML=
-   subjects.map(
-    s=>`
+   [...subjects]
+    .sort(
+     (a,b)=>
+      Number(a.order||0)-
+      Number(b.order||0)
+    )
+    .map(
+     s=>`
 
-    <div class="subject-card">
+     <div class="subject-card">
 
-     <div class="subject-icon">
-      ${escapeHTML(
-       s.icon||
-       "📚"
-      )}
-     </div>
-
-     <h3>
-      ${escapeHTML(
-       s.name||
-       "بدون اسم"
-      )}
-     </h3>
-
-     <p>
-      ${escapeHTML(
-       s.description||
-       ""
-      )}
-     </p>
-
-     <div class="subject-meta">
-
-      <span>
-       ${Number(
-        s.lessons||
-        0
+      <div class="subject-icon">
+       ${escapeHTML(
+        s.icon||
+        "📚"
        )}
-       درس
-      </span>
+      </div>
 
-      <span>
-       ${Number(
-        s.students||
-        0
+      <h3>
+       ${escapeHTML(
+        s.name||
+        "بدون اسم"
        )}
-       طالب
-      </span>
+      </h3>
+
+      <p>
+       ${escapeHTML(
+        s.description||
+        ""
+       )}
+      </p>
+
+      <div class="subject-meta">
+
+       <span>
+        ${curriculumLessons.filter(
+         l=>l.subjectId===s.id
+        ).length}
+        درس
+       </span>
+
+       <span>
+        ${Number(
+         s.students||
+         0
+        )}
+        طالب
+       </span>
+
+      </div>
+
+      <div style="margin-top:10px">
+
+       <span
+        class="badge ${
+         s.active!==false
+         ?"green"
+         :"red"
+        }"
+       >
+        ${
+         s.active!==false
+         ?"منشورة"
+         :"مخفية"
+        }
+       </span>
+
+      </div>
+
+      <div class="card-actions">
+
+       <button
+        class="secondary"
+        onclick="editSubject('${s.id}')"
+       >
+        تعديل
+       </button>
+
+       <button
+        class="${
+         s.active!==false
+         ?"danger"
+         :"success"
+        }"
+        onclick="
+         toggleSubject(
+          '${s.id}',
+          ${s.active!==false}
+         )
+        "
+       >
+        ${
+         s.active!==false
+         ?"إخفاء"
+         :"نشر"
+        }
+       </button>
+
+       <button
+        class="danger"
+        onclick="deleteSubject('${s.id}')"
+       >
+        حذف
+       </button>
+
+      </div>
 
      </div>
 
-     <div class="card-actions">
-
-      <button
-       class="secondary"
-       onclick="editSubject('${s.id}')"
-      >
-       تعديل
-      </button>
-
-      <button
-       class="danger"
-       onclick="deleteSubject('${s.id}')"
-      >
-       حذف
-      </button>
-
-     </div>
-
-    </div>
-
-   `
-   ).join("");
+     `
+    )
+    .join("");
 
  };
 
@@ -3849,7 +5442,6 @@ window.addSubject=
  async e=>{
 
   e.preventDefault();
-
 
   const name=
    $("subjectName")
@@ -3868,10 +5460,19 @@ window.addSubject=
     .value
     .trim();
 
+  const order=
+   Number(
+    $("subjectOrder")
+     .value
+   )||
+   0;
+
+  const active=
+   $("subjectActive")
+    .checked;
 
   if(!name)
    return;
-
 
   try{
 
@@ -3881,16 +5482,26 @@ window.addSubject=
      "subjects"
     ),
     {
+
      name,
+
      icon,
+
      description,
+
      lessons:0,
+
      students:0,
+
+     active,
+
+     order,
+
      createdAt:
       serverTimestamp()
+
     }
    );
-
 
    closeModal(
     "subjectModal"
@@ -3898,10 +5509,48 @@ window.addSubject=
 
    e.target.reset();
 
+   $("subjectActive").checked=
+    true;
+
    showToast(
     "تمت إضافة المادة"
    );
 
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.toggleSubject=
+ async(
+  id,
+  active
+ )=>{
+
+  try{
+
+   await updateDoc(
+    doc(
+     db,
+     "subjects",
+     id
+    ),
+    {
+     active:!active
+    }
+   );
+
+   showToast(
+    active
+    ?"تم إخفاء المادة"
+    :"تم نشر المادة"
+   );
 
   }catch(err){
 
@@ -3922,7 +5571,6 @@ window.deleteSubject=
     x=>x.id===id
    );
 
-
   if(
    !s||
    !confirm(
@@ -3930,7 +5578,6 @@ window.deleteSubject=
    )
   )
    return;
-
 
   try{
 
@@ -3968,7 +5615,6 @@ window.editSubject=
   if(!s)
    return;
 
-
   const name=
    prompt(
     "اسم المادة:",
@@ -3976,10 +5622,15 @@ window.editSubject=
     ""
    );
 
-
   if(!name?.trim())
    return;
 
+  const description=
+   prompt(
+    "وصف المادة:",
+    s.description||
+    ""
+   );
 
   try{
 
@@ -3990,8 +5641,15 @@ window.editSubject=
      id
     ),
     {
+
      name:
-      name.trim()
+      name.trim(),
+
+     description:
+      description?.trim()||
+      s.description||
+      ""
+
     }
    );
 
@@ -4006,6 +5664,2428 @@ window.editSubject=
    );
 
   }
+
+ };
+
+
+/* =========================
+   CURRICULUM
+========================= */
+
+function populateSubjectSelect(
+ id
+){
+
+ const select=
+  $(id);
+
+ if(!select)
+  return;
+
+ select.innerHTML=
+  subjects.length
+
+  ?
+
+  subjects
+   .filter(
+    s=>s.active!==false
+   )
+   .sort(
+    (a,b)=>
+     Number(a.order||0)-
+     Number(b.order||0)
+   )
+   .map(
+    s=>`
+
+    <option value="${s.id}">
+     ${escapeHTML(
+      s.icon||
+      "📚"
+     )}
+     ${escapeHTML(
+      s.name||
+      ""
+     )}
+    </option>
+
+    `
+   )
+   .join("")
+
+  :
+
+  `
+   <option value="">
+    أضف مادة أولًا
+   </option>
+  `;
+
+}
+
+
+window.openCurriculumModal=
+ ()=>{
+
+  $("curriculumEditId").value=
+   "";
+
+  $("curriculumModalTitle")
+   .textContent=
+   "إضافة درس منهج";
+
+  $("curriculumSubmitBtn")
+   .textContent=
+   "حفظ الدرس";
+
+  $("curriculumTitle").value=
+   "";
+
+  $("curriculumDescription").value=
+   "";
+
+  $("curriculumContent").value=
+   "";
+
+  $("curriculumOrder").value=
+   "0";
+
+  $("curriculumActive").checked=
+   true;
+
+  populateSubjectSelect(
+   "curriculumSubject"
+  );
+
+  openModal(
+   "curriculumModal"
+  );
+
+ };
+
+
+window.editCurriculum=
+ id=>{
+
+  const l=
+   curriculumLessons.find(
+    x=>x.id===id
+   );
+
+  if(!l)
+   return;
+
+  $("curriculumEditId").value=
+   id;
+
+  $("curriculumModalTitle")
+   .textContent=
+   "تعديل درس المنهج";
+
+  $("curriculumSubmitBtn")
+   .textContent=
+   "حفظ التعديلات";
+
+  populateSubjectSelect(
+   "curriculumSubject"
+  );
+
+  $("curriculumSubject").value=
+   l.subjectId||
+   "";
+
+  $("curriculumTitle").value=
+   l.title||
+   "";
+
+  $("curriculumDescription").value=
+   l.description||
+   "";
+
+  $("curriculumContent").value=
+   l.content||
+   "";
+
+  $("curriculumOrder").value=
+   Number(
+    l.order||
+    0
+   );
+
+  $("curriculumActive").checked=
+   l.active!==false;
+
+  openModal(
+   "curriculumModal"
+  );
+
+ };
+
+
+window.saveCurriculumLesson=
+ async e=>{
+
+  e.preventDefault();
+
+  const editId=
+   $("curriculumEditId")
+    .value;
+
+  const subjectId=
+   $("curriculumSubject")
+    .value;
+
+  const subject=
+   subjects.find(
+    s=>s.id===subjectId
+   );
+
+  const data={
+
+   subjectId,
+
+   subjectName:
+    subject?.name||
+    "",
+
+   title:
+    $("curriculumTitle")
+     .value
+     .trim(),
+
+   description:
+    $("curriculumDescription")
+     .value
+     .trim(),
+
+   content:
+    $("curriculumContent")
+     .value
+     .trim(),
+
+   order:
+    Number(
+     $("curriculumOrder")
+      .value
+    )||
+    0,
+
+   active:
+    $("curriculumActive")
+     .checked
+
+  };
+
+  if(
+   !data.subjectId||
+   !data.title||
+   !data.content
+  ){
+
+   showToast(
+    "أكمل بيانات الدرس"
+   );
+
+   return;
+
+  }
+
+  try{
+
+   if(editId){
+
+    await updateDoc(
+     doc(
+      db,
+      "curriculumLessons",
+      editId
+     ),
+     data
+    );
+
+    showToast(
+     "تم تعديل الدرس"
+    );
+
+   }else{
+
+    await addDoc(
+     collection(
+      db,
+      "curriculumLessons"
+     ),
+     {
+
+      ...data,
+
+      createdAt:
+       serverTimestamp()
+
+     }
+    );
+
+    showToast(
+     "تمت إضافة الدرس"
+    );
+
+   }
+
+   closeModal(
+    "curriculumModal"
+   );
+
+   e.target.reset();
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.toggleCurriculum=
+ async(
+  id,
+  active
+ )=>{
+
+  try{
+
+   await updateDoc(
+    doc(
+     db,
+     "curriculumLessons",
+     id
+    ),
+    {
+     active:!active
+    }
+   );
+
+   showToast(
+    active
+    ?"تم إخفاء الدرس"
+    :"تم نشر الدرس"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.deleteCurriculum=
+ async id=>{
+
+  if(
+   !confirm(
+    "هل تريد حذف هذا الدرس؟"
+   )
+  )
+   return;
+
+  try{
+
+   await deleteDoc(
+    doc(
+     db,
+     "curriculumLessons",
+     id
+    )
+   );
+
+   showToast(
+    "تم حذف الدرس"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.renderCurriculum=
+ ()=>{
+
+  const grid=
+   $("curriculumGrid");
+
+  if(!curriculumLessons.length){
+
+   grid.innerHTML=`
+
+    <div
+     class="card"
+     style="grid-column:1/-1"
+    >
+
+     <div class="empty">
+
+      <div class="empty-icon">
+       📖
+      </div>
+
+      لا توجد دروس منهج حاليًا
+
+     </div>
+
+    </div>
+
+   `;
+
+   return;
+
+  }
+
+  const sorted=
+   [...curriculumLessons]
+    .sort(
+     (a,b)=>
+      Number(a.order||0)-
+      Number(b.order||0)
+    );
+
+  grid.innerHTML=
+   sorted.map(
+    l=>{
+
+     const subject=
+      subjects.find(
+       s=>s.id===l.subjectId
+      );
+
+     return `
+
+     <div class="content-card">
+
+      <div class="content-top">
+
+       <div>
+
+        <h3>
+         ${escapeHTML(
+          l.title||
+          "درس بدون عنوان"
+         )}
+        </h3>
+
+        <p>
+         ${escapeHTML(
+          subject?.name||
+          l.subjectName||
+          "بدون مادة"
+         )}
+        </p>
+
+       </div>
+
+       <span
+        class="badge ${
+         l.active!==false
+         ?"green"
+         :"red"
+        }"
+       >
+        ${
+         l.active!==false
+         ?"منشور"
+         :"مخفي"
+        }
+       </span>
+
+      </div>
+
+      <p>
+       ${escapeHTML(
+        l.description||
+        "لا يوجد وصف"
+       )}
+      </p>
+
+      <div class="content-meta">
+
+       <span class="badge purple">
+        ترتيب ${Number(
+         l.order||
+         0
+        )}
+       </span>
+
+       <span class="badge blue">
+        شرح نصي
+       </span>
+
+      </div>
+
+      <div class="content-actions">
+
+       <button
+        class="secondary"
+        onclick="editCurriculum('${l.id}')"
+       >
+        تعديل
+       </button>
+
+       <button
+        class="${
+         l.active!==false
+         ?"danger"
+         :"success"
+        }"
+        onclick="
+         toggleCurriculum(
+          '${l.id}',
+          ${l.active!==false}
+         )
+        "
+       >
+        ${
+         l.active!==false
+         ?"إخفاء"
+         :"نشر"
+        }
+       </button>
+
+       <button
+        class="danger"
+        onclick="deleteCurriculum('${l.id}')"
+       >
+        حذف
+       </button>
+
+      </div>
+
+     </div>
+
+     `;
+
+    }
+   ).join("");
+
+ };
+
+
+/* =========================
+   TRAININGS
+========================= */
+
+function populateTrainingLessons(){
+
+ const subjectId=
+  $("trainingSubject")
+   .value;
+
+ const select=
+  $("trainingLesson");
+
+ const filtered=
+  curriculumLessons
+   .filter(
+    l=>
+     l.subjectId===subjectId
+     &&
+     l.active!==false
+   )
+   .sort(
+    (a,b)=>
+     Number(a.order||0)-
+     Number(b.order||0)
+   );
+
+ select.innerHTML=
+  `
+  <option value="">
+   بدون ربط بدرس
+  </option>
+  `+
+  filtered.map(
+   l=>`
+
+   <option value="${l.id}">
+    ${escapeHTML(
+     l.title
+    )}
+   </option>
+
+   `
+  ).join("");
+
+}
+
+
+window.openTrainingModal=
+ ()=>{
+
+  $("trainingEditId").value=
+   "";
+
+  $("trainingModalTitle")
+   .textContent=
+   "إضافة تدريب";
+
+  $("trainingSubmitBtn")
+   .textContent=
+   "حفظ التدريب";
+
+  $("trainingTitle").value=
+   "";
+
+  $("trainingQuestion").value=
+   "";
+
+  $("trainingOptionA").value=
+   "";
+
+  $("trainingOptionB").value=
+   "";
+
+  $("trainingOptionC").value=
+   "";
+
+  $("trainingOptionD").value=
+   "";
+
+  $("trainingCorrectAnswer").value=
+   "A";
+
+  $("trainingPoints").value=
+   "1";
+
+  $("trainingOrder").value=
+   "0";
+
+  $("trainingExplanation").value=
+   "";
+
+  $("trainingDifficulty").value=
+   "medium";
+
+  $("trainingActive").checked=
+   true;
+
+  populateSubjectSelect(
+   "trainingSubject"
+  );
+
+  populateTrainingLessons();
+
+  openModal(
+   "trainingModal"
+  );
+
+ };
+
+
+window.editTraining=
+ id=>{
+
+  const t=
+   trainings.find(
+    x=>x.id===id
+   );
+
+  if(!t)
+   return;
+
+  $("trainingEditId").value=
+   id;
+
+  $("trainingModalTitle")
+   .textContent=
+   "تعديل التدريب";
+
+  $("trainingSubmitBtn")
+   .textContent=
+   "حفظ التعديلات";
+
+  populateSubjectSelect(
+   "trainingSubject"
+  );
+
+  $("trainingSubject").value=
+   t.subjectId||
+   "";
+
+  populateTrainingLessons();
+
+  $("trainingLesson").value=
+   t.lessonId||
+   "";
+
+  $("trainingTitle").value=
+   t.title||
+   "";
+
+  $("trainingQuestion").value=
+   t.question||
+   "";
+
+  $("trainingOptionA").value=
+   t.options?.A||
+   "";
+
+  $("trainingOptionB").value=
+   t.options?.B||
+   "";
+
+  $("trainingOptionC").value=
+   t.options?.C||
+   "";
+
+  $("trainingOptionD").value=
+   t.options?.D||
+   "";
+
+  $("trainingCorrectAnswer").value=
+   t.correctAnswer||
+   "A";
+
+  $("trainingPoints").value=
+   Number(
+    t.points||
+    1
+   );
+
+  $("trainingOrder").value=
+   Number(
+    t.order||
+    0
+   );
+
+  $("trainingExplanation").value=
+   t.explanation||
+   "";
+
+  $("trainingDifficulty").value=
+   t.difficulty||
+   "medium";
+
+  $("trainingActive").checked=
+   t.active!==false;
+
+  openModal(
+   "trainingModal"
+  );
+
+ };
+
+
+window.saveTraining=
+ async e=>{
+
+  e.preventDefault();
+
+  const editId=
+   $("trainingEditId")
+    .value;
+
+  const subjectId=
+   $("trainingSubject")
+    .value;
+
+  const lessonId=
+   $("trainingLesson")
+    .value;
+
+  const subject=
+   subjects.find(
+    s=>s.id===subjectId
+   );
+
+  const lesson=
+   curriculumLessons.find(
+    l=>l.id===lessonId
+   );
+
+  const data={
+
+   title:
+    $("trainingTitle")
+     .value
+     .trim(),
+
+   subjectId,
+
+   subjectName:
+    subject?.name||
+    "",
+
+   lessonId:
+    lessonId||
+    "",
+
+   lessonTitle:
+    lesson?.title||
+    "",
+
+   question:
+    $("trainingQuestion")
+     .value
+     .trim(),
+
+   type:
+    "multiple_choice",
+
+   options:{
+    A:$("trainingOptionA")
+      .value
+      .trim(),
+
+    B:$("trainingOptionB")
+      .value
+      .trim(),
+
+    C:$("trainingOptionC")
+      .value
+      .trim(),
+
+    D:$("trainingOptionD")
+      .value
+      .trim()
+   },
+
+   correctAnswer:
+    $("trainingCorrectAnswer")
+     .value,
+
+   points:
+    Number(
+     $("trainingPoints")
+      .value
+    )||
+    1,
+
+   explanation:
+    $("trainingExplanation")
+     .value
+     .trim(),
+
+   difficulty:
+    $("trainingDifficulty")
+     .value,
+
+   order:
+    Number(
+     $("trainingOrder")
+      .value
+    )||
+    0,
+
+   active:
+    $("trainingActive")
+     .checked
+
+  };
+
+  if(
+   !data.title||
+   !data.subjectId||
+   !data.question
+  ){
+
+   showToast(
+    "أكمل بيانات التدريب"
+   );
+
+   return;
+
+  }
+
+  try{
+
+   if(editId){
+
+    await updateDoc(
+     doc(
+      db,
+      "trainings",
+      editId
+     ),
+     data
+    );
+
+    showToast(
+     "تم تعديل التدريب"
+    );
+
+   }else{
+
+    await addDoc(
+     collection(
+      db,
+      "trainings"
+     ),
+     {
+
+      ...data,
+
+      createdAt:
+       serverTimestamp()
+
+     }
+    );
+
+    showToast(
+     "تمت إضافة التدريب"
+    );
+
+   }
+
+   closeModal(
+    "trainingModal"
+   );
+
+   e.target.reset();
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.toggleTraining=
+ async(
+  id,
+  active
+ )=>{
+
+  try{
+
+   await updateDoc(
+    doc(
+     db,
+     "trainings",
+     id
+    ),
+    {
+     active:!active
+    }
+   );
+
+   showToast(
+    active
+    ?"تم إخفاء التدريب"
+    :"تم نشر التدريب"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.deleteTraining=
+ async id=>{
+
+  if(
+   !confirm(
+    "هل تريد حذف هذا التدريب؟"
+   )
+  )
+   return;
+
+  try{
+
+   await deleteDoc(
+    doc(
+     db,
+     "trainings",
+     id
+    )
+   );
+
+   showToast(
+    "تم حذف التدريب"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.renderTrainings=
+ ()=>{
+
+  const grid=
+   $("trainingsGrid");
+
+  if(!trainings.length){
+
+   grid.innerHTML=`
+
+    <div
+     class="card"
+     style="grid-column:1/-1"
+    >
+
+     <div class="empty">
+
+      <div class="empty-icon">
+       📝
+      </div>
+
+      لا توجد تدريبات حاليًا
+
+     </div>
+
+    </div>
+
+   `;
+
+   return;
+
+  }
+
+  const sorted=
+   [...trainings]
+    .sort(
+     (a,b)=>
+      Number(a.order||0)-
+      Number(b.order||0)
+    );
+
+  grid.innerHTML=
+   sorted.map(
+    t=>{
+
+     const subject=
+      subjects.find(
+       s=>s.id===t.subjectId
+      );
+
+     const difficulty=
+      t.difficulty==="easy"
+      ?"سهل"
+      :
+      t.difficulty==="hard"
+      ?"صعب"
+      :
+      "متوسط";
+
+     return `
+
+     <div class="content-card">
+
+      <div class="content-top">
+
+       <div>
+
+        <h3>
+         ${escapeHTML(
+          t.title||
+          "تدريب"
+         )}
+        </h3>
+
+        <p>
+         ${escapeHTML(
+          subject?.name||
+          t.subjectName||
+          "بدون مادة"
+         )}
+        </p>
+
+       </div>
+
+       <span
+        class="badge ${
+         t.active!==false
+         ?"green"
+         :"red"
+        }"
+       >
+        ${
+         t.active!==false
+         ?"منشور"
+         :"مخفي"
+        }
+       </span>
+
+      </div>
+
+      <div class="question-preview">
+
+       ${escapeHTML(
+        t.question||
+        ""
+       )}
+
+       <div class="option-preview">
+        A — ${escapeHTML(
+         t.options?.A||
+         ""
+        )}
+       </div>
+
+       <div class="option-preview">
+        B — ${escapeHTML(
+         t.options?.B||
+         ""
+        )}
+       </div>
+
+       <div class="option-preview">
+        C — ${escapeHTML(
+         t.options?.C||
+         ""
+        )}
+       </div>
+
+       <div class="option-preview">
+        D — ${escapeHTML(
+         t.options?.D||
+         ""
+        )}
+       </div>
+
+      </div>
+
+      <div class="content-meta">
+
+       <span class="badge purple">
+        ${difficulty}
+       </span>
+
+       <span class="badge blue">
+        ${Number(
+         t.points||
+         1
+        )} درجة
+       </span>
+
+       ${
+        t.lessonTitle
+        ?
+        `
+        <span class="badge purple">
+         ${escapeHTML(
+          t.lessonTitle
+         )}
+        </span>
+        `
+        :""
+       }
+
+      </div>
+
+      <div class="content-actions">
+
+       <button
+        class="secondary"
+        onclick="editTraining('${t.id}')"
+       >
+        تعديل
+       </button>
+
+       <button
+        class="${
+         t.active!==false
+         ?"danger"
+         :"success"
+        }"
+        onclick="
+         toggleTraining(
+          '${t.id}',
+          ${t.active!==false}
+         )
+        "
+       >
+        ${
+         t.active!==false
+         ?"إخفاء"
+         :"نشر"
+        }
+       </button>
+
+       <button
+        class="danger"
+        onclick="deleteTraining('${t.id}')"
+       >
+        حذف
+       </button>
+
+      </div>
+
+     </div>
+
+     `;
+
+    }
+   ).join("");
+
+ };
+
+
+/* =========================
+   EXAMS
+========================= */
+
+window.openExamModal=
+ ()=>{
+
+  $("examEditId").value=
+   "";
+
+  $("examModalTitle")
+   .textContent=
+   "إنشاء امتحان";
+
+  $("examSubmitBtn")
+   .textContent=
+   "حفظ الامتحان";
+
+  $("examTitle").value=
+   "";
+
+  $("examDescription").value=
+   "";
+
+  $("examDuration").value=
+   "30";
+
+  $("examTotalMarks").value=
+   "10";
+
+  $("examActive").checked=
+   true;
+
+  populateSubjectSelect(
+   "examSubject"
+  );
+
+  openModal(
+   "examModal"
+  );
+
+ };
+
+
+window.editExam=
+ id=>{
+
+  const ex=
+   exams.find(
+    x=>x.id===id
+   );
+
+  if(!ex)
+   return;
+
+  $("examEditId").value=
+   id;
+
+  $("examModalTitle")
+   .textContent=
+   "تعديل الامتحان";
+
+  $("examSubmitBtn")
+   .textContent=
+   "حفظ التعديلات";
+
+  populateSubjectSelect(
+   "examSubject"
+  );
+
+  $("examSubject").value=
+   ex.subjectId||
+   "";
+
+  $("examTitle").value=
+   ex.title||
+   "";
+
+  $("examDescription").value=
+   ex.description||
+   "";
+
+  $("examDuration").value=
+   Number(
+    ex.duration||
+    30
+   );
+
+  $("examTotalMarks").value=
+   Number(
+    ex.totalMarks||
+    10
+   );
+
+  $("examActive").checked=
+   ex.active!==false;
+
+  openModal(
+   "examModal"
+  );
+
+ };
+
+
+window.saveExam=
+ async e=>{
+
+  e.preventDefault();
+
+  const editId=
+   $("examEditId")
+    .value;
+
+  const subjectId=
+   $("examSubject")
+    .value;
+
+  const subject=
+   subjects.find(
+    s=>s.id===subjectId
+   );
+
+  const data={
+
+   title:
+    $("examTitle")
+     .value
+     .trim(),
+
+   subjectId,
+
+   subjectName:
+    subject?.name||
+    "",
+
+   description:
+    $("examDescription")
+     .value
+     .trim(),
+
+   duration:
+    Number(
+     $("examDuration")
+      .value
+    )||
+    30,
+
+   totalMarks:
+    Number(
+     $("examTotalMarks")
+      .value
+    )||
+    10,
+
+   active:
+    $("examActive")
+     .checked
+
+  };
+
+  if(
+   !data.title||
+   !data.subjectId
+  ){
+
+   showToast(
+    "أكمل بيانات الامتحان"
+   );
+
+   return;
+
+  }
+
+  try{
+
+   if(editId){
+
+    await updateDoc(
+     doc(
+      db,
+      "exams",
+      editId
+     ),
+     data
+    );
+
+    showToast(
+     "تم تعديل الامتحان"
+    );
+
+   }else{
+
+    await addDoc(
+     collection(
+      db,
+      "exams"
+     ),
+     {
+
+      ...data,
+
+      createdAt:
+       serverTimestamp()
+
+     }
+    );
+
+    showToast(
+     "تم إنشاء الامتحان"
+    );
+
+   }
+
+   closeModal(
+    "examModal"
+   );
+
+   e.target.reset();
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.toggleExam=
+ async(
+  id,
+  active
+ )=>{
+
+  try{
+
+   await updateDoc(
+    doc(
+     db,
+     "exams",
+     id
+    ),
+    {
+     active:!active
+    }
+   );
+
+   showToast(
+    active
+    ?"تم إخفاء الامتحان"
+    :"تم نشر الامتحان"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.deleteExam=
+ async id=>{
+
+  const count=
+   examQuestions.filter(
+    q=>q.examId===id
+   ).length;
+
+  if(
+   !confirm(
+    `هل تريد حذف الامتحان؟ يوجد ${count} سؤال مرتبط به.`
+   )
+  )
+   return;
+
+  try{
+
+   await deleteDoc(
+    doc(
+     db,
+     "exams",
+     id
+    )
+   );
+
+   const questions=
+    examQuestions.filter(
+     q=>q.examId===id
+    );
+
+   for(
+    const q of questions
+   ){
+
+    await deleteDoc(
+     doc(
+      db,
+      "examQuestions",
+      q.id
+     )
+    );
+
+   }
+
+   showToast(
+    "تم حذف الامتحان وأسئلته"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.openExamQuestionModal=
+ examId=>{
+
+  const ex=
+   exams.find(
+    x=>x.id===examId
+   );
+
+  if(!ex)
+   return;
+
+  $("examQuestionEditId").value=
+   "";
+
+  $("examQuestionExamId").value=
+   examId;
+
+  $("examQuestionExamName").value=
+   ex.title||
+   "";
+
+  $("examQuestionModalTitle")
+   .textContent=
+   "إضافة سؤال للامتحان";
+
+  $("examQuestionSubmitBtn")
+   .textContent=
+   "حفظ السؤال";
+
+  $("examQuestionText").value=
+   "";
+
+  $("examOptionA").value=
+   "";
+
+  $("examOptionB").value=
+   "";
+
+  $("examOptionC").value=
+   "";
+
+  $("examOptionD").value=
+   "";
+
+  $("examCorrectAnswer").value=
+   "A";
+
+  $("examQuestionPoints").value=
+   "1";
+
+  $("examQuestionOrder").value=
+   "0";
+
+  $("examQuestionExplanation").value=
+   "";
+
+  $("examQuestionActive").checked=
+   true;
+
+  openModal(
+   "examQuestionModal"
+  );
+
+ };
+
+
+window.editExamQuestion=
+ id=>{
+
+  const q=
+   examQuestions.find(
+    x=>x.id===id
+   );
+
+  if(!q)
+   return;
+
+  const ex=
+   exams.find(
+    x=>x.id===q.examId
+   );
+
+  $("examQuestionEditId").value=
+   id;
+
+  $("examQuestionExamId").value=
+   q.examId||
+   "";
+
+  $("examQuestionExamName").value=
+   ex?.title||
+   "الامتحان";
+
+  $("examQuestionModalTitle")
+   .textContent=
+   "تعديل سؤال الامتحان";
+
+  $("examQuestionSubmitBtn")
+   .textContent=
+   "حفظ التعديلات";
+
+  $("examQuestionText").value=
+   q.question||
+   "";
+
+  $("examOptionA").value=
+   q.options?.A||
+   "";
+
+  $("examOptionB").value=
+   q.options?.B||
+   "";
+
+  $("examOptionC").value=
+   q.options?.C||
+   "";
+
+  $("examOptionD").value=
+   q.options?.D||
+   "";
+
+  $("examCorrectAnswer").value=
+   q.correctAnswer||
+   "A";
+
+  $("examQuestionPoints").value=
+   Number(
+    q.points||
+    1
+   );
+
+  $("examQuestionOrder").value=
+   Number(
+    q.order||
+    0
+   );
+
+  $("examQuestionExplanation").value=
+   q.explanation||
+   "";
+
+  $("examQuestionActive").checked=
+   q.active!==false;
+
+  openModal(
+   "examQuestionModal"
+  );
+
+ };
+
+
+window.saveExamQuestion=
+ async e=>{
+
+  e.preventDefault();
+
+  const editId=
+   $("examQuestionEditId")
+    .value;
+
+  const examId=
+   $("examQuestionExamId")
+    .value;
+
+  const ex=
+   exams.find(
+    x=>x.id===examId
+   );
+
+  const data={
+
+   examId,
+
+   subjectId:
+    ex?.subjectId||
+    "",
+
+   question:
+    $("examQuestionText")
+     .value
+     .trim(),
+
+   type:
+    "multiple_choice",
+
+   options:{
+
+    A:
+     $("examOptionA")
+      .value
+      .trim(),
+
+    B:
+     $("examOptionB")
+      .value
+      .trim(),
+
+    C:
+     $("examOptionC")
+      .value
+      .trim(),
+
+    D:
+     $("examOptionD")
+      .value
+      .trim()
+
+   },
+
+   correctAnswer:
+    $("examCorrectAnswer")
+     .value,
+
+   points:
+    Number(
+     $("examQuestionPoints")
+      .value
+    )||
+    1,
+
+   explanation:
+    $("examQuestionExplanation")
+     .value
+     .trim(),
+
+   order:
+    Number(
+     $("examQuestionOrder")
+      .value
+    )||
+    0,
+
+   active:
+    $("examQuestionActive")
+     .checked
+
+  };
+
+  if(
+   !data.examId||
+   !data.question
+  ){
+
+   showToast(
+    "أكمل بيانات السؤال"
+   );
+
+   return;
+
+  }
+
+  try{
+
+   if(editId){
+
+    await updateDoc(
+     doc(
+      db,
+      "examQuestions",
+      editId
+     ),
+     data
+    );
+
+    showToast(
+     "تم تعديل السؤال"
+    );
+
+   }else{
+
+    await addDoc(
+     collection(
+      db,
+      "examQuestions"
+     ),
+     {
+
+      ...data,
+
+      createdAt:
+       serverTimestamp()
+
+     }
+    );
+
+    showToast(
+     "تمت إضافة السؤال للامتحان"
+    );
+
+   }
+
+   closeModal(
+    "examQuestionModal"
+   );
+
+   e.target.reset();
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.deleteExamQuestion=
+ async id=>{
+
+  if(
+   !confirm(
+    "هل تريد حذف هذا السؤال؟"
+   )
+  )
+   return;
+
+  try{
+
+   await deleteDoc(
+    doc(
+     db,
+     "examQuestions",
+     id
+    )
+   );
+
+   showToast(
+    "تم حذف السؤال"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.toggleExamQuestion=
+ async(
+  id,
+  active
+ )=>{
+
+  try{
+
+   await updateDoc(
+    doc(
+     db,
+     "examQuestions",
+     id
+    ),
+    {
+     active:!active
+    }
+   );
+
+   showToast(
+    active
+    ?"تم إخفاء السؤال"
+    :"تم تفعيل السؤال"
+   );
+
+  }catch(err){
+
+   showToast(
+    firebaseError(err)
+   );
+
+  }
+
+ };
+
+
+window.renderExams=
+ ()=>{
+
+  const grid=
+   $("examsGrid");
+
+  if(!exams.length){
+
+   grid.innerHTML=`
+
+    <div
+     class="card"
+     style="grid-column:1/-1"
+    >
+
+     <div class="empty">
+
+      <div class="empty-icon">
+       🧪
+      </div>
+
+      لا توجد امتحانات حاليًا
+
+     </div>
+
+    </div>
+
+   `;
+
+   return;
+
+  }
+
+  grid.innerHTML=
+   exams.map(
+    ex=>{
+
+     const subject=
+      subjects.find(
+       s=>s.id===ex.subjectId
+      );
+
+     const questions=
+      examQuestions
+       .filter(
+        q=>
+         q.examId===ex.id
+      )
+       .sort(
+        (a,b)=>
+         Number(a.order||0)-
+         Number(b.order||0)
+       );
+
+     const questionMarks=
+      questions.reduce(
+       (sum,q)=>
+        sum+
+        Number(
+         q.points||
+         0
+        ),
+       0
+      );
+
+     return `
+
+     <div class="content-card">
+
+      <div class="content-top">
+
+       <div>
+
+        <h3>
+         ${escapeHTML(
+          ex.title||
+          "امتحان"
+         )}
+        </h3>
+
+        <p>
+         ${escapeHTML(
+          subject?.name||
+          ex.subjectName||
+          "بدون مادة"
+         )}
+        </p>
+
+       </div>
+
+       <span
+        class="badge ${
+         ex.active!==false
+         ?"green"
+         :"red"
+        }"
+       >
+        ${
+         ex.active!==false
+         ?"منشور"
+         :"مخفي"
+        }
+       </span>
+
+      </div>
+
+      <p>
+       ${escapeHTML(
+        ex.description||
+        "لا يوجد وصف"
+       )}
+      </p>
+
+      <div class="content-meta">
+
+       <span class="badge purple">
+        ⏱ ${Number(
+         ex.duration||
+         0
+        )} دقيقة
+       </span>
+
+       <span class="badge blue">
+        ${questions.length} سؤال
+       </span>
+
+       <span class="badge purple">
+        ${Number(
+         ex.totalMarks||
+         questionMarks||
+         0
+        )} درجة
+       </span>
+
+      </div>
+
+      <div
+       style="
+        margin-top:13px;
+        padding:10px;
+        border-radius:11px;
+        background:rgba(255,255,255,.035);
+        font-size:10px;
+        color:#aaa5b7
+       "
+      >
+       درجات الأسئلة الحالية:
+       <strong>
+        ${questionMarks}
+       </strong>
+      </div>
+
+      <div class="content-actions">
+
+       <button
+        class="primary"
+        onclick="
+         openExamQuestionModal(
+          '${ex.id}'
+         )
+        "
+       >
+        ＋ إضافة سؤال
+       </button>
+
+       <button
+        class="secondary"
+        onclick="editExam('${ex.id}')"
+       >
+        تعديل
+       </button>
+
+       <button
+        class="${
+         ex.active!==false
+         ?"danger"
+         :"success"
+        }"
+        onclick="
+         toggleExam(
+          '${ex.id}',
+          ${ex.active!==false}
+         )
+        "
+       >
+        ${
+         ex.active!==false
+         ?"إخفاء"
+         :"نشر"
+        }
+       </button>
+
+       <button
+        class="danger"
+        onclick="deleteExam('${ex.id}')"
+       >
+        حذف
+       </button>
+
+      </div>
+
+      ${
+       questions.length
+
+       ?
+
+       `
+       <div
+        style="
+         margin-top:15px;
+         border-top:1px solid var(--border);
+         padding-top:13px
+        "
+       >
+
+        <div
+         style="
+          font-size:11px;
+          color:#9995a8;
+          margin-bottom:8px
+         "
+        >
+         أسئلة الامتحان
+        </div>
+
+        ${questions.map(
+         (q,i)=>`
+
+         <div
+          style="
+           padding:9px;
+           border:1px solid var(--border);
+           border-radius:10px;
+           margin-bottom:7px
+          "
+         >
+
+          <div
+           style="
+            display:flex;
+            justify-content:space-between;
+            gap:8px
+           "
+          >
+
+           <strong
+            style="
+             font-size:10px;
+             line-height:1.7
+            "
+           >
+            ${i+1}.
+            ${escapeHTML(
+             q.question||
+             ""
+            )}
+           </strong>
+
+           <span
+            class="badge ${
+             q.active!==false
+             ?"green"
+             :"red"
+            }"
+           >
+            ${Number(
+             q.points||
+             1
+            )} درجة
+           </span>
+
+          </div>
+
+          <div
+           style="
+            margin-top:6px;
+            color:#9995a8;
+            font-size:9px
+           "
+          >
+           الإجابة الصحيحة:
+           ${escapeHTML(
+            q.correctAnswer||
+            ""
+           )}
+          </div>
+
+          <div
+           style="
+            display:flex;
+            gap:6px;
+            margin-top:7px
+           "
+          >
+
+           <button
+            class="secondary"
+            onclick="
+             editExamQuestion(
+              '${q.id}'
+             )
+            "
+           >
+            تعديل
+           </button>
+
+           <button
+            class="${
+             q.active!==false
+             ?"danger"
+             :"success"
+            }"
+            onclick="
+             toggleExamQuestion(
+              '${q.id}',
+              ${q.active!==false}
+             )
+            "
+           >
+            ${
+             q.active!==false
+             ?"إخفاء"
+             :"تفعيل"
+            }
+           </button>
+
+           <button
+            class="danger"
+            onclick="
+             deleteExamQuestion(
+              '${q.id}'
+             )
+            "
+           >
+            حذف
+           </button>
+
+          </div>
+
+         </div>
+
+         `
+        ).join("")}
+
+       </div>
+       `
+
+       :
+
+       `
+       <div
+        class="muted"
+        style="
+         margin-top:15px;
+         font-size:10px
+        "
+       >
+        لم تتم إضافة أسئلة لهذا الامتحان بعد.
+       </div>
+       `
+      }
+
+     </div>
+
+     `;
+
+    }
+   ).join("");
+
+ };
+
+
+/* =========================
+   ATTEMPTS
+========================= */
+
+window.renderAttempts=
+ ()=>{
+
+  const tbody=
+   $("attemptsTable");
+
+  if(!attempts.length){
+
+   tbody.innerHTML=
+    emptyRow(
+     6,
+     "لا توجد نتائج حتى الآن"
+    );
+
+   return;
+
+  }
+
+  const sorted=
+   [...attempts]
+    .sort(
+     (a,b)=>
+      getTimestampValue(
+       b.submittedAt||
+       b.createdAt
+      )-
+      getTimestampValue(
+       a.submittedAt||
+       a.createdAt
+      )
+    );
+
+  tbody.innerHTML=
+   sorted.map(
+    a=>{
+
+     const score=
+      Number(
+       a.score||
+       0
+      );
+
+     const total=
+      Number(
+       a.total||
+       0
+      );
+
+     const percentage=
+      total>0
+      ?
+      Math.round(
+       score/total*100
+      )
+      :
+      0;
+
+     const student=
+      students.find(
+       s=>
+        s.id===a.uid||
+        s.uid===a.uid
+      );
+
+     return `
+
+     <tr>
+
+      <td>
+
+       <div class="student-name">
+
+        <div class="student-avatar">
+         ${escapeHTML(
+          (
+           student?.name||
+           a.studentName||
+           "?"
+          ).charAt(0)
+         )}
+        </div>
+
+        <strong>
+         ${escapeHTML(
+          student?.name||
+          a.studentName||
+          "طالب"
+         )}
+        </strong>
+
+       </div>
+
+      </td>
+
+      <td>
+
+       <span class="badge purple">
+        ${
+         a.type==="exam"
+         ?"امتحان"
+         :"تدريب"
+        }
+       </span>
+
+      </td>
+
+      <td>
+       ${escapeHTML(
+        a.examTitle||
+        a.trainingTitle||
+        a.title||
+        "—"
+       )}
+      </td>
+
+      <td>
+
+       <strong>
+        ${score}
+       </strong>
+
+       /
+       ${total}
+
+      </td>
+
+      <td>
+
+       <span
+        class="badge ${
+         percentage>=80
+         ?"green"
+         :
+         percentage>=50
+         ?"yellow"
+         :"red"
+        }"
+       >
+        ${percentage}%
+       </span>
+
+      </td>
+
+      <td class="muted">
+       ${escapeHTML(
+        transactionDate({
+         createdAt:
+          a.submittedAt||
+          a.createdAt
+        })
+       )}
+      </td>
+
+     </tr>
+
+     `;
+
+    }
+   ).join("");
 
  };
 
@@ -4034,7 +8114,7 @@ function populateClassSelects(){
     )}
    </option>
 
-  `
+   `
   ).join("")
 
   :
@@ -4044,7 +8124,6 @@ function populateClassSelects(){
    أضف مادة أولًا
   </option>
   `;
-
 
  $("classTeacher").innerHTML=
   teachers.length
@@ -4064,7 +8143,7 @@ function populateClassSelects(){
     )}
    </option>
 
-  `
+   `
   ).join("")
 
   :
@@ -4084,25 +8163,32 @@ window.renderClasses=
   const grid=
    $("classesGrid");
 
-
   if(!classes.length){
 
    grid.innerHTML=`
+
     <div
      class="card"
      style="grid-column:1/-1"
     >
+
      <div class="empty">
-      <div class="empty-icon">🎓</div>
+
+      <div class="empty-icon">
+       🎓
+      </div>
+
       لا توجد حصص حاليًا
+
      </div>
+
     </div>
+
    `;
 
    return;
 
   }
-
 
   grid.innerHTML=
    classes.map(
@@ -4121,7 +8207,6 @@ window.renderClasses=
      const published=
       c.published!==false;
 
-
      return `
 
       <div class="class-card">
@@ -4138,6 +8223,7 @@ window.renderClasses=
          </h3>
 
          <p>
+
           ${escapeHTML(
            subject?.name||
            c.subjectName||
@@ -4151,6 +8237,7 @@ window.renderClasses=
            c.teacherName||
            ""
           )}
+
          </p>
 
         </div>
@@ -4176,7 +8263,10 @@ window.renderClasses=
        <div class="class-info">
 
         <div class="info-box">
-         <small>الموعد</small>
+
+         <small>
+          الموعد
+         </small>
 
          <strong>
           ${escapeHTML(
@@ -4184,10 +8274,14 @@ window.renderClasses=
            "—"
           )}
          </strong>
+
         </div>
 
         <div class="info-box">
-         <small>الوقت</small>
+
+         <small>
+          الوقت
+         </small>
 
          <strong>
           ${escapeHTML(
@@ -4195,18 +8289,28 @@ window.renderClasses=
            "—"
           )}
          </strong>
+
         </div>
 
         <div class="info-box">
-         <small>السعر</small>
+
+         <small>
+          السعر
+         </small>
 
          <strong>
+
           ${Number(
            c.price||
            0
-          ).toLocaleString("ar-EG")}
+          ).toLocaleString(
+           "ar-EG"
+          )}
+
           ج.م
+
          </strong>
+
         </div>
 
        </div>
@@ -4224,12 +8328,16 @@ window.renderClasses=
          class="muted"
          style="font-size:10px"
         >
+
          👨‍🎓
+
          ${Number(
           c.students||
           0
          )}
+
          طالب
+
         </span>
 
         <div>
@@ -4284,7 +8392,6 @@ window.addClass=
 
   e.preventDefault();
 
-
   const subjectId=
    $("classSubject")
     .value;
@@ -4292,7 +8399,6 @@ window.addClass=
   const teacherId=
    $("classTeacher")
     .value;
-
 
   if(
    !subjectId||
@@ -4307,7 +8413,6 @@ window.addClass=
 
   }
 
-
   const subject=
    subjects.find(
     s=>s.id===subjectId
@@ -4317,7 +8422,6 @@ window.addClass=
    teachers.find(
     t=>t.id===teacherId
    );
-
 
   try{
 
@@ -4375,7 +8479,6 @@ window.addClass=
     }
    );
 
-
    closeModal(
     "classModal"
    );
@@ -4385,7 +8488,6 @@ window.addClass=
    showToast(
     "تم نشر الحصة"
    );
-
 
   }catch(err){
 
@@ -4444,7 +8546,6 @@ window.deleteClass=
   )
    return;
 
-
   try{
 
    await deleteDoc(
@@ -4494,7 +8595,7 @@ function populateTeacherSubject(){
     )}
    </option>
 
-  `
+   `
   ).join("")
 
   :
@@ -4514,7 +8615,6 @@ window.renderTeachers=
   const tbody=
    $("teachersTable");
 
-
   if(!teachers.length){
 
    tbody.innerHTML=
@@ -4526,7 +8626,6 @@ window.renderTeachers=
    return;
 
   }
-
 
   tbody.innerHTML=
    teachers.map(
@@ -4619,7 +8718,6 @@ window.addTeacher=
 
   e.preventDefault();
 
-
   const name=
    $("teacherName")
     .value
@@ -4634,7 +8732,6 @@ window.addTeacher=
     s=>s.id===subjectId
    );
 
-
   if(
    !name||
    !subjectId
@@ -4648,7 +8745,6 @@ window.addTeacher=
 
   }
 
-
   try{
 
    await addDoc(
@@ -4657,18 +8753,24 @@ window.addTeacher=
      "teachers"
     ),
     {
+
      name,
+
      subjectId,
+
      subjectName:
       subject?.name||
       "",
+
      classes:0,
+
      active:true,
+
      createdAt:
       serverTimestamp()
+
     }
    );
-
 
    closeModal(
     "teacherModal"
@@ -4679,7 +8781,6 @@ window.addTeacher=
    showToast(
     "تمت إضافة المدرس"
    );
-
 
   }catch(err){
 
@@ -4703,7 +8804,6 @@ window.editTeacher=
   if(!t)
    return;
 
-
   const name=
    prompt(
     "اسم المدرس:",
@@ -4711,10 +8811,8 @@ window.editTeacher=
     ""
    );
 
-
   if(!name?.trim())
    return;
-
 
   try{
 
@@ -4753,7 +8851,6 @@ window.deleteTeacher=
     x=>x.id===id
    );
 
-
   if(
    !t||
    !confirm(
@@ -4761,7 +8858,6 @@ window.deleteTeacher=
    )
   )
    return;
-
 
   try{
 
@@ -4798,7 +8894,6 @@ window.renderWallets=
   const tbody=
    $("walletsTable");
 
-
   if(!students.length){
 
    tbody.innerHTML=
@@ -4811,7 +8906,6 @@ window.renderWallets=
 
   }
 
-
   tbody.innerHTML=
    students.map(
     s=>{
@@ -4822,7 +8916,6 @@ window.renderWallets=
        s.wallet??
        0
       );
-
 
      const last=
       [...transactions]
@@ -4838,7 +8931,6 @@ window.renderWallets=
           a.createdAt
          )
        )[0];
-
 
      return `
 
@@ -4874,9 +8966,12 @@ window.renderWallets=
         )}
        </td>
 
-       <td class="balance">
+       <td>
 
-        ${bal.toLocaleString("ar-EG")}
+        ${bal.toLocaleString(
+         "ar-EG"
+        )}
+
         ج.م
 
        </td>
@@ -4885,11 +8980,13 @@ window.renderWallets=
 
         ${
          last
-         ?escapeHTML(
+         ?
+         escapeHTML(
           last.reason||
           "—"
          )
-         :"—"
+         :
+         "—"
         }
 
        </td>
@@ -4923,48 +9020,11 @@ window.renderWallets=
    TRANSACTIONS
 ========================= */
 
-function getTimestampValue(value){
-
- if(!value)
-  return 0;
-
- if(typeof value.seconds==="number")
-  return value.seconds;
-
- if(value.toDate)
-  return Math.floor(
-   value.toDate().getTime()/1000
-  );
-
- return 0;
-
-}
-
-
-function transactionDate(t){
-
- if(t.createdAt?.toDate)
-  return t.createdAt
-   .toDate()
-   .toLocaleString("ar-EG");
-
- if(t.createdAt?.seconds)
-  return new Date(
-   t.createdAt.seconds*1000
-  ).toLocaleString("ar-EG");
-
- return t.date||
-  "—";
-
-}
-
-
 window.renderTransactions=
  ()=>{
 
   const tbody=
    $("transactionsTable");
-
 
   if(!transactions.length){
 
@@ -4978,7 +9038,6 @@ window.renderTransactions=
 
   }
 
-
   const sorted=
    [...transactions]
     .sort(
@@ -4990,7 +9049,6 @@ window.renderTransactions=
        a.createdAt
       )
     );
-
 
   tbody.innerHTML=
    sorted.map(
@@ -5047,7 +9105,9 @@ window.renderTransactions=
       ${Number(
        t.amount||
        0
-      ).toLocaleString("ar-EG")}
+      ).toLocaleString(
+       "ar-EG"
+      )}
 
       ج.م
 
@@ -5075,10 +9135,12 @@ window.renderTransactions=
 
 
 /* =========================
-   SUBSCRIPTION REQUESTS
+   SUBSCRIPTIONS
 ========================= */
 
-function subscriptionRequestDate(request){
+function subscriptionRequestDate(
+ request
+){
 
  if(request.createdAt?.toDate)
   return request.createdAt
@@ -5095,7 +9157,9 @@ function subscriptionRequestDate(request){
 }
 
 
-function subscriptionPlanLabel(plan){
+function subscriptionPlanLabel(
+ plan
+){
 
  if(plan==="weekly")
   return "أسبوعية";
@@ -5111,7 +9175,9 @@ function subscriptionPlanLabel(plan){
 }
 
 
-function subscriptionAmount(request){
+function subscriptionAmount(
+ request
+){
 
  if(request.plan==="weekly")
   return 80;
@@ -5127,7 +9193,9 @@ function subscriptionAmount(request){
 }
 
 
-function subscriptionStatusLabel(status){
+function subscriptionStatusLabel(
+ status
+){
 
  if(status==="pending")
   return "قيد المراجعة";
@@ -5144,7 +9212,9 @@ function subscriptionStatusLabel(status){
 }
 
 
-function subscriptionStatusClass(status){
+function subscriptionStatusClass(
+ status
+){
 
  if(status==="approved")
   return "green";
@@ -5169,7 +9239,6 @@ window.renderSubscriptionRequests=
   if(!tbody)
    return;
 
-
   const sorted=
    [...subscriptionRequests]
     .sort(
@@ -5182,16 +9251,13 @@ window.renderSubscriptionRequests=
       )
     );
 
-
   const pendingCount=
    sorted.filter(
     x=>x.status==="pending"
    ).length;
 
-
   const badge=
    $("subscriptionPendingBadge");
-
 
   if(badge){
 
@@ -5205,10 +9271,8 @@ window.renderSubscriptionRequests=
 
   }
 
-
   const pageCount=
    $("subscriptionPagePendingCount");
-
 
   if(pageCount){
 
@@ -5217,10 +9281,8 @@ window.renderSubscriptionRequests=
 
   }
 
-
   const total=
    $("subscriptionRequestCount");
-
 
   if(total){
 
@@ -5228,7 +9290,6 @@ window.renderSubscriptionRequests=
     `${sorted.length} طلب`;
 
   }
-
 
   if(!sorted.length){
 
@@ -5241,7 +9302,6 @@ window.renderSubscriptionRequests=
    return;
 
   }
-
 
   tbody.innerHTML=
    sorted.map(
@@ -5257,11 +9317,9 @@ window.renderSubscriptionRequests=
        request
       );
 
-
      const status=
       request.status||
       "pending";
-
 
      const actions=
       status==="pending"
@@ -5279,14 +9337,22 @@ window.renderSubscriptionRequests=
 
        <button
         class="success"
-        onclick="approveSubscription('${request.id}')"
+        onclick="
+         approveSubscription(
+          '${request.id}'
+         )
+        "
        >
         ✅ موافقة
        </button>
 
        <button
         class="danger"
-        onclick="rejectSubscription('${request.id}')"
+        onclick="
+         rejectSubscription(
+          '${request.id}'
+         )
+        "
        >
         ❌ رفض
        </button>
@@ -5302,7 +9368,6 @@ window.renderSubscriptionRequests=
       </span>
       `;
 
-
      return `
 
       <tr>
@@ -5313,8 +9378,10 @@ window.renderSubscriptionRequests=
 
          <div class="student-avatar">
           ${escapeHTML(
-           (request.studentName||"?")
-            .charAt(0)
+           (
+            request.studentName||
+            "?"
+           ).charAt(0)
           )}
          </div>
 
@@ -5339,7 +9406,9 @@ window.renderSubscriptionRequests=
        <td>
 
         <span class="badge purple">
-         ${escapeHTML(plan)}
+         ${escapeHTML(
+          plan
+         )}
         </span>
 
        </td>
@@ -5347,8 +9416,13 @@ window.renderSubscriptionRequests=
        <td
         style="font-weight:800"
        >
-        ${amount.toLocaleString("ar-EG")}
+
+        ${amount.toLocaleString(
+         "ar-EG"
+        )}
+
         ج.م
+
        </td>
 
        <td>
@@ -5429,7 +9503,6 @@ window.approveSubscription=
     x=>x.id===requestId
    );
 
-
   if(!request){
 
    showToast(
@@ -5439,7 +9512,6 @@ window.approveSubscription=
    return;
 
   }
-
 
   if(request.status!=="pending"){
 
@@ -5451,11 +9523,9 @@ window.approveSubscription=
 
   }
 
-
   const studentId=
    request.studentId||
    request.uid;
-
 
   if(!studentId){
 
@@ -5467,9 +9537,7 @@ window.approveSubscription=
 
   }
 
-
   let durationDays;
-
 
   if(request.plan==="weekly"){
 
@@ -5489,18 +9557,15 @@ window.approveSubscription=
 
   }
 
-
   const amount=
    subscriptionAmount(
     request
    );
 
-
   const expectedAmount=
    request.plan==="weekly"
    ?80
    :250;
-
 
   if(amount!==expectedAmount){
 
@@ -5512,14 +9577,12 @@ window.approveSubscription=
 
   }
 
-
   if(
    !confirm(
     `هل تريد الموافقة على اشتراك ${subscriptionPlanLabel(request.plan)} للطالب ${request.studentName||""}؟`
    )
   )
    return;
-
 
   try{
 
@@ -5530,7 +9593,6 @@ window.approveSubscription=
      requestId
     );
 
-
    const studentRef=
     doc(
      db,
@@ -5538,10 +9600,8 @@ window.approveSubscription=
      studentId
     );
 
-
    const now=
     Date.now();
-
 
    const durationMs=
     durationDays*
@@ -5549,7 +9609,6 @@ window.approveSubscription=
     60*
     60*
     1000;
-
 
    await runTransaction(
     db,
@@ -5560,7 +9619,6 @@ window.approveSubscription=
        requestRef
       );
 
-
      if(!requestSnap.exists()){
 
       throw new Error(
@@ -5569,10 +9627,8 @@ window.approveSubscription=
 
      }
 
-
      const requestData=
       requestSnap.data();
-
 
      if(requestData.status!=="pending"){
 
@@ -5581,7 +9637,6 @@ window.approveSubscription=
       );
 
      }
-
 
      if(
       requestData.plan!=="weekly" &&
@@ -5594,12 +9649,10 @@ window.approveSubscription=
 
      }
 
-
      const studentSnap=
       await tx.get(
        studentRef
       );
-
 
      if(!studentSnap.exists()){
 
@@ -5609,22 +9662,17 @@ window.approveSubscription=
 
      }
 
-
      const studentData=
       studentSnap.data();
-
 
      let startMs=
       now;
 
-
      const currentEnd=
       studentData.subscriptionEnd;
 
-
      let currentEndMs=
       0;
-
 
      if(currentEnd?.toMillis){
 
@@ -5639,12 +9687,6 @@ window.approveSubscription=
 
      }
 
-
-     /*
-      لو الاشتراك الحالي ما زال فعالًا،
-      يبدأ الاشتراك الجديد بعد انتهائه.
-     */
-
      if(
       studentData.subscriptionStatus==="active" &&
       currentEndMs>now
@@ -5655,11 +9697,9 @@ window.approveSubscription=
 
      }
 
-
      const endMs=
       startMs+
       durationMs;
-
 
      tx.update(
       studentRef,
@@ -5686,7 +9726,6 @@ window.approveSubscription=
       }
      );
 
-
      tx.update(
       requestRef,
       {
@@ -5706,11 +9745,9 @@ window.approveSubscription=
     }
    );
 
-
    showToast(
     "تمت الموافقة وتفعيل الاشتراك بنجاح"
    );
-
 
   }catch(err){
 
@@ -5718,7 +9755,6 @@ window.approveSubscription=
     "Approve subscription:",
     err
    );
-
 
    showToast(
     err.message||
@@ -5742,7 +9778,6 @@ window.rejectSubscription=
     x=>x.id===requestId
    );
 
-
   if(!request){
 
    showToast(
@@ -5752,7 +9787,6 @@ window.rejectSubscription=
    return;
 
   }
-
 
   if(request.status!=="pending"){
 
@@ -5764,17 +9798,14 @@ window.rejectSubscription=
 
   }
 
-
   const reason=
    prompt(
     "سبب الرفض (اختياري):",
     ""
    );
 
-
   if(reason===null)
    return;
-
 
   if(
    !confirm(
@@ -5782,7 +9813,6 @@ window.rejectSubscription=
    )
   )
    return;
-
 
   try{
 
@@ -5793,7 +9823,6 @@ window.rejectSubscription=
      requestId
     );
 
-
    await runTransaction(
     db,
     async tx=>{
@@ -5803,7 +9832,6 @@ window.rejectSubscription=
        requestRef
       );
 
-
      if(!requestSnap.exists()){
 
       throw new Error(
@@ -5812,10 +9840,8 @@ window.rejectSubscription=
 
      }
 
-
      const data=
       requestSnap.data();
-
 
      if(data.status!=="pending"){
 
@@ -5824,7 +9850,6 @@ window.rejectSubscription=
       );
 
      }
-
 
      tx.update(
       requestRef,
@@ -5848,11 +9873,9 @@ window.rejectSubscription=
     }
    );
 
-
    showToast(
     "تم رفض طلب الاشتراك"
    );
-
 
   }catch(err){
 
@@ -5860,7 +9883,6 @@ window.rejectSubscription=
     "Reject subscription:",
     err
    );
-
 
    showToast(
     err.message||
@@ -5886,28 +9908,13 @@ function renderDashboard(){
   .textContent=
   subjects.length;
 
- $("statClasses")
+ $("statCurriculum")
   .textContent=
-  classes.length;
+  curriculumLessons.length;
 
-
- const total=
-  students.reduce(
-   (sum,s)=>
-    sum+
-    Number(
-     s.balance??
-     s.wallet??
-     0
-    ),
-   0
-  );
-
-
- $("statBalance").innerHTML=
-  `${total.toLocaleString("ar-EG")}
-   <small>ج.م</small>`;
-
+ $("statExams")
+  .textContent=
+  exams.length;
 
  const recent=
   [...students]
@@ -5920,13 +9927,14 @@ function renderDashboard(){
       a.createdAt
      )
    )
-   .slice(0,6);
-
+   .slice(
+    0,
+    6
+   );
 
  $("dashboardStudentCount")
   .textContent=
   `${recent.length}`;
-
 
  $("recentStudents").innerHTML=
   recent.length
@@ -5943,10 +9951,12 @@ function renderDashboard(){
      <div class="student-name">
 
       <div class="student-avatar">
+
        ${escapeHTML(
         (s.name||"?")
          .charAt(0)
        )}
+
       </div>
 
       <strong>
@@ -5974,7 +9984,9 @@ function renderDashboard(){
       s.balance??
       s.wallet??
       0
-     ).toLocaleString("ar-EG")}
+     ).toLocaleString(
+      "ar-EG"
+     )}
 
      ج.م
 
@@ -5992,7 +10004,6 @@ function renderDashboard(){
    "لا يوجد طلاب"
   );
 
-
  const acts=
   [...transactions]
    .sort(
@@ -6004,16 +10015,16 @@ function renderDashboard(){
       a.createdAt
      )
    )
-   .slice(0,6);
-
+   .slice(
+    0,
+    6
+   );
 
  $("dashboardActivityCount")
   .textContent=
   `${acts.length}`;
 
-
  $("recentActivity").innerHTML=
-
   acts.length
 
   ?
@@ -6024,11 +10035,13 @@ function renderDashboard(){
    <div class="activity-item">
 
     <div class="activity-icon">
+
      ${
       t.type==="add"
       ?"💰"
       :"💸"
      }
+
     </div>
 
     <div class="activity-text">
@@ -6045,7 +10058,9 @@ function renderDashboard(){
       ${Number(
        t.amount||
        0
-      ).toLocaleString("ar-EG")}
+      ).toLocaleString(
+       "ar-EG"
+      )}
 
       ج.م
 
@@ -6080,11 +10095,13 @@ function renderDashboard(){
    class="empty"
    style="padding:30px 10px"
   >
+
    <div class="empty-icon">
     📋
    </div>
 
    لا توجد نشاطات
+
   </div>
   `;
 
@@ -6100,6 +10117,14 @@ function renderAll(){
  renderStudents();
 
  renderSubjects();
+
+ renderCurriculum();
+
+ renderTrainings();
+
+ renderExams();
+
+ renderAttempts();
 
  renderClasses();
 
@@ -6133,7 +10158,6 @@ window.exportTransactions=
 
   }
 
-
   const rows=[
 
    [
@@ -6145,7 +10169,6 @@ window.exportTransactions=
    ]
 
   ];
-
 
   transactions.forEach(
    t=>{
@@ -6174,7 +10197,6 @@ window.exportTransactions=
    }
   );
 
-
   const csv=
    "\uFEFF"+
    rows
@@ -6194,7 +10216,6 @@ window.exportTransactions=
     )
     .join("\n");
 
-
   const blob=
    new Blob(
     [csv],
@@ -6204,19 +10225,18 @@ window.exportTransactions=
     }
    );
 
-
   const url=
    URL.createObjectURL(
     blob
    );
-
 
   const a=
    document.createElement(
     "a"
    );
 
-  a.href=url;
+  a.href=
+   url;
 
   a.download=
    "mathix-transactions.csv";
