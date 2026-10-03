@@ -388,7 +388,15 @@ tr:last-child td{border-bottom:0}
       <div class="field"><label>الترتيب</label><input id="lessonOrder" type="number" value="0"></div>
       <div class="field full"><label>عنوان الدرس</label><input id="lessonTitle" required></div>
       <div class="field full"><label>الوصف</label><textarea id="lessonDescription"></textarea></div>
-      <div class="field full"><label>رابط YouTube</label><input id="lessonYoutubeUrl" placeholder="https://www.youtube.com/watch?v=..." required></div>
+      <div class="field full">
+  <label>رابط الفيديو</label>
+  <input
+    id="lessonVideoUrl"
+    type="url"
+    placeholder="https://example.com/video.mp4"
+    required
+  >
+</div>
       <div class="field"><label>الوصول</label><select id="lessonAccessType"><option value="free">مجاني</option><option value="paid">مدفوع</option></select></div>
       <div class="field"><label>السعر بالجنيه</label><input id="lessonPrice" type="number" min="0" step="1" value="0"></div>
       <label class="check full"><input id="lessonActive" type="checkbox" checked> الدرس منشور ونشط</label>
@@ -813,8 +821,8 @@ window.openLessonModal=()=>{
 window.editLesson=id=>{
   const l=curriculumLessons.find(x=>x.id===id);if(!l)return;
   fillLessonSubjects();$("lessonId").value=id;$("lessonSubject").value=l.subjectId||"";
-  $("lessonOrder").value=Number(l.order??0);$("lessonTitle").value=l.title||"";
-  $("lessonDescription").value=l.description||"";$("lessonYoutubeUrl").value=l.youtubeUrl||"";
+  $("lessonOrder").value=Number(l.order??0);$("lessonTitle").value=l.title||"";$("lessonDescription").value = l.description || "";
+$("lessonVideoUrl").value = l.videoUrl || "";
   $("lessonAccessType").value=l.accessType==="paid"?"paid":"free";$("lessonPrice").value=Number(l.price||0);
   $("lessonActive").checked=l.active!==false;togglePrice();$("lessonModalTitle").textContent="تعديل درس";openModal("lessonModal");
 };
