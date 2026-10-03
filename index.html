@@ -10255,6 +10255,1333 @@ window.exportTransactions=
 ========================= */
 
 renderAll();
+/* =========================================================
+   MATHIX - MULTI QUESTION TRAININGS EXTENSION
+   لا يحذف أو يستبدل أي وظيفة قديمة.
+   ========================================================= */
+
+window.__mathixTrainingQuestions = [];
+
+/* ---------- إنشاء Modal جديد بدون لمس الـ Modals القديمة ---------- */
+
+function ensureMultiTrainingModal(){
+
+  if(document.getElementById("multiTrainingModal"))
+    return;
+
+  const modal=document.createElement("div");
+
+  modal.className="modal-overlay";
+  modal.id="multiTrainingModal";
+
+  modal.innerHTML=`
+
+    <div class="modal large">
+
+      <div class="modal-head">
+
+        <h3 id="multiTrainingModalTitle">
+          إضافة تدريب متعدد الأسئلة
+        </h3>
+
+        <button
+          class="close"
+          type="button"
+          onclick="closeMultiTrainingModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <form
+        class="form"
+        id="multiTrainingForm"
+        onsubmit="saveMultiTraining(event)"
+      >
+
+        <input
+          type="hidden"
+          id="multiTrainingEditId"
+        >
+
+        <div class="form-note">
+          التدريب الواحد يمكن أن يحتوي على عدد غير محدود من الأسئلة.
+          يمكنك إضافة السؤال ثم الضغط على «إضافة سؤال» وتكرار العملية.
+        </div>
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label>اسم التدريب</label>
+
+            <input
+              id="multiTrainingTitle"
+              required
+              placeholder="مثال: تدريب على النهايات"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>المادة</label>
+
+            <select
+              id="multiTrainingSubject"
+              required
+              onchange="populateMultiTrainingLessons()"
+            ></select>
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label>الدرس</label>
+
+            <select id="multiTrainingLesson">
+
+              <option value="">
+                بدون ربط بدرس
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label>الترتيب</label>
+
+            <input
+              type="number"
+              id="multiTrainingOrder"
+              value="0"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="checkbox-field">
+
+          <input
+            type="checkbox"
+            id="multiTrainingActive"
+            checked
+          >
+
+          <label>
+            التدريب منشور للطلاب
+          </label>
+
+        </div>
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin:20px 0 12px;
+          "
+        >
+
+          <strong style="font-size:14px">
+            أسئلة التدريب
+          </strong>
+
+          <span
+            class="badge purple"
+            id="multiTrainingQuestionCount"
+          >
+            0 سؤال
+          </span>
+
+        </div>
+
+        <div
+          id="multiTrainingQuestions"
+          style="
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+          "
+        ></div>
+
+        <div
+          style="
+            margin-top:15px;
+            padding-top:15px;
+            border-top:1px solid var(--border);
+          "
+        >
+
+          <button
+            type="button"
+            class="secondary"
+            onclick="addMultiTrainingQuestion()"
+          >
+            ＋ إضافة سؤال
+          </button>
+
+        </div>
+
+        <div
+          class="modal-footer"
+          style="margin-top:20px"
+        >
+
+          <button
+            class="primary"
+            id="multiTrainingSubmit"
+          >
+            حفظ التدريب
+          </button>
+
+          <button
+            type="button"
+            class="secondary"
+            onclick="closeMultiTrainingModal()"
+          >
+            إلغاء
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(modal);
+
+}
+
+
+/* ---------- فتح الـModal ---------- */
+
+window.openMultiTrainingModal=async function(id=""){
+
+  ensureMultiTrainingModal();
+
+  const modal=
+    document.getElementById("multiTrainingModal");
+
+  const form=
+    document.getElementById("multiTrainingForm");
+
+  form.reset();
+
+  document.getElementById(
+    "multiTrainingEditId"
+  ).value=id||"";
+
+  document.getElementById(
+    "multiTrainingQuestions"
+  ).innerHTML="";
+
+  window.__mathixTrainingQuestions=[];
+
+  populateMultiTrainingSubjects();
+
+  document.getElementById(
+    "multiTrainingActive"
+  ).checked=true;
+
+  document.getElementById(
+    "multiTrainingOrder"
+  ).value=0;
+
+  if(id){
+
+    const training=
+      trainings.find(x=>x.id===id);
+
+    if(training){
+
+      document.getElementById(
+        "multiTrainingModalTitle"
+      ).textContent=
+        "تعديل التدريب";
+
+      document.getElementById(
+        "multiTrainingSubmit"
+      ).textContent=
+        "حفظ التعديلات";
+
+      document.getElementById(
+        "multiTrainingTitle"
+      ).value=
+        training.title||"";
+
+      document.getElementById(
+        "multiTrainingSubject"
+      ).value=
+        training.subjectId||"";
+
+      populateMultiTrainingLessons();
+
+      document.getElementById(
+        "multiTrainingLesson"
+      ).value=
+        training.lessonId||"";
+
+      document.getElementById(
+        "multiTrainingOrder"
+      ).value=
+        Number(training.order||0);
+
+      document.getElementById(
+        "multiTrainingActive"
+      ).checked=
+        training.active!==false;
+
+      await loadMultiTrainingQuestions(id);
+
+    }
+
+  }else{
+
+    document.getElementById(
+      "multiTrainingModalTitle"
+    ).textContent=
+      "إضافة تدريب متعدد الأسئلة";
+
+    document.getElementById(
+      "multiTrainingSubmit"
+    ).textContent=
+      "حفظ التدريب";
+
+    addMultiTrainingQuestion();
+
+  }
+
+  modal.classList.add("open");
+
+};
+
+
+/* ---------- إغلاق ---------- */
+
+window.closeMultiTrainingModal=function(){
+
+  const modal=
+    document.getElementById("multiTrainingModal");
+
+  if(modal)
+    modal.classList.remove("open");
+
+};
+
+
+/* ---------- المواد ---------- */
+
+function populateMultiTrainingSubjects(){
+
+  const select=
+    document.getElementById(
+      "multiTrainingSubject"
+    );
+
+  if(!select)
+    return;
+
+  select.innerHTML=`
+
+    <option value="">
+      اختر المادة
+    </option>
+
+    ${
+      subjects
+      .filter(s=>s.active!==false)
+      .sort(
+        (a,b)=>
+          Number(a.order||0)-
+          Number(b.order||0)
+      )
+      .map(s=>`
+
+        <option value="${s.id}">
+          ${escapeHTML(
+            s.icon||"📚"
+          )}
+          ${escapeHTML(
+            s.name||""
+          )}
+        </option>
+
+      `)
+      .join("")
+    }
+
+  `;
+
+}
+
+
+/* ---------- الدروس ---------- */
+
+window.populateMultiTrainingLessons=function(){
+
+  const subjectId=
+    document.getElementById(
+      "multiTrainingSubject"
+    ).value;
+
+  const select=
+    document.getElementById(
+      "multiTrainingLesson"
+    );
+
+  if(!select)
+    return;
+
+  const lessons=
+    curriculumLessons
+    .filter(
+      l=>
+        l.subjectId===subjectId &&
+        l.active!==false
+    )
+    .sort(
+      (a,b)=>
+        Number(a.order||0)-
+        Number(b.order||0)
+    );
+
+  select.innerHTML=`
+
+    <option value="">
+      بدون ربط بدرس
+    </option>
+
+    ${
+      lessons.map(l=>`
+
+        <option value="${l.id}">
+          ${escapeHTML(
+            l.title||
+            l.name||
+            "درس"
+          )}
+        </option>
+
+      `).join("")
+    }
+
+  `;
+
+};
+
+
+/* ---------- تحميل أسئلة تدريب ---------- */
+
+async function loadMultiTrainingQuestions(trainingId){
+
+  try{
+
+    const snapshot=
+      await getDocs(
+        collection(
+          db,
+          "trainingQuestions"
+        )
+      );
+
+    window.__mathixTrainingQuestions=
+      [];
+
+    snapshot.forEach(item=>{
+
+      const data=item.data();
+
+      if(data.trainingId===trainingId){
+
+        window.__mathixTrainingQuestions.push({
+
+          id:item.id,
+
+          ...data
+
+        });
+
+      }
+
+    });
+
+    window.__mathixTrainingQuestions.sort(
+      (a,b)=>
+        Number(a.order||0)-
+        Number(b.order||0)
+    );
+
+    if(
+      !window.__mathixTrainingQuestions.length
+    ){
+
+      addMultiTrainingQuestion();
+
+    }else{
+
+      renderMultiTrainingQuestions();
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(
+      firebaseError(error)
+    );
+
+  }
+
+}
+
+
+/* ---------- إضافة سؤال ---------- */
+
+window.addMultiTrainingQuestion=function(data={}){
+
+  window.__mathixTrainingQuestions.push({
+
+    id:
+      data.id||
+      "new_"+Date.now()+"_"+Math.random(),
+
+    question:
+      data.question||"",
+
+    options:{
+      A:data.options?.A||"",
+      B:data.options?.B||"",
+      C:data.options?.C||"",
+      D:data.options?.D||""
+    },
+
+    correctAnswer:
+      data.correctAnswer||"A",
+
+    points:
+      Number(data.points||1),
+
+    explanation:
+      data.explanation||"",
+
+    order:
+      Number(
+        data.order||
+        window.__mathixTrainingQuestions.length
+      ),
+
+    active:
+      data.active!==false
+
+  });
+
+  renderMultiTrainingQuestions();
+
+};
+
+
+/* ---------- عرض الأسئلة ---------- */
+
+function renderMultiTrainingQuestions(){
+
+  const container=
+    document.getElementById(
+      "multiTrainingQuestions"
+    );
+
+  const count=
+    document.getElementById(
+      "multiTrainingQuestionCount"
+    );
+
+  if(!container)
+    return;
+
+  if(count){
+
+    count.textContent=
+      `${window.__mathixTrainingQuestions.length} سؤال`;
+
+  }
+
+  container.innerHTML=
+    window.__mathixTrainingQuestions
+    .map(
+      (q,index)=>`
+
+      <div
+        class="card"
+        style="
+          padding:15px;
+          border:1px solid var(--border);
+          border-radius:15px;
+        "
+      >
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:12px;
+          "
+        >
+
+          <strong>
+            السؤال ${index+1}
+          </strong>
+
+          <button
+            type="button"
+            class="danger"
+            onclick="removeMultiTrainingQuestion(${index})"
+          >
+            حذف السؤال
+          </button>
+
+        </div>
+
+        <div class="field">
+
+          <label>نص السؤال</label>
+
+          <textarea
+            data-training-q="${index}"
+            data-field="question"
+            placeholder="اكتب السؤال هنا"
+          >${escapeHTML(
+            q.question||""
+          )}</textarea>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label>اختيار A</label>
+
+            <input
+              data-training-q="${index}"
+              data-field="A"
+              value="${escapeHTML(
+                q.options?.A||""
+              )}"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>اختيار B</label>
+
+            <input
+              data-training-q="${index}"
+              data-field="B"
+              value="${escapeHTML(
+                q.options?.B||""
+              )}"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="field">
+
+            <label>اختيار C</label>
+
+            <input
+              data-training-q="${index}"
+              data-field="C"
+              value="${escapeHTML(
+                q.options?.C||""
+              )}"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>اختيار D</label>
+
+            <input
+              data-training-q="${index}"
+              data-field="D"
+              value="${escapeHTML(
+                q.options?.D||""
+              )}"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="form-row-3">
+
+          <div class="field">
+
+            <label>الإجابة الصحيحة</label>
+
+            <select
+              data-training-q="${index}"
+              data-field="correctAnswer"
+            >
+
+              <option
+                value="A"
+                ${q.correctAnswer==="A"?"selected":""}
+              >
+                A
+              </option>
+
+              <option
+                value="B"
+                ${q.correctAnswer==="B"?"selected":""}
+              >
+                B
+              </option>
+
+              <option
+                value="C"
+                ${q.correctAnswer==="C"?"selected":""}
+              >
+                C
+              </option>
+
+              <option
+                value="D"
+                ${q.correctAnswer==="D"?"selected":""}
+              >
+                D
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label>الدرجة</label>
+
+            <input
+              type="number"
+              min="1"
+              data-training-q="${index}"
+              data-field="points"
+              value="${Number(q.points||1)}"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>الترتيب</label>
+
+            <input
+              type="number"
+              data-training-q="${index}"
+              data-field="order"
+              value="${Number(q.order||index)}"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label>شرح الإجابة</label>
+
+          <textarea
+            data-training-q="${index}"
+            data-field="explanation"
+            placeholder="شرح اختياري بعد الإجابة"
+          >${escapeHTML(
+            q.explanation||""
+          )}</textarea>
+
+        </div>
+
+        <div class="checkbox-field">
+
+          <input
+            type="checkbox"
+            data-training-q="${index}"
+            data-field="active"
+            ${q.active!==false?"checked":""}
+          >
+
+          <label>
+            السؤال منشور
+          </label>
+
+        </div>
+
+      </div>
+
+    `
+    )
+    .join("");
+
+}
+
+
+/* ---------- حذف سؤال من القائمة ---------- */
+
+window.removeMultiTrainingQuestion=function(index){
+
+  if(
+    window.__mathixTrainingQuestions.length<=1
+  ){
+
+    showToast(
+      "التدريب لازم يحتوي على سؤال واحد على الأقل."
+    );
+
+    return;
+
+  }
+
+  window.__mathixTrainingQuestions.splice(
+    index,
+    1
+  );
+
+  renderMultiTrainingQuestions();
+
+};
+
+
+/* ---------- قراءة البيانات من الحقول ---------- */
+
+function collectMultiTrainingQuestions(){
+
+  const questions=
+    window.__mathixTrainingQuestions;
+
+  questions.forEach(
+    (q,index)=>{
+
+      const get=(field)=>{
+
+        const el=
+          document.querySelector(
+            `[data-training-q="${index}"][data-field="${field}"]`
+          );
+
+        return el;
+
+      };
+
+      q.question=
+        get("question")?.value?.trim()||"";
+
+      q.options.A=
+        get("A")?.value?.trim()||"";
+
+      q.options.B=
+        get("B")?.value?.trim()||"";
+
+      q.options.C=
+        get("C")?.value?.trim()||"";
+
+      q.options.D=
+        get("D")?.value?.trim()||"";
+
+      q.correctAnswer=
+        get("correctAnswer")?.value||"A";
+
+      q.points=
+        Number(
+          get("points")?.value||1
+        );
+
+      q.order=
+        Number(
+          get("order")?.value||index
+        );
+
+      q.explanation=
+        get("explanation")?.value?.trim()||"";
+
+      q.active=
+        !!get("active")?.checked;
+
+    }
+  );
+
+  return questions;
+
+}
+
+
+/* ---------- حفظ التدريب ---------- */
+
+window.saveMultiTraining=async function(event){
+
+  event.preventDefault();
+
+  collectMultiTrainingQuestions();
+
+  const editId=
+    document.getElementById(
+      "multiTrainingEditId"
+    ).value;
+
+  const subjectId=
+    document.getElementById(
+      "multiTrainingSubject"
+    ).value;
+
+  const lessonId=
+    document.getElementById(
+      "multiTrainingLesson"
+    ).value;
+
+  const subject=
+    subjects.find(
+      s=>s.id===subjectId
+    );
+
+  const lesson=
+    curriculumLessons.find(
+      l=>l.id===lessonId
+    );
+
+  const title=
+    document.getElementById(
+      "multiTrainingTitle"
+    ).value.trim();
+
+  const questions=
+    window.__mathixTrainingQuestions;
+
+  if(!title||!subjectId){
+
+    showToast(
+      "اكتب اسم التدريب واختر المادة."
+    );
+
+    return;
+
+  }
+
+  if(!questions.length){
+
+    showToast(
+      "أضف سؤال واحد على الأقل."
+    );
+
+    return;
+
+  }
+
+  for(
+    let i=0;
+    i<questions.length;
+    i++
+  ){
+
+    const q=questions[i];
+
+    if(
+      !q.question||
+      !q.options.A||
+      !q.options.B||
+      !q.options.C||
+      !q.options.D
+    ){
+
+      showToast(
+        `أكمل بيانات السؤال رقم ${i+1}.`
+      );
+
+      return;
+
+    }
+
+  }
+
+  const trainingData={
+
+    title,
+
+    subjectId,
+
+    subjectName:
+      subject?.name||"",
+
+    lessonId:
+      lessonId||"",
+
+    lessonTitle:
+      lesson?.title||
+      lesson?.name||
+      "",
+
+    order:
+      Number(
+        document.getElementById(
+          "multiTrainingOrder"
+        ).value||0
+      ),
+
+    active:
+      document.getElementById(
+        "multiTrainingActive"
+      ).checked,
+
+    questionCount:
+      questions.length,
+
+    multiQuestion:
+      true
+
+  };
+
+  try{
+
+    let trainingId=editId;
+
+    if(editId){
+
+      await updateDoc(
+        doc(
+          db,
+          "trainings",
+          editId
+        ),
+        trainingData
+      );
+
+    }else{
+
+      const ref=
+        await addDoc(
+          collection(
+            db,
+            "trainings"
+          ),
+          {
+            ...trainingData,
+
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+      trainingId=ref.id;
+
+    }
+
+    /* حذف أسئلة التدريب القديمة المرتبطة
+       ثم إعادة حفظ القائمة الحالية */
+
+    const oldSnapshot=
+      await getDocs(
+        collection(
+          db,
+          "trainingQuestions"
+        )
+      );
+
+    for(
+      const item of oldSnapshot.docs
+    ){
+
+      const data=item.data();
+
+      if(
+        data.trainingId===trainingId
+      ){
+
+        await deleteDoc(
+          doc(
+            db,
+            "trainingQuestions",
+            item.id
+          )
+        );
+
+      }
+
+    }
+
+    for(
+      let i=0;
+      i<questions.length;
+      i++
+    ){
+
+      const q=questions[i];
+
+      await addDoc(
+        collection(
+          db,
+          "trainingQuestions"
+        ),
+        {
+
+          trainingId,
+
+          subjectId,
+
+          question:
+            q.question,
+
+          type:
+            "multiple_choice",
+
+          options:{
+            A:q.options.A,
+            B:q.options.B,
+            C:q.options.C,
+            D:q.options.D
+          },
+
+          correctAnswer:
+            q.correctAnswer,
+
+          points:
+            Number(q.points||1),
+
+          explanation:
+            q.explanation||"",
+
+          order:
+            Number(q.order||i),
+
+          active:
+            q.active!==false,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+    }
+
+    closeMultiTrainingModal();
+
+    showToast(
+      editId
+      ?"تم تعديل التدريب وأسئلته"
+      :"تم إنشاء التدريب وأسئلته"
+    );
+
+    if(typeof refreshData==="function")
+      refreshData();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      firebaseError(error)
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   زر جديد داخل صفحة التدريبات
+   ========================================================= */
+
+function addMultiTrainingButton(){
+
+  const view=
+    document.getElementById(
+      "view-trainings"
+    );
+
+  if(!view)
+    return;
+
+  const toolbar=
+    view.querySelector(
+      ".toolbar"
+    );
+
+  if(!toolbar)
+    return;
+
+  if(
+    document.getElementById(
+      "multiTrainingOpenBtn"
+    )
+  )
+    return;
+
+  const button=
+    document.createElement("button");
+
+  button.id=
+    "multiTrainingOpenBtn";
+
+  button.className=
+    "primary";
+
+  button.textContent=
+    "＋ تدريب متعدد الأسئلة";
+
+  button.onclick=
+    ()=>{
+      openMultiTrainingModal();
+    };
+
+  const right=
+    toolbar.querySelector(
+      ".toolbar-right"
+    );
+
+  if(right)
+    right.appendChild(button);
+  else
+    toolbar.appendChild(button);
+
+}
+
+
+/* =========================================================
+   زر الأسئلة بجوار التدريبات الموجودة
+   ========================================================= */
+
+const __oldRenderTrainings=
+  window.renderTrainings;
+
+window.renderTrainings=function(){
+
+  if(
+    typeof __oldRenderTrainings==="function"
+  ){
+
+    __oldRenderTrainings();
+
+  }
+
+  setTimeout(
+    ()=>{
+      addMultiTrainingButton();
+      addQuestionButtonsToTrainings();
+    },
+    0
+  );
+
+};
+
+
+function addQuestionButtonsToTrainings(){
+
+  const grid=
+    document.getElementById(
+      "trainingsGrid"
+    );
+
+  if(!grid)
+    return;
+
+  const cards=
+    grid.querySelectorAll(
+      ".content-card"
+    );
+
+  cards.forEach(
+    (card,index)=>{
+
+      if(
+        card.querySelector(
+          ".multi-question-btn"
+        )
+      )
+        return;
+
+      const training=
+        [...trainings]
+        .sort(
+          (a,b)=>
+            Number(a.order||0)-
+            Number(b.order||0)
+        )[index];
+
+      if(!training)
+        return;
+
+      const actions=
+        card.querySelector(
+          ".content-actions"
+        );
+
+      if(!actions)
+        return;
+
+      const button=
+        document.createElement("button");
+
+      button.type=
+        "button";
+
+      button.className=
+        "blue multi-question-btn";
+
+      button.textContent=
+        training.multiQuestion
+        ?"إدارة الأسئلة"
+        :"تحويل لتدريب متعدد";
+
+      button.onclick=
+        ()=>{
+          openMultiTrainingModal(
+            training.id
+          );
+        };
+
+      actions.insertBefore(
+        button,
+        actions.firstChild
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   تشغيل الزر بعد تحميل الصفحة
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+    setTimeout(
+      ()=>{
+        ensureMultiTrainingModal();
+        addMultiTrainingButton();
+      },
+      1000
+    );
+  }
+);
+
 
 </script>
 
