@@ -105,17 +105,17 @@
 </section>
 
 <section class="view" id="view-curriculum">
-  <div class="toolbar"><div><h3 style="font-size:15px">الدروس</h3><p class="muted" style="font-size:11px;margin-top:3px">أضف محتوى الدروس لكل مادة</p></div><button class="primary" onclick="openLessonModal()">＋ إضافة درس</button></div>
+  <div class="toolbar"><div><h3 style="font-size:15px">الدروس</h3><p class="muted" style="font-size:11px;margin-top:3px">إدارة محتوى الدروس النصي</p></div><button class="primary" onclick="openLessonModal()">＋ إضافة درس</button></div>
   <div class="cards" id="curriculumGrid"></div>
 </section>
 
 <section class="view" id="view-trainings">
-  <div class="toolbar"><div><h3 style="font-size:15px">التدريبات</h3><p class="muted" style="font-size:11px;margin-top:3px">أنشئ تدريبًا ثم أضف له أي عدد من الأسئلة</p></div><button class="primary" onclick="openTrainingModal()">＋ إضافة تدريب</button></div>
+  <div class="toolbar"><div><h3 style="font-size:15px">التدريبات</h3><p class="muted" style="font-size:11px;margin-top:3px">تدريب واحد يمكن أن يحتوي على عدد غير محدود من الأسئلة</p></div><button class="primary" onclick="openTrainingModal()">＋ إضافة تدريب</button></div>
   <div class="cards" id="trainingsGrid"></div>
 </section>
 
 <section class="view" id="view-exams">
-  <div class="toolbar"><div><h3 style="font-size:15px">الاختبارات</h3><p class="muted" style="font-size:11px;margin-top:3px">أنشئ اختبارًا وأضف له عددًا غير محدود من الأسئلة</p></div><button class="primary" onclick="openExamModal()">＋ إضافة اختبار</button></div>
+  <div class="toolbar"><div><h3 style="font-size:15px">الاختبارات</h3><p class="muted" style="font-size:11px;margin-top:3px">اختبار واحد يمكن أن يحتوي على عدد غير محدود من الأسئلة</p></div><button class="primary" onclick="openExamModal()">＋ إضافة اختبار</button></div>
   <div class="cards" id="examsGrid"></div>
 </section>
 
@@ -187,53 +187,11 @@
 <div class="modal-footer"><button class="primary">إضافة المادة</button><button type="button" class="secondary" onclick="closeModal('subjectModal')">إلغاء</button></div>
 </form></div></div>
 
-<!-- CURRICULUM LESSON -->
-<div class="modal-overlay" id="lessonModal"><div class="modal"><div class="modal-head"><h3>إضافة درس</h3><button class="close" onclick="closeModal('lessonModal')">×</button></div>
-<form class="form" onsubmit="saveLesson(event)">
-<div class="field"><label>المادة</label><select id="lessonSubject" required></select></div>
-<div class="field"><label>عنوان الدرس</label><input id="lessonTitle" required></div>
-<div class="field"><label>وصف مختصر</label><input id="lessonDescription"></div>
-<div class="field"><label>محتوى الدرس</label><textarea id="lessonContent" style="min-height:180px" required placeholder="اكتب الشرح كنص قابل للعرض والنسخ"></textarea></div>
-<div class="form-row"><div class="field"><label>الترتيب</label><input type="number" id="lessonOrder" min="0" value="0"></div><div class="field"><label>الحالة</label><select id="lessonActive"><option value="true">متاح للطلاب</option><option value="false">مخفي</option></select></div></div>
-<div class="modal-footer"><button class="primary">حفظ الدرس</button><button type="button" class="secondary" onclick="closeModal('lessonModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- TRAINING -->
-<div class="modal-overlay" id="trainingModal"><div class="modal"><div class="modal-head"><h3>إضافة تدريب</h3><button class="close" onclick="closeModal('trainingModal')">×</button></div>
-<form class="form" onsubmit="saveTraining(event)">
-<div class="field"><label>عنوان التدريب</label><input id="trainingTitle" required></div>
-<div class="field"><label>المادة</label><select id="trainingSubject" required></select></div>
-<div class="field"><label>الدرس (اختياري)</label><select id="trainingLesson"><option value="">بدون درس محدد</option></select></div>
-<div class="form-row"><div class="field"><label>الصعوبة</label><select id="trainingDifficulty"><option>سهل</option><option selected>متوسط</option><option>صعب</option></select></div><div class="field"><label>الحالة</label><select id="trainingActive"><option value="true">متاح</option><option value="false">مخفي</option></select></div></div>
-<div class="modal-footer"><button class="primary">إنشاء التدريب</button><button type="button" class="secondary" onclick="closeModal('trainingModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- EXAM -->
-<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-head"><h3>إضافة اختبار</h3><button class="close" onclick="closeModal('examModal')">×</button></div>
-<form class="form" onsubmit="saveExam(event)">
-<div class="field"><label>عنوان الاختبار</label><input id="examTitle" required></div>
-<div class="field"><label>المادة</label><select id="examSubject" required></select></div>
-<div class="field"><label>الوصف</label><textarea id="examDescription"></textarea></div>
-<div class="form-row"><div class="field"><label>المدة بالدقائق</label><input type="number" id="examDuration" min="1" value="30" required></div><div class="field"><label>الدرجة النهائية</label><input type="number" id="examTotalMarks" min="1" value="10" required></div></div>
-<div class="field"><label>الحالة</label><select id="examActive"><option value="true">متاح</option><option value="false">مخفي</option></select></div>
-<div class="modal-footer"><button class="primary">إنشاء الاختبار</button><button type="button" class="secondary" onclick="closeModal('examModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- QUESTION -->
-<div class="modal-overlay" id="questionModal"><div class="modal"><div class="modal-head"><h3 id="questionModalTitle">إضافة سؤال</h3><button class="close" onclick="closeModal('questionModal')">×</button></div>
-<form class="form" onsubmit="saveQuestion(event)">
-<input type="hidden" id="questionKind"><input type="hidden" id="questionParentId"><input type="hidden" id="questionId">
-<div class="field"><label id="questionParentLabel">التدريب</label><input id="questionParentName" disabled></div>
-<div class="field"><label>نص السؤال</label><textarea id="questionText" required></textarea></div>
-<div class="field"><label>الاختيار A</label><input id="optionA" required></div>
-<div class="field"><label>الاختيار B</label><input id="optionB" required></div>
-<div class="field"><label>الاختيار C</label><input id="optionC" required></div>
-<div class="field"><label>الاختيار D</label><input id="optionD" required></div>
-<div class="form-row"><div class="field"><label>الإجابة الصحيحة</label><select id="correctAnswer"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div><div class="field"><label>الدرجة</label><input type="number" id="questionPoints" min="1" value="1" required></div></div>
-<div class="field"><label>شرح الإجابة</label><textarea id="questionExplanation"></textarea></div>
-<div class="form-row"><div class="field"><label>الترتيب</label><input type="number" id="questionOrder" min="0" value="0"></div><div class="field"><label>الحالة</label><select id="questionActive"><option value="true">متاح</option><option value="false">مخفي</option></select></div></div>
-<div class="modal-footer"><button class="primary">حفظ السؤال</button><button type="button" class="secondary" onclick="closeModal('questionModal')">إلغاء</button></div>
-</form></div></div>
+<!-- CONTENT MODALS -->
+<div class="modal-overlay" id="lessonModal"><div class="modal"><div class="modal-head"><h3>إضافة درس</h3><button class="close" onclick="closeModal('lessonModal')">×</button></div><form class="form" onsubmit="saveLesson(event)"><div class="form-row"><div class="field"><label>المادة</label><select id="lessonSubject" required></select></div><div class="field"><label>الترتيب</label><input type="number" id="lessonOrder" value="0"></div></div><div class="field"><label>عنوان الدرس</label><input id="lessonTitle" required></div><div class="field"><label>الوصف</label><input id="lessonDescription"></div><div class="field"><label>المحتوى النصي</label><textarea id="lessonContent" style="min-height:180px" required></textarea></div><div class="field"><label>الحالة</label><select id="lessonActive"><option value="true">ظاهر</option><option value="false">مخفي</option></select></div><div class="modal-footer"><button class="primary">حفظ الدرس</button><button type="button" class="secondary" onclick="closeModal('lessonModal')">إلغاء</button></div></form></div></div>
+<div class="modal-overlay" id="trainingModal"><div class="modal"><div class="modal-head"><h3>إضافة تدريب</h3><button class="close" onclick="closeModal('trainingModal')">×</button></div><form class="form" onsubmit="saveTraining(event)"><div class="form-row"><div class="field"><label>المادة</label><select id="trainingSubject" onchange="populateTrainingLessons()" required></select></div><div class="field"><label>الدرس</label><select id="trainingLesson"><option value="">بدون درس</option></select></div></div><div class="field"><label>اسم التدريب</label><input id="trainingTitle" required></div><div class="field"><label>الوصف</label><textarea id="trainingDescription"></textarea></div><div class="form-row"><div class="field"><label>الصعوبة</label><select id="trainingDifficulty"><option>سهل</option><option selected>متوسط</option><option>صعب</option></select></div><div class="field"><label>الترتيب</label><input type="number" id="trainingOrder" value="0"></div></div><div class="field"><label>الحالة</label><select id="trainingActive"><option value="true">ظاهر</option><option value="false">مخفي</option></select></div><div class="modal-footer"><button class="primary">إنشاء التدريب</button><button type="button" class="secondary" onclick="closeModal('trainingModal')">إلغاء</button></div></form></div></div>
+<div class="modal-overlay" id="examModal"><div class="modal"><div class="modal-head"><h3>إضافة اختبار</h3><button class="close" onclick="closeModal('examModal')">×</button></div><form class="form" onsubmit="saveExam(event)"><div class="field"><label>المادة</label><select id="examSubject" required></select></div><div class="field"><label>اسم الاختبار</label><input id="examTitle" required></div><div class="field"><label>الوصف</label><textarea id="examDescription"></textarea></div><div class="form-row"><div class="field"><label>المدة بالدقائق</label><input type="number" id="examDuration" value="30" min="1"></div><div class="field"><label>إجمالي الدرجات</label><input type="number" id="examTotalMarks" value="0" min="0"></div></div><div class="field"><label>الحالة</label><select id="examActive"><option value="true">ظاهر</option><option value="false">مخفي</option></select></div><div class="modal-footer"><button class="primary">إنشاء الاختبار</button><button type="button" class="secondary" onclick="closeModal('examModal')">إلغاء</button></div></form></div></div>
+<div class="modal-overlay" id="questionModal"><div class="modal"><div class="modal-head"><h3 id="questionModalTitle">إضافة سؤال</h3><button class="close" onclick="closeModal('questionModal')">×</button></div><form class="form" onsubmit="saveQuestion(event)"><input type="hidden" id="questionKind"><input type="hidden" id="questionParentId"><input type="hidden" id="questionId"><div class="field"><label>السؤال</label><textarea id="questionText" required></textarea></div><div class="form-row"><div class="field"><label>A</label><input id="optionA" required></div><div class="field"><label>B</label><input id="optionB" required></div></div><div class="form-row"><div class="field"><label>C</label><input id="optionC" required></div><div class="field"><label>D</label><input id="optionD" required></div></div><div class="form-row"><div class="field"><label>الإجابة الصحيحة</label><select id="correctAnswer"><option>A</option><option>B</option><option>C</option><option>D</option></select></div><div class="field"><label>الدرجة</label><input type="number" id="questionPoints" value="1" min="1"></div></div><div class="field"><label>شرح الإجابة</label><textarea id="questionExplanation"></textarea></div><div class="form-row"><div class="field"><label>الترتيب</label><input type="number" id="questionOrder" value="0"></div><div class="field"><label>الحالة</label><select id="questionActive"><option value="true">ظاهر</option><option value="false">مخفي</option></select></div></div><div class="modal-footer"><button class="primary">حفظ السؤال</button><button type="button" class="secondary" onclick="closeModal('questionModal')">إلغاء</button></div></form></div></div>
 
 <!-- CLASS -->
 <div class="modal-overlay" id="classModal"><div class="modal"><div class="modal-head"><h3>فتح حصة جديدة</h3><button class="close" onclick="closeModal('classModal')">×</button></div>
@@ -274,7 +232,7 @@ const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 const auth=getAuth(app);
 
-let students=[],subjects=[],teachers=[],classes=[],transactions=[],curriculumLessons=[],trainings=[],exams=[],examQuestions=[],trainingQuestions=[];
+let students=[],subjects=[],teachers=[],classes=[],transactions=[],curriculumLessons=[],trainings=[],exams=[];
 let unsubscribers=[];
 let toastTimer;
 
@@ -283,8 +241,8 @@ const titles={
  students:["الطلاب","إدارة حسابات الطلاب"],
  subjects:["المواد","إدارة المواد التعليمية"],
  curriculum:["الدروس","إدارة محتوى الدروس"],
- trainings:["التدريبات","إدارة التدريبات والأسئلة"],
- exams:["الاختبارات","إدارة الاختبارات والأسئلة"],
+ trainings:["التدريبات","إدارة التدريبات وأسئلتها"],
+ exams:["الاختبارات","إدارة الاختبارات وأسئلتها"],
  classes:["الحصص","إنشاء وإدارة الحصص"],
  teachers:["المدرسين","إدارة المدرسين"],
  wallets:["المحافظ","إدارة أرصدة الطلاب"],
@@ -390,22 +348,7 @@ onAuthStateChanged(auth,async user=>{
  $("adminEmail").textContent=user.email||"Administrator";
  $("settingsAdminEmail").value=user.email||"";
  startListeners();
- normalizeLegacySubjects();
 });
-
-async function normalizeLegacySubjects(){
- try{
-   const snap=await getDocs(collection(db,"subjects"));
-   const writes=snap.docs.map((d,i)=>{
-     const data=d.data();
-     const patch={};
-     if(data.active===undefined)patch.active=true;
-     if(data.order===undefined)patch.order=i;
-     return Object.keys(patch).length?updateDoc(doc(db,"subjects",d.id),patch):null;
-   }).filter(Boolean);
-   if(writes.length)await Promise.all(writes);
- }catch(err){console.error("normalizeLegacySubjects",err);}
-}
 
 function stopListeners(){
  unsubscribers.forEach(fn=>{try{fn()}catch{}});
@@ -425,8 +368,6 @@ function startListeners(){
      if(name==="curriculumLessons")curriculumLessons=target;
      if(name==="trainings")trainings=target;
      if(name==="exams")exams=target;
-     if(name==="examQuestions")examQuestions=target;
-     if(name==="trainingQuestions")trainingQuestions=target;
      renderAll();
    },err=>showToast(firebaseError(err)));
    unsubscribers.push(unsub);
@@ -439,8 +380,6 @@ function startListeners(){
  listen("curriculumLessons",curriculumLessons);
  listen("trainings",trainings);
  listen("exams",exams);
- listen("examQuestions",examQuestions);
- listen("trainingQuestions",trainingQuestions);
 }
 
 window.refreshData=()=>{renderAll();showToast("تم تحديث البيانات المعروضة");};
@@ -524,8 +463,7 @@ window.walletAction=async e=>{
 window.renderSubjects=()=>{
  const grid=$("subjectsGrid");
  if(!subjects.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📚</div>لا توجد مواد حاليًا</div></div>`;return}
- const ordered=[...subjects].sort((a,b)=>Number(a.order??999999)-Number(b.order??999999));
- grid.innerHTML=ordered.map(s=>`<div class="subject-card"><div class="subject-icon">${escapeHTML(s.icon||"📚")}</div><h3>${escapeHTML(s.name||"بدون اسم")}</h3><p>${escapeHTML(s.description||"")}</p><div class="subject-meta"><span>${Number(s.lessons||0)} درس</span><span>${Number(s.students||0)} طالب</span><span class="badge ${s.active!==false?"green":"red"}">${s.active!==false?"متاحة للطلاب":"مخفية"}</span></div><div class="card-actions"><button class="secondary" onclick="editSubject('${s.id}')">تعديل</button><button class="secondary" onclick="toggleSubject('${s.id}')">${s.active===false?"إظهار":"إخفاء"}</button><button class="danger" onclick="deleteSubject('${s.id}')">حذف</button></div></div>`).join("");
+ grid.innerHTML=subjects.map(s=>`<div class="subject-card"><div class="subject-icon">${escapeHTML(s.icon||"📚")}</div><h3>${escapeHTML(s.name||"بدون اسم")}</h3><p>${escapeHTML(s.description||"")}</p><div class="subject-meta"><span>${Number(s.lessons||0)} درس</span><span>${Number(s.students||0)} طالب</span></div><div style="margin-top:10px"><span class="badge ${s.active!==false?"green":"red"}">${s.active!==false?"ظاهرة":"مخفية"}</span></div><div class="card-actions"><button class="secondary" onclick="editSubject('${s.id}')">تعديل</button><button class="secondary" onclick="toggleSubject('${s.id}',${s.active!==false})">${s.active!==false?"إخفاء":"إظهار"}</button><button class="danger" onclick="deleteSubject('${s.id}')">حذف</button></div></div>`).join("");
 };
 
 window.addSubject=async e=>{
@@ -543,75 +481,30 @@ window.deleteSubject=async id=>{
 window.editSubject=async id=>{
  const s=subjects.find(x=>x.id===id);if(!s)return;
  const name=prompt("اسم المادة:",s.name||"");if(!name?.trim())return;
- try{await updateDoc(doc(db,"subjects",id),{name:name.trim(),active:s.active!==false,order:Number(s.order??0)});showToast("تم تعديل المادة")}catch(err){showToast(firebaseError(err))}
+ try{await updateDoc(doc(db,"subjects",id),{name:name.trim()});showToast("تم تعديل المادة")}catch(err){showToast(firebaseError(err))}
 };
 
-window.toggleSubject=async id=>{
- const s=subjects.find(x=>x.id===id);if(!s)return;
- try{await updateDoc(doc(db,"subjects",id),{active:s.active===false});showToast(s.active===false?"تم إظهار المادة للطلاب":"تم إخفاء المادة عن الطلاب")}catch(err){showToast(firebaseError(err))}
-};
+function fillSubjectSelect(id){const el=$(id);if(!el)return;el.innerHTML=subjects.length?subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;}
+window.toggleSubject=async(id,active)=>{try{await updateDoc(doc(db,"subjects",id),{active:!active});showToast(active?"تم إخفاء المادة":"تم إظهار المادة")}catch(err){showToast(firebaseError(err))}};
+window.openLessonModal=()=>{fillSubjectSelect("lessonSubject");openModal("lessonModal")};
+window.saveLesson=async e=>{e.preventDefault();const subjectId=$("lessonSubject").value,subject=subjects.find(s=>s.id===subjectId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"curriculumLessons"),{subjectId,subjectName:subject.name,title:$("lessonTitle").value.trim(),description:$("lessonDescription").value.trim(),content:$("lessonContent").value.trim(),order:Number($("lessonOrder").value||0),active:$("lessonActive").value==="true",createdAt:serverTimestamp()});closeModal("lessonModal");e.target.reset();showToast("تمت إضافة الدرس")}catch(err){showToast(firebaseError(err))}};
+window.renderCurriculum=()=>{const g=$("curriculumGrid");if(!curriculumLessons.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📖</div>لا توجد دروس حاليًا</div></div>`;return}g.innerHTML=curriculumLessons.sort((a,b)=>Number(a.order||0)-Number(b.order||0)).map(l=>`<div class="subject-card"><div class="subject-icon">📖</div><h3>${escapeHTML(l.title||"")}</h3><p>${escapeHTML(l.subjectName||"")} • ${escapeHTML(l.description||"")}</p><div class="subject-meta"><span>ترتيب ${Number(l.order||0)}</span><span class="badge ${l.active!==false?"green":"red"}">${l.active!==false?"ظاهر":"مخفي"}</span></div><div class="card-actions"><button class="danger" onclick="deleteLesson('${l.id}')">حذف</button></div></div>`).join("")};
+window.deleteLesson=async id=>{if(!confirm("حذف الدرس؟"))return;try{await deleteDoc(doc(db,"curriculumLessons",id));showToast("تم حذف الدرس")}catch(err){showToast(firebaseError(err))}};
+window.openTrainingModal=()=>{fillSubjectSelect("trainingSubject");populateTrainingLessons();openModal("trainingModal")};
+window.populateTrainingLessons=()=>{const sid=$("trainingSubject").value;const ls=curriculumLessons.filter(l=>l.subjectId===sid);$("trainingLesson").innerHTML=`<option value="">بدون درس محدد</option>`+ls.map(l=>`<option value="${l.id}">${escapeHTML(l.title)}</option>`).join("")};
+window.saveTraining=async e=>{e.preventDefault();const subjectId=$("trainingSubject").value,subject=subjects.find(s=>s.id===subjectId),lessonId=$("trainingLesson").value,lesson=curriculumLessons.find(l=>l.id===lessonId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"trainings"),{title:$("trainingTitle").value.trim(),subjectId,subjectName:subject.name,lessonId:lessonId||null,lessonTitle:lesson?.title||"",description:$("trainingDescription").value.trim(),difficulty:$("trainingDifficulty").value,order:Number($("trainingOrder").value||0),active:$("trainingActive").value==="true",createdAt:serverTimestamp()});closeModal("trainingModal");e.target.reset();showToast("تم إنشاء التدريب — أضف الأسئلة الآن")}catch(err){showToast(firebaseError(err))}};
+window.renderTrainings=()=>{const g=$("trainingsGrid");if(!trainings.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🧠</div>لا توجد تدريبات حاليًا</div></div>`;return}g.innerHTML=trainings.map(t=>`<div class="subject-card"><div class="subject-icon">🧠</div><h3>${escapeHTML(t.title||"")}</h3><p>${escapeHTML(t.subjectName||"")} • ${escapeHTML(t.description||"")}</p><div class="subject-meta"><span>${escapeHTML(t.difficulty||"متوسط")}</span><span class="badge ${t.active!==false?"green":"red"}">${t.active!==false?"ظاهر":"مخفي"}</span></div><div class="card-actions"><button class="primary" onclick="openQuestionManager('training','${t.id}')">الأسئلة</button><button class="danger" onclick="deleteTraining('${t.id}')">حذف</button></div></div>`).join("")};
+window.deleteTraining=async id=>{if(!confirm("حذف التدريب؟"))return;try{await deleteDoc(doc(db,"trainings",id));showToast("تم حذف التدريب")}catch(err){showToast(firebaseError(err))}};
+window.openExamModal=()=>{fillSubjectSelect("examSubject");openModal("examModal")};
+window.saveExam=async e=>{e.preventDefault();const subjectId=$("examSubject").value,subject=subjects.find(s=>s.id===subjectId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"exams"),{title:$("examTitle").value.trim(),subjectId,subjectName:subject.name,description:$("examDescription").value.trim(),duration:Number($("examDuration").value||30),totalMarks:Number($("examTotalMarks").value||0),active:$("examActive").value==="true",createdAt:serverTimestamp()});closeModal("examModal");e.target.reset();showToast("تم إنشاء الاختبار — أضف الأسئلة الآن")}catch(err){showToast(firebaseError(err))}};
+window.renderExams=()=>{const g=$("examsGrid");if(!exams.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📝</div>لا توجد اختبارات حاليًا</div></div>`;return}g.innerHTML=exams.map(x=>`<div class="subject-card"><div class="subject-icon">📝</div><h3>${escapeHTML(x.title||"")}</h3><p>${escapeHTML(x.subjectName||"")} • ${escapeHTML(x.description||"")}</p><div class="subject-meta"><span>⏱ ${Number(x.duration||0)} دقيقة</span><span>${Number(x.totalMarks||0)} درجة</span></div><div class="card-actions"><button class="primary" onclick="openQuestionManager('exam','${x.id}')">الأسئلة</button><button class="danger" onclick="deleteExam('${x.id}')">حذف</button></div></div>`).join("")};
+window.deleteExam=async id=>{if(!confirm("حذف الاختبار؟"))return;try{await deleteDoc(doc(db,"exams",id));showToast("تم حذف الاختبار")}catch(err){showToast(firebaseError(err))}};
+window.openQuestionManager=async(kind,parentId)=>{const parent=kind==='exam'?exams.find(x=>x.id===parentId):trainings.find(x=>x.id===parentId);if(!parent)return;const col=kind==='exam'?'examQuestions':'trainingQuestions';try{const snap=await getDocs(collection(db,col));const qs=snap.docs.map(d=>({id:d.id,...d.data()})).filter(q=>(kind==='exam'?q.examId:q.trainingId)===parentId).sort((a,b)=>Number(a.order||0)-Number(b.order||0));document.getElementById('questionManager')?.remove();const wrap=document.createElement('div');wrap.id='questionManager';wrap.className='modal-overlay open';wrap.innerHTML=`<div class="modal"><div class="modal-head"><h3>${kind==='exam'?'أسئلة الاختبار':'أسئلة التدريب'}: ${escapeHTML(parent.title)}</h3><button class="close" onclick="this.closest('.modal-overlay').remove()">×</button></div><div class="card-body" style="max-height:60vh;overflow:auto">${qs.length?qs.map((q,i)=>`<div style="padding:14px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><strong>${i+1}. ${escapeHTML(q.question)}</strong><div class="muted" style="font-size:10px">الصحيحة: ${escapeHTML(q.correctAnswer)} • الدرجة: ${Number(q.points||1)}</div><div style="margin-top:8px"><button class="secondary" onclick="editQuestion('${kind}','${parentId}','${q.id}')">تعديل</button> <button class="danger" onclick="deleteQuestion('${kind}','${q.id}','${parentId}')">حذف</button></div></div>`).join(''):`<div class="empty">لا توجد أسئلة بعد</div>`}</div><div class="modal-footer"><button class="primary" onclick="openQuestionModal('${kind}','${parentId}')">＋ إضافة سؤال</button><button class="secondary" onclick="this.closest('.modal-overlay').remove()">إغلاق</button></div></div>`;document.body.appendChild(wrap)}catch(err){showToast(firebaseError(err))}};
+window.openQuestionModal=(kind,parentId,q=null)=>{$("questionKind").value=kind;$('questionParentId').value=parentId;$('questionId').value=q?.id||'';$('questionText').value=q?.question||'';$('optionA').value=q?.options?.A||'';$('optionB').value=q?.options?.B||'';$('optionC').value=q?.options?.C||'';$('optionD').value=q?.options?.D||'';$('correctAnswer').value=q?.correctAnswer||'A';$('questionPoints').value=q?.points||1;$('questionExplanation').value=q?.explanation||'';$('questionOrder').value=q?.order||0;$('questionActive').value=String(q?.active!==false);$('questionModalTitle').textContent=q?'تعديل السؤال':'إضافة سؤال';openModal('questionModal')};
+window.editQuestion=async(kind,parentId,id)=>{const col=kind==='exam'?'examQuestions':'trainingQuestions';try{const snap=await getDocs(collection(db,col));const q=snap.docs.map(d=>({id:d.id,...d.data()})).find(x=>x.id===id);if(q)openQuestionModal(kind,parentId,q)}catch(err){showToast(firebaseError(err))}};
+window.saveQuestion=async e=>{e.preventDefault();const kind=$("questionKind").value,parentId=$("questionParentId").value,id=$("questionId").value,isExam=kind==='exam';const data={question:$("questionText").value.trim(),type:'mcq',options:{A:$("optionA").value.trim(),B:$("optionB").value.trim(),C:$("optionC").value.trim(),D:$("optionD").value.trim()},correctAnswer:$("correctAnswer").value,points:Number($("questionPoints").value||1),explanation:$("questionExplanation").value.trim(),order:Number($("questionOrder").value||0),active:$("questionActive").value==='true',createdAt:serverTimestamp()};if(isExam){data.examId=parentId;data.subjectId=exams.find(x=>x.id===parentId)?.subjectId||''}else{data.trainingId=parentId;data.subjectId=trainings.find(x=>x.id===parentId)?.subjectId||''}try{if(id)await updateDoc(doc(db,isExam?'examQuestions':'trainingQuestions',id),data);else await addDoc(collection(db,isExam?'examQuestions':'trainingQuestions'),data);closeModal('questionModal');showToast(id?'تم تعديل السؤال':'تمت إضافة السؤال')}catch(err){showToast(firebaseError(err))}};
+window.deleteQuestion=async(kind,id,parentId)=>{if(!confirm('حذف السؤال؟'))return;try{await deleteDoc(doc(db,kind==='exam'?'examQuestions':'trainingQuestions',id));showToast('تم حذف السؤال');openQuestionManager(kind,parentId)}catch(err){showToast(firebaseError(err))}};
 
-
-function subjectOptions(){
- return subjects.filter(s=>s.active!==false).sort((a,b)=>Number(a.order??999999)-Number(b.order??999999)).map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name||"")}</option>`).join("");
-}
-
-function lessonOptions(){
- return curriculumLessons.filter(l=>l.active!==false).sort((a,b)=>Number(a.order??999999)-Number(b.order??999999)).map(l=>`<option value="${l.id}">${escapeHTML(l.title||"بدون عنوان")}</option>`).join("");
-}
-
-window.openLessonModal=()=>{
- $("lessonSubject").innerHTML=subjectOptions()||`<option value="">أضف مادة أولًا</option>`;
- $("lessonTitle").value="";$('lessonDescription').value="";$('lessonContent').value="";$('lessonOrder').value=curriculumLessons.length;$('lessonActive').value="true";openModal("lessonModal");
-};
-window.saveLesson=async e=>{
- e.preventDefault();
- const subjectId=$("lessonSubject").value,subject=subjects.find(s=>s.id===subjectId);
- if(!subject){showToast("أضف مادة أولًا");return}
- try{await addDoc(collection(db,"curriculumLessons"),{subjectId,subjectName:subject.name,title:$('lessonTitle').value.trim(),description:$('lessonDescription').value.trim(),content:$('lessonContent').value.trim(),order:Number($('lessonOrder').value||0),active:$('lessonActive').value==="true",createdAt:serverTimestamp()});closeModal("lessonModal");e.target.reset();showToast("تمت إضافة الدرس")}
- catch(err){showToast(firebaseError(err))}
-};
-window.deleteLesson=async id=>{if(!confirm("حذف هذا الدرس؟"))return;try{await deleteDoc(doc(db,"curriculumLessons",id));showToast("تم حذف الدرس")}catch(err){showToast(firebaseError(err))}};
-window.renderCurriculum=()=>{
- const grid=$("curriculumGrid");if(!grid)return;
- if(!curriculumLessons.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📖</div>لا توجد دروس حاليًا</div></div>`;return}
- const arr=[...curriculumLessons].sort((a,b)=>Number(a.order??999999)-Number(b.order??999999));
- grid.innerHTML=arr.map(l=>`<div class="subject-card"><div class="subject-icon">📖</div><h3>${escapeHTML(l.title||"بدون عنوان")}</h3><p>${escapeHTML(l.subjectName||"")} — ${escapeHTML(l.description||"")}</p><div class="subject-meta"><span>ترتيب ${Number(l.order||0)}</span><span class="badge ${l.active!==false?'green':'red'}">${l.active!==false?'متاح':'مخفي'}</span></div><div class="card-actions"><button class="danger" onclick="deleteLesson('${l.id}')">حذف</button></div></div>`).join("");
-};
-
-window.openTrainingModal=()=>{
- $("trainingSubject").innerHTML=subjectOptions()||`<option value="">أضف مادة أولًا</option>`;
- $("trainingLesson").innerHTML=`<option value="">بدون درس محدد</option>`+lessonOptions();
- $("trainingTitle").value="";$('trainingDifficulty').value="متوسط";$('trainingActive').value="true";openModal("trainingModal");
-};
-window.saveTraining=async e=>{
- e.preventDefault();const subjectId=$("trainingSubject").value,subject=subjects.find(s=>s.id===subjectId);if(!subject){showToast("أضف مادة أولًا");return}
- const lessonId=$("trainingLesson").value,lesson=curriculumLessons.find(l=>l.id===lessonId);
- try{await addDoc(collection(db,"trainings"),{title:$('trainingTitle').value.trim(),subjectId,subjectName:subject.name,lessonId:lessonId||null,lessonTitle:lesson?.title||"",difficulty:$('trainingDifficulty').value,active:$('trainingActive').value==="true",createdAt:serverTimestamp()});closeModal("trainingModal");e.target.reset();showToast("تم إنشاء التدريب — أضف الأسئلة الآن")}
- catch(err){showToast(firebaseError(err))}
-};
-window.deleteTraining=async id=>{if(!confirm("حذف التدريب؟ سيتم حذف بيانات التدريب فقط؛ الأسئلة المرتبطة تحتاج حذفًا منفصلًا."))return;try{await deleteDoc(doc(db,"trainings",id));showToast("تم حذف التدريب")}catch(err){showToast(firebaseError(err))}};
-window.renderTrainings=()=>{
- const grid=$("trainingsGrid");if(!grid)return;if(!trainings.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🧠</div>لا توجد تدريبات</div></div>`;return}
- grid.innerHTML=[...trainings].sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""),'ar')).map(t=>{const qs=trainingQuestions.filter(q=>q.trainingId===t.id);return `<div class="subject-card"><div class="subject-icon">🧠</div><h3>${escapeHTML(t.title||"بدون عنوان")}</h3><p>${escapeHTML(t.subjectName||"")} ${t.lessonTitle?`• ${escapeHTML(t.lessonTitle)}`:""}</p><div class="subject-meta"><span>${qs.length} سؤال</span><span>${escapeHTML(t.difficulty||"متوسط")}</span><span class="badge ${t.active!==false?'green':'red'}">${t.active!==false?'متاح':'مخفي'}</span></div><div class="card-actions"><button class="primary" onclick="openTrainingQuestions('${t.id}')">⚙ إدارة الأسئلة</button><button class="danger" onclick="deleteTraining('${t.id}')">حذف</button></div></div>`}).join("");
-};
-
-window.openTrainingQuestions=id=>{const t=trainings.find(x=>x.id===id);if(!t)return;openQuestionManager('training',id,t.title||"تدريب");};
-window.openExamModal=()=>{$("examSubject").innerHTML=subjectOptions()||`<option value="">أضف مادة أولًا</option>`;$('examTitle').value="";$('examDescription').value="";$('examDuration').value=30;$('examTotalMarks').value=10;$('examActive').value="true";openModal("examModal");};
-window.saveExam=async e=>{e.preventDefault();const subjectId=$("examSubject").value,subject=subjects.find(s=>s.id===subjectId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"exams"),{title:$('examTitle').value.trim(),subjectId,subjectName:subject.name,description:$('examDescription').value.trim(),duration:Number($('examDuration').value||30),totalMarks:Number($('examTotalMarks').value||0),active:$('examActive').value==="true",createdAt:serverTimestamp()});closeModal("examModal");e.target.reset();showToast("تم إنشاء الاختبار — أضف الأسئلة الآن")}catch(err){showToast(firebaseError(err))}};
-window.deleteExam=async id=>{if(!confirm("حذف الاختبار؟ سيتم حذف بيانات الاختبار فقط؛ الأسئلة المرتبطة تحتاج حذفًا منفصلًا."))return;try{await deleteDoc(doc(db,"exams",id));showToast("تم حذف الاختبار")}catch(err){showToast(firebaseError(err))}};
-window.renderExams=()=>{const grid=$("examsGrid");if(!grid)return;if(!exams.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📝</div>لا توجد اختبارات</div></div>`;return}grid.innerHTML=[...exams].sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""),'ar')).map(x=>{const qs=examQuestions.filter(q=>q.examId===x.id);return `<div class="subject-card"><div class="subject-icon">📝</div><h3>${escapeHTML(x.title||"بدون عنوان")}</h3><p>${escapeHTML(x.subjectName||"")} • ${Number(x.duration||0)} دقيقة</p><div class="subject-meta"><span>${qs.length} سؤال</span><span>الدرجة ${Number(x.totalMarks||0)}</span><span class="badge ${x.active!==false?'green':'red'}">${x.active!==false?'متاح':'مخفي'}</span></div><div class="card-actions"><button class="primary" onclick="openExamQuestions('${x.id}')">⚙ إدارة الأسئلة</button><button class="danger" onclick="deleteExam('${x.id}')">حذف</button></div></div>`}).join("");};
-window.openExamQuestions=id=>{const x=exams.find(e=>e.id===id);if(!x)return;openQuestionManager('exam',id,x.title||"اختبار");};
-
-function openQuestionManager(kind,parentId,parentName){
- const isExam=kind==="exam";const list=isExam?examQuestions.filter(q=>q.examId===parentId):trainingQuestions.filter(q=>q.trainingId===parentId);
- const existing=$("questionManager");if(existing)existing.remove();
- const div=document.createElement("div");div.className="modal-overlay open";div.id="questionManager";div.innerHTML=`<div class="modal" style="width:min(900px,100%)"><div class="modal-head"><h3>${isExam?'أسئلة الاختبار':'أسئلة التدريب'}: ${escapeHTML(parentName)}</h3><button class="close" onclick="document.getElementById('questionManager').remove()">×</button></div><div class="form"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px"><strong>عدد الأسئلة: ${list.length}</strong><button class="primary" onclick="openQuestionForm('${kind}','${parentId}','${escapeHTML(parentName).replace(/'/g,'&#039;')}')">＋ إضافة سؤال</button></div><div id="questionManagerList">${list.length?list.sort((a,b)=>Number(a.order??999999)-Number(b.order??999999)).map((q,i)=>`<div class="card" style="margin-bottom:10px;padding:14px"><div style="display:flex;justify-content:space-between;gap:12px"><div><b>${i+1}. ${escapeHTML(q.question||"")}</b><div class="muted" style="margin-top:5px">A: ${escapeHTML(q.options?.A||"")} • B: ${escapeHTML(q.options?.B||"")} • C: ${escapeHTML(q.options?.C||"")} • D: ${escapeHTML(q.options?.D||"")}</div><small class="muted">الإجابة: ${escapeHTML(q.correctAnswer||"")} • الدرجة: ${Number(q.points||1)}</small></div><div class="card-actions"><button class="secondary" onclick="editQuestion('${kind}','${q.id}')">تعديل</button><button class="danger" onclick="deleteQuestion('${kind}','${q.id}')">حذف</button></div></div></div>`).join(""):`<div class="empty" style="padding:35px">لم تضف أسئلة بعد. اضغط «إضافة سؤال».</div>`}</div></div></div>`;document.body.appendChild(div);
-}
-window.openQuestionForm=(kind,parentId,parentName,q=null)=>{const isExam=kind==="exam";$("questionKind").value=kind;$("questionParentId").value=parentId;$("questionId").value=q?.id||"";$("questionParentName").value=parentName;$("questionParentLabel").textContent=isExam?"الاختبار":"التدريب";$("questionText").value=q?.question||"";$("optionA").value=q?.options?.A||"";$("optionB").value=q?.options?.B||"";$("optionC").value=q?.options?.C||"";$("optionD").value=q?.options?.D||"";$("correctAnswer").value=q?.correctAnswer||"A";$("questionPoints").value=q?.points||1;$("questionExplanation").value=q?.explanation||"";$("questionOrder").value=q?.order??(isExam?examQuestions.filter(x=>x.examId===parentId).length:trainingQuestions.filter(x=>x.trainingId===parentId).length);$("questionActive").value=q?.active!==false?"true":"false";$("questionModalTitle").textContent=q?'تعديل سؤال':'إضافة سؤال';openModal("questionModal");};
-window.editQuestion=(kind,id)=>{const q=(kind==="exam"?examQuestions:trainingQuestions).find(x=>x.id===id);if(!q)return;const parentId=kind==="exam"?q.examId:q.trainingId;const parent=(kind==="exam"?exams:trainings).find(x=>x.id===parentId);openQuestionForm(kind,parentId,parent?.title||"",q);};
-window.saveQuestion=async e=>{e.preventDefault();const kind=$("questionKind").value,parentId=$("questionParentId").value,id=$("questionId").value;const isExam=kind==="exam";const data={question:$('questionText').value.trim(),type:'mcq',options:{A:$('optionA').value.trim(),B:$('optionB').value.trim(),C:$('optionC').value.trim(),D:$('optionD').value.trim()},correctAnswer:$('correctAnswer').value,points:Number($('questionPoints').value||1),explanation:$('questionExplanation').value.trim(),order:Number($('questionOrder').value||0),active:$('questionActive').value==='true',createdAt:serverTimestamp()};if(isExam){data.examId=parentId;const parent=exams.find(x=>x.id===parentId);data.subjectId=parent?.subjectId||''}else{data.trainingId=parentId;const parent=trainings.find(x=>x.id===parentId);data.subjectId=parent?.subjectId||''}try{if(id)await updateDoc(doc(db,isExam?'examQuestions':'trainingQuestions',id),data);else await addDoc(collection(db,isExam?'examQuestions':'trainingQuestions'),data);closeModal('questionModal');showToast(id?'تم تعديل السؤال':'تمت إضافة السؤال');const m=document.getElementById('questionManager');if(m){m.remove();const parent=isExam?exams.find(x=>x.id===parentId):trainings.find(x=>x.id===parentId);openQuestionManager(kind,parentId,parent?.title||'')}}catch(err){showToast(firebaseError(err))}};
-window.deleteQuestion=async(kind,id)=>{if(!confirm('حذف السؤال؟'))return;try{await deleteDoc(doc(db,kind==='exam'?'examQuestions':'trainingQuestions',id));showToast('تم حذف السؤال');const m=document.getElementById('questionManager');if(m)m.remove()}catch(err){showToast(firebaseError(err))}};
 function populateClassSelects(){
  $("classSubject").innerHTML=subjects.length?subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;
  $("classTeacher").innerHTML=teachers.length?teachers.map(t=>`<option value="${t.id}">${escapeHTML(t.name)} — ${escapeHTML(t.subjectName||t.subject||"")}</option>`).join(""):`<option value="">أضف مدرسًا أولًا</option>`;
