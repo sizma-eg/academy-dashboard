@@ -388,14 +388,14 @@ tr:last-child td{border-bottom:0}
       <div class="field"><label>الترتيب</label><input id="lessonOrder" type="number" value="0"></div>
       <div class="field full"><label>عنوان الدرس</label><input id="lessonTitle" required></div>
       <div class="field full"><label>الوصف</label><textarea id="lessonDescription"></textarea></div>
-     <div class="field full">
+   <div class="field full">
   <label>رابط فيديو YouTube (Unlisted)</label>
   <input
-    id="lessonVideoUrl"
-    type="url"
-    placeholder="https://www.youtube.com/watch?v=..."
-    required
-  >
+  id="lessonYoutubeUrl"
+  type="url"
+  placeholder="https://www.youtube.com/watch?v=..."
+  required
+>
   <small style="opacity:.7;display:block;margin-top:6px;">
     ضع رابط فيديو YouTube واجعله Unlisted من إعدادات الخصوصية في YouTube.
   </small>
@@ -821,6 +821,7 @@ window.openLessonModal=()=>{
   $("lessonForm").reset();$("lessonId").value="";fillLessonSubjects();togglePrice();
   $("lessonModalTitle").textContent="إضافة درس";openModal("lessonModal");
 };
+
 window.editLesson=id=>{
   const l=curriculumLessons.find(x=>x.id===id);if(!l)return;
   fillLessonSubjects();$("lessonId").value=id;$("lessonSubject").value=l.subjectId||"";
