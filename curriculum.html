@@ -781,42 +781,42 @@
 
 <nav class="nav">
 
-  <a href="admin-dashboard.html">
+  <a href="dashboard.html">
     <span class="nav-icon">⌂</span>
     <span>الرئيسية</span>
   </a>
 
-  <a href="admin-students.html">
+  <a href="students.html">
     <span class="nav-icon">♙</span>
     <span>الطلاب</span>
   </a>
 
-  <a href="admin-subjects.html">
+  <a href="subjects.html">
     <span class="nav-icon">▣</span>
     <span>المواد</span>
   </a>
 
-  <a href="admin-curriculum.html" class="active">
+  <a href="curriculum.html" class="active">
     <span class="nav-icon">☷</span>
     <span>المنهج والدروس</span>
   </a>
 
-  <a href="admin-classes.html">
+  <a href="classes.html">
     <span class="nav-icon">▤</span>
     <span>الحصص</span>
   </a>
 
-  <a href="admin-exams.html">
+  <a href="exams.html">
     <span class="nav-icon">✓</span>
     <span>الامتحانات</span>
   </a>
 
-  <a href="admin-wallet.html">
+  <a href="wallet.html">
     <span class="nav-icon">◇</span>
     <span>المحفظة</span>
   </a>
 
-  <a href="admin-requests.html">
+  <a href="requests.html">
     <span class="nav-icon">◌</span>
     <span>الطلبات</span>
   </a>
@@ -839,7 +839,7 @@
 
   <div class="title-wrap">
 
-    <button class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu" id="mobileMenu" type="button">
       ☰
     </button>
 
@@ -851,13 +851,12 @@
   </div>
 
   <div class="top-actions">
-    <button class="btn btn-primary" id="addLessonBtn">
+    <button class="btn btn-primary" id="addLessonBtn" type="button">
       + إضافة درس
     </button>
   </div>
 
 </div>
-
 
 <section class="stats">
 
@@ -883,7 +882,6 @@
 
 </section>
 
-
 <div class="toolbar">
 
   <div class="search">
@@ -900,7 +898,6 @@
   </select>
 
 </div>
-
 
 <section class="curriculum" id="curriculum">
   <div class="empty">
@@ -930,7 +927,6 @@
   </button>
 </div>
 
-
 <form id="lessonForm">
 
   <div class="form-grid">
@@ -943,7 +939,6 @@
       </select>
     </div>
 
-
     <div class="field">
       <label>الفصل</label>
 
@@ -954,7 +949,6 @@
         required
       >
     </div>
-
 
     <div class="field">
       <label>الوحدة</label>
@@ -967,7 +961,6 @@
       >
     </div>
 
-
     <div class="field full">
       <label>عنوان الدرس</label>
 
@@ -979,7 +972,6 @@
       >
     </div>
 
-
     <div class="field full">
       <label>وصف الدرس</label>
 
@@ -988,7 +980,6 @@
         placeholder="وصف مختصر للدرس..."
       ></textarea>
     </div>
-
 
     <div class="field">
       <label>نوع الدرس</label>
@@ -1014,7 +1005,6 @@
       </select>
     </div>
 
-
     <div class="field">
       <label>السعر</label>
 
@@ -1032,7 +1022,6 @@
       </span>
     </div>
 
-
     <div class="field">
       <label>الترتيب</label>
 
@@ -1043,7 +1032,6 @@
         value="0"
       >
     </div>
-
 
     <div class="field">
       <label class="checkbox" style="margin-top:25px;">
@@ -1061,11 +1049,9 @@
 
   </div>
 
-
   <div class="content-section">
 
     <h3>محتوى الدرس</h3>
-
 
     <div
       class="field content-field active"
@@ -1086,7 +1072,6 @@
       </span>
 
     </div>
-
 
     <div
       class="field content-field"
@@ -1109,7 +1094,6 @@
 
     </div>
 
-
     <div
       class="field content-field"
       id="youtubeField"
@@ -1130,7 +1114,6 @@
       </span>
 
     </div>
-
 
     <div
       class="field content-field"
@@ -1154,7 +1137,6 @@
     </div>
 
   </div>
-
 
   <div class="modal-actions">
 
@@ -1535,16 +1517,6 @@
   }
 
 
-  function getSubjectName(id) {
-
-    return (
-      subjects.find(
-        item => item.id === id
-      )?.name || ""
-    );
-  }
-
-
   function getFilteredLessons() {
 
     const search =
@@ -1584,13 +1556,6 @@
 
     const visibleLessons =
       getFilteredLessons();
-
-    const subjectIds =
-      new Set(
-        lessons
-          .map(item => item.subjectId)
-          .filter(Boolean)
-      );
 
 
     const chapters =
@@ -1636,6 +1601,7 @@
 
       const subjectId =
         lesson.subjectId || "unknown";
+
 
       if (!hierarchy.has(subjectId)) {
 
@@ -1850,7 +1816,7 @@
                 ${
                   chapters
                     .map(
-                      (chapter, chapterIndex) => {
+                      chapter => {
 
                         const units =
                           [...chapter.units.values()];
@@ -2498,26 +2464,15 @@
       }
 
 
-      if (!user.emailVerified) {
-
-        signOut(auth);
-
-        window.location.href =
-          "index.html";
-
-        return;
-      }
-
-
       if (
         String(user.email || "").toLowerCase() !==
         ADMIN_EMAIL.toLowerCase()
       ) {
 
-        signOut(auth);
-
-        window.location.href =
-          "index.html";
+        signOut(auth).finally(() => {
+          window.location.href =
+            "index.html";
+        });
 
         return;
       }
