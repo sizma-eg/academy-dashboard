@@ -1,942 +1,1207 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07070b">
-<title>Mathix Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#07070b;--panel:#0d0c13;--panel2:#111019;--border:rgba(255,255,255,.08);--text:#f7f5ff;--muted:#9995a8;--purple:#8b5cf6;--purple2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--radius:18px}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Cairo",sans-serif;background:radial-gradient(circle at 80% 0%,rgba(139,92,246,.10),transparent 28%),var(--bg);color:var(--text);min-height:100vh}button,input,select,textarea{font-family:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}
-.sidebar{width:265px;position:fixed;top:0;right:0;bottom:0;padding:22px 16px;background:rgba(10,9,15,.92);border-left:1px solid var(--border);backdrop-filter:blur(20px);z-index:100;transition:.3s}
-.logo{display:flex;align-items:center;gap:11px;padding:5px 10px 25px}.logo-mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:20px;color:white;background:linear-gradient(135deg,#8b5cf6,#5b21b6);box-shadow:0 10px 30px rgba(139,92,246,.25)}.logo-text strong{display:block;font-size:21px;letter-spacing:.4px}.logo-text span{color:var(--muted);font-size:11px}
-.nav-title{color:#666274;font-size:11px;font-weight:700;padding:12px 13px 8px}.nav{display:flex;flex-direction:column;gap:5px}.nav button{width:100%;border:0;background:transparent;color:#a9a5b7;padding:12px 14px;border-radius:13px;text-align:right;display:flex;align-items:center;gap:12px;font-size:14px;transition:.2s}.nav button:hover{background:rgba(255,255,255,.045);color:white}.nav button.active{color:white;background:linear-gradient(90deg,rgba(139,92,246,.24),rgba(139,92,246,.08));box-shadow:inset -3px 0 var(--purple)}.nav-icon{width:23px;text-align:center;font-size:17px}.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:18px}.admin-card{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:15px;padding:12px;display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#a78bfa,#6d28d9);font-weight:800}.admin-card strong{display:block;font-size:12px}.admin-card span{color:var(--muted);font-size:10px}
-.main{width:calc(100% - 265px);margin-right:265px;padding:25px 30px 50px}.mobile-top{display:none}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.page-title h1{font-size:25px;font-weight:800}.page-title p{color:var(--muted);font-size:12px;margin-top:3px}.top-actions{display:flex;gap:10px;align-items:center}.icon-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--border);background:var(--panel);color:white;font-size:17px}.primary{border:0;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:white;padding:11px 17px;border-radius:12px;font-weight:700;box-shadow:0 8px 25px rgba(109,40,217,.18)}.secondary{border:1px solid var(--border);background:var(--panel2);color:white;padding:10px 15px;border-radius:11px;font-weight:600}.danger{border:0;background:rgba(239,68,68,.12);color:#f87171;padding:9px 13px;border-radius:10px}.success{border:0;background:rgba(34,197,94,.12);color:#4ade80;padding:9px 13px;border-radius:10px}
-.view{display:none}.view.active{display:block}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}.stat{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid var(--border);border-radius:var(--radius);padding:19px;position:relative;overflow:hidden}.stat::after{content:"";width:80px;height:80px;position:absolute;left:-20px;bottom:-35px;background:rgba(139,92,246,.08);border-radius:50%}.stat-top{display:flex;justify-content:space-between;align-items:center}.stat-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(139,92,246,.13);font-size:18px}.stat small{color:var(--muted);font-size:11px}.stat h2{font-size:25px;margin-top:12px}.stat-change{color:#4ade80;font-size:10px;margin-top:4px}
-.grid-2{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}.card-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border)}.card-head h3{font-size:14px}.card-head span{color:var(--muted);font-size:11px}.card-body{padding:18px 20px}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:700px}th{color:#777384;font-size:11px;font-weight:600;text-align:right;padding:13px 15px;border-bottom:1px solid var(--border);white-space:nowrap}td{padding:14px 15px;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;white-space:nowrap}tr:last-child td{border-bottom:0}.student-name{display:flex;align-items:center;gap:10px}.student-avatar{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(139,92,246,.14);color:#c4b5fd;font-weight:800}.muted{color:var(--muted)}.badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:700}.badge.green{color:#4ade80;background:rgba(34,197,94,.1)}.badge.red{color:#f87171;background:rgba(239,68,68,.1)}.badge.yellow{color:#fbbf24;background:rgba(245,158,11,.1)}.badge.purple{color:#c4b5fd;background:rgba(139,92,246,.12)}
-.activity{display:flex;flex-direction:column}.activity-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)}.activity-item:last-child{border-bottom:0}.activity-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(139,92,246,.1)}.activity-text{flex:1}.activity-text strong{display:block;font-size:11px}.activity-text span{color:var(--muted);font-size:10px}
-.toolbar{display:flex;gap:10px;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap}.search{position:relative;flex:1;min-width:220px}.search input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 40px 12px 14px;color:white;outline:none}.search span{position:absolute;right:14px;top:10px;color:#777384}.toolbar-right{display:flex;gap:8px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.subject-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:17px;padding:18px}.subject-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(139,92,246,.13);font-size:22px;margin-bottom:13px}.subject-card h3{font-size:15px}.subject-card p{color:var(--muted);font-size:11px;margin:4px 0 15px}.subject-meta{display:flex;justify-content:space-between;color:#aaa5b7;font-size:10px;padding-top:12px;border-top:1px solid var(--border)}.card-actions{display:flex;gap:7px;margin-top:14px}
-.class-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.class-card{padding:18px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.025)}.class-head{display:flex;justify-content:space-between;gap:10px}.class-card h3{font-size:14px}.class-card p{color:var(--muted);font-size:11px;margin-top:5px}.class-info{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.info-box{background:rgba(255,255,255,.035);padding:10px;border-radius:10px}.info-box small{display:block;color:#777384;font-size:9px}.info-box strong{font-size:11px}
-.empty{text-align:center;padding:55px 20px;color:var(--muted)}.empty-icon{font-size:35px;margin-bottom:10px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}.modal-overlay.open{display:flex}.modal{width:min(550px,100%);max-height:90vh;overflow:auto;background:#111019;border:1px solid var(--border);border-radius:22px;box-shadow:0 30px 100px rgba(0,0,0,.5)}.modal-head{display:flex;align-items:center;justify-content:space-between;padding:19px 20px;border-bottom:1px solid var(--border)}.modal-head h3{font-size:16px}.close{width:35px;height:35px;border-radius:10px;border:1px solid var(--border);background:transparent;color:white}.form{padding:20px}.field{margin-bottom:14px}.field label{display:block;color:#aaa5b7;font-size:11px;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);background:#0b0a10;color:white;border-radius:11px;padding:11px 12px;outline:none;font-size:12px}.field textarea{resize:vertical;min-height:90px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal-footer{display:flex;gap:8px;justify-content:flex-start;padding-top:5px}
-.toast{position:fixed;left:25px;bottom:25px;background:#17151e;border:1px solid var(--border);border-right:3px solid var(--purple);padding:13px 16px;border-radius:12px;font-size:12px;transform:translateY(120px);opacity:0;transition:.3s;z-index:1000}.toast.show{transform:translateY(0);opacity:1}
-.login-screen{position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,rgba(139,92,246,.16),transparent 40%),#07070b;display:none;align-items:center;justify-content:center;padding:20px;z-index:2000}.login-screen.open{display:flex}.login-box{width:min(420px,100%);background:#111019;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 30px 100px rgba(0,0,0,.55)}.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:25px}.login-logo .logo-mark{flex:none}.login-box h2{font-size:22px}.login-box>p{color:var(--muted);font-size:12px;margin:5px 0 22px}.login-error{display:none;background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:10px;border-radius:10px;font-size:11px;margin-bottom:12px}.login-error.show{display:block}
-@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}@media(max-width:800px){.sidebar{transform:translateX(100%)}.sidebar.open{transform:translateX(0)}.main{width:100%;margin-right:0;padding:15px;padding-top:75px}.mobile-top{display:flex;position:fixed;top:0;right:0;left:0;height:60px;z-index:90;align-items:center;justify-content:space-between;padding:0 15px;background:rgba(7,7,11,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}.mobile-logo{font-weight:900;font-size:18px}.menu{width:40px;height:40px;border:1px solid var(--border);background:var(--panel);color:white;border-radius:11px}.topbar{margin-bottom:20px}.top-actions .secondary{display:none}.class-grid{grid-template-columns:1fr}}@media(max-width:600px){.stats{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:14px}.stat h2{font-size:20px}.cards{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.page-title h1{font-size:21px}}
 
-/* MATHIX WALLET / MEDIA ADDITIONS */
-.addon-upload-progress{display:none;margin-top:10px;height:7px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}.addon-upload-progress.show{display:block}.addon-upload-progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8b5cf6,#a78bfa);transition:.2s}.addon-file-info{font-size:10px;color:#9995a8;margin-top:7px;line-height:1.7}.addon-request{padding:16px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.025);margin-bottom:10px}.addon-request-row{display:flex;justify-content:space-between;gap:15px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:11px}.addon-request-row:last-child{border-bottom:0}.addon-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:600px){.addon-request-row{flex-direction:column;gap:3px}}
-</style>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07070b"
+  >
+
+  <meta
+    name="description"
+    content="Mathix Admin - لوحة تحكم المنصة"
+  >
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <title>Mathix Admin | تسجيل الدخول</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07070b;
+      --card: #101016;
+      --card-2: #15151d;
+      --border: rgba(255,255,255,.08);
+      --text: #ffffff;
+      --muted: #9999a8;
+      --purple: #8b5cf6;
+      --purple-light: #a78bfa;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family: "Cairo", sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 50% -15%,
+          rgba(139,92,246,.20),
+          transparent 38%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+
+      position: fixed;
+
+      width: 500px;
+      height: 500px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(139,92,246,.07);
+
+      filter: blur(110px);
+
+      top: -260px;
+      left: -180px;
+
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+
+      position: fixed;
+
+      width: 420px;
+      height: 420px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(124,58,237,.06);
+
+      filter: blur(110px);
+
+      right: -180px;
+      bottom: -220px;
+
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      text-align: center;
+
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 86px;
+      height: 86px;
+
+      object-fit: contain;
+
+      display: block;
+
+      margin:
+        0 auto 12px;
+
+      filter:
+        drop-shadow(
+          0 0 22px rgba(139,92,246,.38)
+        );
+    }
+
+    .brand-name {
+      font-family:
+        "Chakra Petch",
+        sans-serif;
+
+      font-size: 31px;
+
+      font-weight: 700;
+
+      letter-spacing: 1px;
+    }
+
+    .brand-name span {
+      color:
+        var(--purple-light);
+    }
+
+    .admin-label {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      margin-top: 7px;
+
+      padding: 5px 11px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(139,92,246,.09);
+
+      border:
+        1px solid rgba(139,92,246,.18);
+
+      color:
+        var(--purple-light);
+
+      font-size: 11px;
+
+      font-weight: 700;
+    }
+
+    .admin-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background:
+        var(--purple-light);
+
+      box-shadow:
+        0 0 10px var(--purple);
+    }
+
+    .card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.045),
+          rgba(255,255,255,.012)
+        ),
+        var(--card);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 24px;
+
+      padding: 30px;
+
+      box-shadow:
+        0 28px 90px rgba(0,0,0,.48),
+        inset 0 1px 0 rgba(255,255,255,.03);
+
+      backdrop-filter:
+        blur(20px);
+    }
+
+    .title {
+      margin-bottom: 23px;
+    }
+
+    .title h1 {
+      font-size: 24px;
+
+      font-weight: 800;
+
+      margin-bottom: 5px;
+    }
+
+    .title p {
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.8;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input {
+      width: 100%;
+      height: 53px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      outline: none;
+
+      background:
+        var(--card-2);
+
+      color:
+        white;
+
+      padding:
+        0 15px;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size: 14px;
+
+      transition:
+        .2s ease;
+    }
+
+    .input::placeholder {
+      color:
+        #666674;
+    }
+
+    .input:focus {
+      border-color:
+        rgba(139,92,246,.75);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(139,92,246,.10);
+    }
+
+    .password-toggle {
+      position: absolute;
+
+      left: 13px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      border: 0;
+
+      background:
+        transparent;
+
+      color:
+        #8d8d9b;
+
+      cursor: pointer;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size: 12px;
+    }
+
+    .password-toggle:hover {
+      color:
+        white;
+    }
+
+    .forgot {
+      text-align: left;
+
+      margin-top: -3px;
+
+      margin-bottom: 18px;
+    }
+
+    .forgot button {
+      border: 0;
+
+      background:
+        transparent;
+
+      color:
+        var(--purple-light);
+
+      cursor: pointer;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size: 12px;
+    }
+
+    .forgot button:hover {
+      text-decoration:
+        underline;
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 54px;
+
+      border: 0;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #8b5cf6
+        );
+
+      color:
+        white;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        .2s ease;
+
+      box-shadow:
+        0 12px 30px
+        rgba(124,58,237,.22);
+    }
+
+    .login-btn:hover {
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 16px 38px
+        rgba(124,58,237,.30);
+    }
+
+    .login-btn:disabled {
+      opacity: .55;
+
+      cursor:
+        not-allowed;
+
+      transform:
+        none;
+    }
+
+    .message {
+      display: none;
+
+      margin-bottom: 16px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+
+      line-height: 1.8;
+    }
+
+    .message.error {
+      display: block;
+
+      color:
+        #fecaca;
+
+      background:
+        rgba(239,68,68,.10);
+
+      border:
+        1px solid
+        rgba(239,68,68,.20);
+    }
+
+    .message.success {
+      display: block;
+
+      color:
+        #bbf7d0;
+
+      background:
+        rgba(34,197,94,.10);
+
+      border:
+        1px solid
+        rgba(34,197,94,.20);
+    }
+
+    .security-note {
+      margin-top: 18px;
+
+      padding-top: 17px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.06);
+
+      text-align: center;
+
+      color:
+        #707080;
+
+      font-size: 11px;
+
+      line-height: 1.8;
+    }
+
+    .loading {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+    }
+
+    .spinner {
+      width: 17px;
+      height: 17px;
+
+      border-radius: 50%;
+
+      border:
+        2px solid
+        rgba(255,255,255,.30);
+
+      border-top-color:
+        white;
+
+      animation:
+        spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+
+      to {
+        transform:
+          rotate(360deg);
+      }
+
+    }
+
+    @media (max-width: 520px) {
+
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        padding:
+          23px 18px;
+
+        border-radius:
+          20px;
+      }
+
+      .brand-name {
+        font-size: 28px;
+      }
+
+      .logo {
+        width: 72px;
+        height: 72px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
+
 <body>
 
-<div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="logo-mark">M</div>
-      <div class="logo-text"><strong>Mathix</strong><span>ADMIN PANEL</span></div>
+  <main class="container">
+
+    <div class="brand">
+
+      <img
+        class="logo"
+        src="logo.png"
+        alt="Mathix"
+      >
+
+      <div class="brand-name">
+        <span>Math</span>ix
+      </div>
+
+      <div class="admin-label">
+
+        <span class="admin-dot"></span>
+
+        لوحة تحكم الإدارة
+
+      </div>
+
     </div>
-    <h2>تسجيل دخول الإدارة</h2>
-    <p>سجّل الدخول بحساب الأدمن للوصول إلى لوحة التحكم.</p>
-    <div class="login-error" id="loginError"></div>
-    <form id="loginForm">
-      <div class="field"><label>البريد الإلكتروني</label><input type="email" id="loginEmail" autocomplete="username" required></div>
-      <div class="field"><label>كلمة المرور</label><input type="password" id="loginPassword" autocomplete="current-password" required></div>
-      <button class="primary" style="width:100%">دخول</button>
-    </form>
-  </div>
-</div>
 
-<div class="app" id="app">
-<aside class="sidebar" id="sidebar">
-  <div class="logo"><div class="logo-mark">M</div><div class="logo-text"><strong>Mathix</strong><span>ADMIN PANEL</span></div></div>
-  <div class="nav-title">الإدارة</div>
-  <nav class="nav">
-    <button class="active" data-view="dashboard"><span class="nav-icon">📊</span>الرئيسية</button>
-    <button data-view="students"><span class="nav-icon">👨‍🎓</span>الطلاب</button>
-    <button data-view="subjects"><span class="nav-icon">📚</span>المواد</button>
-    <button data-view="curriculum"><span class="nav-icon">📖</span>الدروس</button>
-    <button data-view="trainings"><span class="nav-icon">🧠</span>التدريبات</button>
-    <button data-view="exams"><span class="nav-icon">📝</span>الاختبارات</button>
-    <button data-view="classes"><span class="nav-icon">🎓</span>الحصص</button>
-    <button data-view="teachers"><span class="nav-icon">👨‍🏫</span>المدرسين</button>
-    <button data-view="wallets"><span class="nav-icon">💰</span>المحافظ</button>
-    <button data-view="transactions"><span class="nav-icon">💳</span>المعاملات</button>
-    <button data-view="walletRequests"><span class="nav-icon">➕</span>طلبات شحن المحفظة</button>
-    <button data-view="purchaseRequests"><span class="nav-icon">🛒</span>طلبات شراء الدروس</button>
-    <button data-view="purchases"><span class="nav-icon">🧾</span>مشتريات الطلاب</button>
-  </nav>
-  <div class="nav-title">النظام</div>
-  <nav class="nav"><button data-view="settings"><span class="nav-icon">⚙️</span>الإعدادات</button></nav>
-  <div class="sidebar-bottom"><div class="admin-card"><div class="avatar">A</div><div><strong id="adminName">Mathix Admin</strong><span id="adminEmail">Administrator</span></div></div></div>
-</aside>
 
-<div class="mobile-top"><button class="menu" id="menuBtn">☰</button><div class="mobile-logo">Mathix Admin</div><div style="width:40px"></div></div>
+    <section class="card">
 
-<main class="main">
-<div class="topbar">
-  <div class="page-title"><h1 id="pageTitle">الرئيسية</h1><p id="pageSubtitle">نظرة عامة على منصة Mathix</p></div>
-  <div class="top-actions">
-    <button class="icon-btn" onclick="showToast('لا توجد إشعارات جديدة')">🔔</button>
-    <button class="secondary" onclick="refreshData()">↻ تحديث</button>
-    <button class="secondary" onclick="logoutAdmin()">خروج</button>
-  </div>
-</div>
+      <div class="title">
 
-<section class="view active" id="view-dashboard">
-  <div class="stats">
-    <div class="stat"><div class="stat-top"><small>إجمالي الطلاب</small><div class="stat-icon">👨‍🎓</div></div><h2 id="statStudents">0</h2><div class="stat-change">بيانات حقيقية من Firebase</div></div>
-    <div class="stat"><div class="stat-top"><small>المواد</small><div class="stat-icon">📚</div></div><h2 id="statSubjects">0</h2><div class="stat-change">بيانات حقيقية من Firebase</div></div>
-    <div class="stat"><div class="stat-top"><small>الحصص</small><div class="stat-icon">🎓</div></div><h2 id="statClasses">0</h2><div class="stat-change">بيانات حقيقية من Firebase</div></div>
-    <div class="stat"><div class="stat-top"><small>أرصدة المحافظ</small><div class="stat-icon">💰</div></div><h2 id="statBalance">0 <small>ج.م</small></h2><div class="stat-change">بيانات حقيقية من Firebase</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><div class="card-head"><h3>آخر الطلاب</h3><span id="dashboardStudentCount">0</span></div><div class="table-wrap"><table><thead><tr><th>الطالب</th><th>الكود</th><th>الرصيد</th></tr></thead><tbody id="recentStudents"></tbody></table></div></div>
-    <div class="card"><div class="card-head"><h3>آخر النشاطات</h3><span id="dashboardActivityCount">0</span></div><div class="card-body"><div class="activity" id="recentActivity"></div></div></div>
-  </div>
-</section>
+        <h1>
+          تسجيل دخول الأدمن
+        </h1>
 
-<section class="view" id="view-students">
-  <div class="toolbar"><div class="search"><span>⌕</span><input id="studentSearch" placeholder="ابحث باسم الطالب أو الكود أو البريد..." oninput="renderStudents()"></div><div class="toolbar-right"><button class="primary" onclick="openModal('studentModal')">＋ إضافة طالب</button></div></div>
-  <div class="card"><div class="card-head"><h3>جميع الطلاب</h3><span id="studentCount">0 طالب</span></div><div class="table-wrap"><table><thead><tr><th>الطالب</th><th>الكود</th><th>البريد</th><th>الرصيد</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
-</section>
+        <p>
+          هذه الصفحة مخصصة لإدارة منصة Mathix فقط.
+        </p>
 
-<section class="view" id="view-subjects">
-  <div class="toolbar"><div><h3 style="font-size:15px">إدارة المواد</h3><p class="muted" style="font-size:11px;margin-top:3px">أضف وعدّل مواد Mathix</p></div><button class="primary" onclick="openModal('subjectModal')">＋ إضافة مادة</button></div>
-  <div class="cards" id="subjectsGrid"></div>
-</section>
-
-<section class="view" id="view-curriculum">
-  <div class="toolbar"><div><h3 style="font-size:15px">الدروس</h3><p class="muted" style="font-size:11px;margin-top:3px">إدارة محتوى الدروس النصي</p></div><button class="primary" onclick="openLessonModal()">＋ إضافة درس</button></div>
-  <div class="cards" id="curriculumGrid"></div>
-</section>
-
-<section class="view" id="view-trainings">
-  <div class="toolbar"><div><h3 style="font-size:15px">التدريبات</h3><p class="muted" style="font-size:11px;margin-top:3px">تدريب واحد يمكن أن يحتوي على عدد غير محدود من الأسئلة</p></div><button class="primary" onclick="openTrainingModal()">＋ إضافة تدريب</button></div>
-  <div class="cards" id="trainingsGrid"></div>
-</section>
-
-<section class="view" id="view-exams">
-  <div class="toolbar"><div><h3 style="font-size:15px">الاختبارات</h3><p class="muted" style="font-size:11px;margin-top:3px">اختبار واحد يمكن أن يحتوي على عدد غير محدود من الأسئلة</p></div><button class="primary" onclick="openExamModal()">＋ إضافة اختبار</button></div>
-  <div class="cards" id="examsGrid"></div>
-</section>
-
-<section class="view" id="view-classes">
-  <div class="toolbar"><div><h3 style="font-size:15px">إدارة الحصص</h3><p class="muted" style="font-size:11px;margin-top:3px">إنشاء وإدارة الحصص التعليمية</p></div><button class="primary" onclick="openClassModal()">＋ إضافة حصة PDF</button></div>
-  <div class="class-grid" id="classesGrid"></div>
-</section>
-
-<section class="view" id="view-teachers">
-  <div class="toolbar"><div><h3 style="font-size:15px">المدرسين</h3><p class="muted" style="font-size:11px;margin-top:3px">إدارة المدرسين والحصص الخاصة بهم</p></div><button class="primary" onclick="openModal('teacherModal')">＋ إضافة مدرس</button></div>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>المدرس</th><th>المادة</th><th>الحصص</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="teachersTable"></tbody></table></div></div>
-</section>
-
-<section class="view" id="view-wallets">
-  <div class="toolbar"><div><h3 style="font-size:15px">محافظ الطلاب</h3><p class="muted" style="font-size:11px;margin-top:3px">إدارة أرصدة الطلاب</p></div></div>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>الطالب</th><th>الكود</th><th>الرصيد</th><th>آخر عملية</th><th>الإجراءات</th></tr></thead><tbody id="walletsTable"></tbody></table></div></div>
-</section>
-
-<section class="view" id="view-transactions">
-  <div class="toolbar"><div><h3 style="font-size:15px">المعاملات المالية</h3><p class="muted" style="font-size:11px;margin-top:3px">سجل كل عمليات المحافظ</p></div><button class="secondary" onclick="exportTransactions()">⬇ تصدير</button></div>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>الطالب</th><th>النوع</th><th>المبلغ</th><th>السبب</th><th>التاريخ</th></tr></thead><tbody id="transactionsTable"></tbody></table></div></div>
-</section>
-
-<section class="view" id="view-settings">
-  <div class="card"><div class="card-head"><h3>إعدادات الإدارة</h3></div><div class="card-body">
-    <div class="field"><label>اسم المنصة</label><input value="Mathix" disabled></div>
-    <div class="field"><label>البريد الحالي</label><input id="settingsAdminEmail" disabled></div>
-    <button class="danger" onclick="logoutAdmin()">تسجيل الخروج</button>
-  </div></div>
-</section>
-<section class="view" id="view-walletRequests"><div class="toolbar"><div><h3 style="font-size:15px">طلبات شحن المحفظة</h3><p class="muted" style="font-size:11px;margin-top:3px">مراجعة طلبات شحن أرصدة الطلاب</p></div></div><div id="walletRequestsGrid"></div></section>
-<section class="view" id="view-purchaseRequests"><div class="toolbar"><div><h3 style="font-size:15px">طلبات شراء الدروس</h3><p class="muted" style="font-size:11px;margin-top:3px">اعتماد أو رفض طلبات الطلاب لشراء الدروس المدفوعة</p></div><span class="badge purple" id="purchaseRequestsCount">0 طلب</span></div><div id="purchaseRequestsGrid"></div></section>
-<section class="view" id="view-purchases"><div class="toolbar"><div><h3 style="font-size:15px">مشتريات الطلاب</h3><p class="muted" style="font-size:11px;margin-top:3px">سجل عمليات شراء الدروس</p></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>الطالب</th><th>المحتوى</th><th>النوع</th><th>السعر</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody id="purchasesTable"></tbody></table></div></div></section>
-</main>
-</div>
-
-<!-- STUDENT -->
-<div class="modal-overlay" id="studentModal"><div class="modal"><div class="modal-head"><h3>إضافة طالب</h3><button class="close" onclick="closeModal('studentModal')">×</button></div>
-<form class="form" onsubmit="addStudent(event)">
-<div class="form-row"><div class="field"><label>اسم الطالب</label><input id="newStudentName" required></div><div class="field"><label>كود الطالب</label><input id="newStudentCode" placeholder="MX0000" required></div></div>
-<div class="field"><label>البريد الإلكتروني</label><input type="email" id="newStudentEmail" required></div>
-<div class="field"><label>كلمة المرور الأولية</label><input type="password" id="newStudentPassword" minlength="6" required></div>
-<div class="modal-footer"><button class="primary">إضافة الطالب</button><button type="button" class="secondary" onclick="closeModal('studentModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- PASSWORD -->
-<div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-head"><h3>إعادة تعيين كلمة مرور الطالب</h3><button class="close" onclick="closeModal('passwordModal')">×</button></div>
-<form class="form" onsubmit="changePassword(event)">
-<input type="hidden" id="passwordStudentId">
-<div class="field"><label>الطالب</label><input id="passwordStudentName" disabled></div>
-<div class="field"><label>البريد</label><input id="passwordStudentEmail" disabled></div>
-<p class="muted" style="font-size:11px;margin-bottom:15px">لأمان الحسابات، سيتم إرسال رابط إعادة تعيين كلمة المرور إلى بريد الطالب بدل تخزين أو كشف كلمة المرور داخل لوحة الأدمن.</p>
-<div class="modal-footer"><button class="primary">إرسال رابط إعادة التعيين</button><button type="button" class="secondary" onclick="closeModal('passwordModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- WALLET -->
-<div class="modal-overlay" id="walletModal"><div class="modal"><div class="modal-head"><h3>إدارة محفظة الطالب</h3><button class="close" onclick="closeModal('walletModal')">×</button></div>
-<form class="form" onsubmit="walletAction(event)">
-<input type="hidden" id="walletStudentId">
-<div class="field"><label>الطالب</label><input id="walletStudentName" disabled></div>
-<div class="field"><label>الرصيد الحالي</label><input id="walletCurrent" disabled></div>
-<div class="form-row"><div class="field"><label>العملية</label><select id="walletType"><option value="add">إضافة رصيد</option><option value="subtract">خصم رصيد</option></select></div><div class="field"><label>المبلغ بالجنيه</label><input type="number" id="walletAmount" min="1" step="0.01" required></div></div>
-<div class="field"><label>السبب</label><input id="walletReason" placeholder="مثال: شحن يدوي"></div>
-<div class="modal-footer"><button class="primary">تنفيذ العملية</button><button type="button" class="secondary" onclick="closeModal('walletModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- SUBJECT -->
-<div class="modal-overlay" id="subjectModal"><div class="modal"><div class="modal-head"><h3>إضافة مادة</h3><button class="close" onclick="closeModal('subjectModal')">×</button></div>
-<form class="form" onsubmit="addSubject(event)">
-<div class="form-row"><div class="field"><label>اسم المادة</label><input id="subjectName" required></div><div class="field"><label>الأيقونة</label><input id="subjectIcon" placeholder="📚"></div></div>
-<div class="field"><label>الوصف</label><textarea id="subjectDescription" placeholder="وصف مختصر للمادة"></textarea></div>
-<div class="modal-footer"><button class="primary">إضافة المادة</button><button type="button" class="secondary" onclick="closeModal('subjectModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- CONTENT MODALS -->
-<div class="modal-overlay" id="lessonModal"><div class="modal large"><div class="modal-head"><h3>إضافة درس</h3><button class="close" onclick="closeModal('lessonModal')">×</button></div><form class="form" onsubmit="saveLesson(event)">
-<div class="form-note">الدروس هنا فيديوهات YouTube فقط. يمكنك تحديد الدرس مجاني أو مدفوع، والطالب لا يحصل على الدرس المدفوع إلا بعد اعتماد الشراء وخصم الرصيد.</div>
-<div class="form-row"><div class="field"><label>المادة</label><select id="lessonSubject" required></select></div><div class="field"><label>الترتيب</label><input type="number" id="lessonOrder" value="0"></div></div>
-<div class="field"><label>عنوان الدرس</label><input id="lessonTitle" required></div>
-<div class="field"><label>الوصف</label><textarea id="lessonDescription" placeholder="وصف مختصر للدرس"></textarea></div>
-<div class="field"><label>رابط YouTube</label><input id="lessonYoutubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." required></div>
-<div class="form-row"><div class="field"><label>نوع الوصول</label><select id="lessonAccessType" onchange="toggleLessonPrice()"><option value="free">مجاني</option><option value="paid">مدفوع</option></select></div><div class="field"><label>السعر بالجنيه</label><input type="number" id="lessonPrice" min="0" step="0.01" value="0"></div></div>
-<div class="field"><label>الحالة</label><select id="lessonActive"><option value="true">ظاهر للطلاب</option><option value="false">مخفي</option></select></div>
-<div class="modal-footer"><button class="primary" id="saveLessonBtn">حفظ الدرس</button><button type="button" class="secondary" onclick="closeModal('lessonModal')">إلغاء</button></div>
-</form></div></div>
-
-<!-- CLASS / PDF -->
-<div class="modal-overlay" id="classModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="classModalTitle">إضافة حصة PDF</h3>
-      <button class="close" type="button" onclick="closeModal('classModal')">×</button>
-    </div>
-    <form class="form" onsubmit="saveClass(event)">
-      <input type="hidden" id="classId">
-      <div class="field"><label>المادة</label><select id="classSubject" required></select></div>
-      <div class="field"><label>عنوان الحصة</label><input id="classTitle" placeholder="مثال: المتتابعات — الحصة الأولى" required></div>
-      <div class="field"><label>وصف الحصة</label><textarea id="classDescription" placeholder="وصف مختصر للحصة"></textarea></div>
-      <div class="field">
-        <label>رابط PDF الخارجي</label>
-        <input id="classPdfUrl" type="url" placeholder="https://example.com/lesson.pdf" required>
-        <small style="display:block;color:#777384;font-size:9px;margin-top:6px">سيتم حفظ الرابط في lessonContent وليس داخل بيانات الحصة العامة.</small>
       </div>
-      <div class="form-row">
-        <div class="field"><label>نوع الوصول</label><select id="classAccessType" onchange="toggleClassPrice()"><option value="free">مجانية</option><option value="paid">مدفوعة</option></select></div>
-        <div class="field"><label>السعر</label><input id="classPrice" type="number" min="0" step="1" value="0"></div>
+
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+      <form id="loginForm">
+
+        <div class="field">
+
+          <label for="email">
+            البريد الإلكتروني
+          </label>
+
+          <input
+            class="input"
+            id="email"
+            type="email"
+            autocomplete="username"
+            placeholder="admin@example.com"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="password">
+            كلمة المرور
+          </label>
+
+          <div class="input-wrap">
+
+            <input
+              class="input"
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="أدخل كلمة المرور"
+              required
+            >
+
+            <button
+              class="password-toggle"
+              id="togglePassword"
+              type="button"
+            >
+              إظهار
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="forgot">
+
+          <button
+            type="button"
+            id="forgotPassword"
+          >
+            نسيت كلمة المرور؟
+          </button>
+
+        </div>
+
+
+        <button
+          class="login-btn"
+          id="loginButton"
+          type="submit"
+        >
+          تسجيل الدخول
+        </button>
+
+      </form>
+
+
+      <div class="security-note">
+
+        الدخول مسموح للحساب الإداري المصرح به فقط.
+
+        <br>
+
+        جميع صلاحيات الإدارة محمية عبر Firebase Authentication وFirestore Rules.
+
       </div>
-      <div class="form-row">
-        <div class="field"><label>ترتيب الحصة</label><input id="classOrder" type="number" min="0" value="0"></div>
-        <div class="field"><label>الحالة</label><select id="classActive"><option value="true">ظاهرة للطلاب</option><option value="false">مخفية</option></select></div>
-      </div>
-      <div class="modal-footer">
-        <button class="primary" id="saveClassBtn" type="submit">حفظ الحصة</button>
-        <button type="button" class="secondary" onclick="closeModal('classModal')">إلغاء</button>
-      </div>
-    </form>
-  </div>
-</div>
 
-<!-- TEACHER -->
-<div class="modal-overlay" id="teacherModal"><div class="modal"><div class="modal-head"><h3>إضافة مدرس</h3><button class="close" onclick="closeModal('teacherModal')">×</button></div>
-<form class="form" onsubmit="addTeacher(event)">
-<div class="field"><label>اسم المدرس</label><input id="teacherName" required></div>
-<div class="field"><label>المادة</label><select id="teacherSubject" required></select></div>
-<div class="modal-footer"><button class="primary">إضافة المدرس</button><button type="button" class="secondary" onclick="closeModal('teacherModal')">إلغاء</button></div>
-</form></div></div>
+    </section>
 
-<div class="toast" id="toast"></div>
+  </main>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot, serverTimestamp, runTransaction, getDocs, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-const firebaseConfig={
-  apiKey:"AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
-  authDomain:"mathix-88811.firebaseapp.com",
-  projectId:"mathix-88811",
-  storageBucket:"mathix-88811.firebasestorage.app",
-  messagingSenderId:"1043867239139",
-  appId:"1:1043867239139:web:da19abef81f052682bbbd6",
-  measurementId:"G-T17ZDVBLM2"
-};
+  <script type="module">
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-const auth=getAuth(app);
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-let students=[],subjects=[],teachers=[],classes=[],transactions=[],curriculumLessons=[],trainings=[],exams=[],walletRequests=[],purchaseRequests=[],purchases=[];
-let unsubscribers=[];
-let toastTimer;
 
-const titles={
- dashboard:["الرئيسية","نظرة عامة على منصة Mathix"],
- students:["الطلاب","إدارة حسابات الطلاب"],
- subjects:["المواد","إدارة المواد التعليمية"],
- curriculum:["الدروس","إدارة محتوى الدروس"],
- trainings:["التدريبات","إدارة التدريبات وأسئلتها"],
- exams:["الاختبارات","إدارة الاختبارات وأسئلتها"],
- classes:["الحصص","إنشاء وإدارة الحصص"],
- teachers:["المدرسين","إدارة المدرسين"],
- wallets:["المحافظ","إدارة أرصدة الطلاب"],
- transactions:["المعاملات","السجل المالي للمنصة"],
- walletRequests:["طلبات شحن المحفظة","مراجعة طلبات شحن الطلاب"],
- purchaseRequests:["طلبات شراء الدروس","مراجعة واعتماد شراء الدروس"],
- purchases:["مشتريات الطلاب","سجل شراء الدروس والمحتوى"],
- settings:["الإعدادات","إعدادات الإدارة"]
-};
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      signOut,
+      onAuthStateChanged
+    } from
+      "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-const $=id=>document.getElementById(id);
 
-function escapeHTML(v){
- return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-}
+    /*
+      Firebase
+      Project: mathix-88811
+    */
 
-function emptyRow(columns,msg="لا توجد بيانات"){
- return `<tr><td colspan="${columns}" style="text-align:center;padding:45px;color:#9995a8">${escapeHTML(msg)}</td></tr>`;
-}
+    const firebaseConfig = {
 
-function firebaseError(error){
- console.error(error);
- const map={
-  "auth/invalid-credential":"البريد أو كلمة المرور غير صحيحة",
-  "auth/invalid-email":"البريد الإلكتروني غير صحيح",
-  "auth/too-many-requests":"محاولات كثيرة، حاول لاحقًا",
-  "auth/network-request-failed":"تعذر الاتصال بالإنترنت",
-  "auth/email-already-in-use":"هذا البريد مستخدم بالفعل",
-  "auth/weak-password":"كلمة المرور ضعيفة",
-  "permission-denied":"ليس لديك صلاحية للوصول إلى هذه البيانات"
- };
- return map[error?.code]||error?.message||"حدث خطأ غير معروف";
-}
+      apiKey:
+        "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
 
-window.showToast=message=>{
- const toast=$("toast");
- toast.textContent=message;
- toast.classList.add("show");
- clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>toast.classList.remove("show"),3000);
-};
+      authDomain:
+        "mathix-88811.firebaseapp.com",
 
-window.openModal=id=>{ const m=$(id); if(m)m.classList.add("open"); if(id==="classModal")populateClassSelects(); if(id==="teacherModal")populateTeacherSubject(); };
-window.closeModal=id=>{ const m=$(id); if(m)m.classList.remove("open"); };
+      projectId:
+        "mathix-88811",
 
-document.querySelectorAll(".modal-overlay").forEach(x=>x.addEventListener("click",e=>{if(e.target===x)x.classList.remove("open")}));
+      storageBucket:
+        "mathix-88811.firebasestorage.app",
 
-document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>{
- const view=btn.dataset.view;
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
- btn.classList.add("active");
- document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
- $("view-"+view)?.classList.add("active");
- $("pageTitle").textContent=titles[view][0];
- $("pageSubtitle").textContent=titles[view][1];
- $("sidebar").classList.remove("open");
-}));
+      messagingSenderId:
+        "1043867239139",
 
-$("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
+      appId:
+        "1:1043867239139:web:da19abef81f052682bbbd6",
 
-$("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const errorBox=$("loginError");
- errorBox.classList.remove("show");
- try{
-   await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value);
- }catch(err){
-   errorBox.textContent=firebaseError(err);
-   errorBox.classList.add("show");
- }
-});
+      measurementId:
+        "G-T17ZDVBLM2"
 
-window.logoutAdmin=async()=>{
- try{await signOut(auth)}catch(e){showToast(firebaseError(e))}
-};
+    };
 
-async function isAdmin(user){
- try{
-   const snap=await getDocs(query(collection(db,"admins")));
-   return snap.docs.some(d=>{
-     const x=d.data();
-     return d.id===user.uid && x.role==="admin" && x.active!==false;
-   });
- }catch(e){
-   console.error(e);
-   return false;
- }
-}
-onAuthStateChanged(auth, async user => {
 
-  if (!user) {
+    /*
+      مهم:
+      غيّر هذا الإيميل إلى إيميل الأدمن الحقيقي.
+    */
 
-    $("loginScreen").classList.add("open");
+    const ADMIN_EMAIL =
+      "YOUR_ADMIN_EMAIL";
 
-    $("app").style.display = "none";
 
-    stopListeners();
+    const app =
+      initializeApp(firebaseConfig);
 
-    return;
-  }
 
-  console.log("CURRENT LOGIN UID:", user.uid);
-  console.log("CURRENT LOGIN EMAIL:", user.email);
+    const auth =
+      getAuth(app);
 
-  // باقي كود التحقق من صلاحية الـAdmin هنا...const allowed=await isAdmin(user);
- if(!allowed){
-   await signOut(auth);
-   $("loginError").textContent="هذا الحساب ليس لديه صلاحية Admin.";
-   $("loginError").classList.add("show");
-   return;
- }
- $("loginScreen").classList.remove("open");
- $("app").style.display="flex";
- $("adminEmail").textContent=user.email||"Administrator";
- $("settingsAdminEmail").value=user.email||"";
- startListeners();
-});
 
-function stopListeners(){
- unsubscribers.forEach(fn=>{try{fn()}catch{}});
- unsubscribers=[];
-}
+    const loginForm =
+      document.getElementById(
+        "loginForm"
+      );
 
-function startListeners(){
- if(unsubscribers.length)return;
- const listen=(name,target)=>{
-   const unsub=onSnapshot(collection(db,name),snap=>{
-     target=snap.docs.map(d=>({id:d.id,...d.data()}));
-     if(name==="students")students=target;
-     if(name==="subjects")subjects=target;
-     if(name==="teachers")teachers=target;
-     if(name==="lessons")classes=target;
-     if(name==="transactions")transactions=target;
-     if(name==="curriculumLessons")curriculumLessons=target;
-     if(name==="trainings")trainings=target;
-     if(name==="exams")exams=target;
-     if(name==="walletRequests")walletRequests=target;
-     if(name==="purchaseRequests")purchaseRequests=target;
-     if(name==="purchases")purchases=target;
-     renderAll();
-   },err=>showToast(firebaseError(err)));
-   unsubscribers.push(unsub);
- };
- listen("students",students);
- listen("subjects",subjects);
- listen("teachers",teachers);
- listen("lessons",classes);
- listen("transactions",transactions);
- listen("curriculumLessons",curriculumLessons);
- listen("trainings",trainings);
- listen("exams",exams);
- listen("walletRequests",walletRequests);
- listen("purchaseRequests",purchaseRequests);
- listen("purchases",purchases);
-}
 
-window.refreshData=()=>{renderAll();showToast("تم تحديث البيانات المعروضة");};
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
 
-window.renderStudents=()=>{
- const tbody=$("studentsTable");
- const search=($("studentSearch").value||"").trim().toLowerCase();
- const filtered=students.filter(s=>
-   String(s.name||"").toLowerCase().includes(search)||
-   String(s.code||s.studentCode||"").toLowerCase().includes(search)||
-   String(s.email||"").toLowerCase().includes(search)
- );
- $("studentCount").textContent=`${filtered.length} طالب`;
- if(!filtered.length){tbody.innerHTML=emptyRow(6,"لا يوجد طلاب حاليًا");return}
- tbody.innerHTML=filtered.map(s=>{
-   const bal=Number(s.balance??s.wallet??0);
-   return `<tr>
-    <td><div class="student-name"><div class="student-avatar">${escapeHTML((s.name||"?").charAt(0))}</div><div><strong>${escapeHTML(s.name||"بدون اسم")}</strong><div class="muted">${escapeHTML(s.email||"")}</div></div></div></td>
-    <td>${escapeHTML(s.code||s.studentCode||"—")}</td>
-    <td>${escapeHTML(s.email||"—")}</td>
-    <td class="balance">${bal.toLocaleString("ar-EG")} ج.م</td>
-    <td><span class="badge ${s.active!==false?"green":"red"}">${s.active!==false?"نشط":"موقوف"}</span></td>
-    <td><button class="secondary" onclick="openPasswordModal('${s.id}')">🔐</button> <button class="secondary" onclick="openWalletModal('${s.id}')">💰</button></td>
-   </tr>`;
- }).join("");
-};
 
-window.addStudent=async e=>{
- e.preventDefault();
- const name=$("newStudentName").value.trim(),code=$("newStudentCode").value.trim(),email=$("newStudentEmail").value.trim().toLowerCase(),password=$("newStudentPassword").value;
- if(password.length<6){showToast("كلمة المرور يجب أن تكون 6 أحرف على الأقل");return}
- try{
-   await addDoc(collection(db,"students"),{name,code,email,balance:0,active:true,authCreated:false,createdAt:serverTimestamp()});
-   closeModal("studentModal");e.target.reset();showToast("تم حفظ الطالب في Firebase");
- }catch(err){showToast(firebaseError(err))}
-};
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
 
-window.openPasswordModal=id=>{
- const s=students.find(x=>x.id===id);if(!s)return;
- $("passwordStudentId").value=id;$("passwordStudentName").value=s.name||"";$("passwordStudentEmail").value=s.email||"";
- openModal("passwordModal");
-};
 
-window.changePassword=async e=>{
- e.preventDefault();
- const id=$("passwordStudentId").value,s=students.find(x=>x.id===id);
- if(!s?.email){showToast("الطالب لا يملك بريدًا إلكترونيًا");return}
- try{
-   await sendPasswordResetEmail(auth,s.email);
-   closeModal("passwordModal");showToast("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريد الطالب");
- }catch(err){showToast(firebaseError(err))}
-};
+    const togglePassword =
+      document.getElementById(
+        "togglePassword"
+      );
 
-window.openWalletModal=id=>{
- const s=students.find(x=>x.id===id);if(!s)return;
- $("walletStudentId").value=id;$("walletStudentName").value=s.name||"";
- $("walletCurrent").value=`${Number(s.balance??s.wallet??0).toLocaleString("ar-EG")} ج.م`;
- $("walletAmount").value="";$("walletReason").value="";openModal("walletModal");
-};
 
-window.walletAction=async e=>{
- e.preventDefault();
- const id=$("walletStudentId").value,type=$("walletType").value,amount=Number($("walletAmount").value),reason=$("walletReason").value.trim()||"تعديل يدوي";
- if(!amount||amount<=0){showToast("أدخل مبلغ صحيح");return}
- try{
-   const studentRef=doc(db,"students",id);
-   await runTransaction(db,async tx=>{
-     const snap=await tx.get(studentRef);
-     if(!snap.exists())throw new Error("الطالب غير موجود");
-     const data=snap.data(),oldBalance=Number(data.balance??data.wallet??0);
-     if(type==="subtract"&&amount>oldBalance)throw new Error("الرصيد غير كافٍ");
-     const newBalance=type==="add"?oldBalance+amount:oldBalance-amount;
-     tx.update(studentRef,{balance:newBalance});
-     const trRef=doc(collection(db,"transactions"));
-     tx.set(trRef,{studentId:id,student:data.name||"",type,amount:type==="add"?amount:-amount,reason,oldBalance,newBalance,createdAt:serverTimestamp()});
-   });
-   closeModal("walletModal");e.target.reset();showToast(type==="add"?"تم إضافة الرصيد":"تم خصم الرصيد");
- }catch(err){showToast(firebaseError(err))}
-};
+    const forgotPassword =
+      document.getElementById(
+        "forgotPassword"
+      );
 
-window.renderSubjects=()=>{
- const grid=$("subjectsGrid");
- if(!subjects.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📚</div>لا توجد مواد حاليًا</div></div>`;return}
- grid.innerHTML=subjects.map(s=>`<div class="subject-card"><div class="subject-icon">${escapeHTML(s.icon||"📚")}</div><h3>${escapeHTML(s.name||"بدون اسم")}</h3><p>${escapeHTML(s.description||"")}</p><div class="subject-meta"><span>${Number(s.lessons||0)} درس</span><span>${Number(s.students||0)} طالب</span></div><div style="margin-top:10px"><span class="badge ${s.active!==false?"green":"red"}">${s.active!==false?"ظاهرة":"مخفية"}</span></div><div class="card-actions"><button class="secondary" onclick="editSubject('${s.id}')">تعديل</button><button class="secondary" onclick="toggleSubject('${s.id}',${s.active!==false})">${s.active!==false?"إخفاء":"إظهار"}</button><button class="danger" onclick="deleteSubject('${s.id}')">حذف</button></div></div>`).join("");
-};
 
-window.addSubject=async e=>{
- e.preventDefault();
- const name=$("subjectName").value.trim(),icon=$("subjectIcon").value.trim()||"📚",description=$("subjectDescription").value.trim();
- if(!name)return;
- try{await addDoc(collection(db,"subjects"),{name,icon,description,lessons:0,students:0,active:true,order:subjects.length,createdAt:serverTimestamp()});closeModal("subjectModal");e.target.reset();showToast("تمت إضافة المادة");}catch(err){showToast(firebaseError(err))}
-};
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
 
-window.deleteSubject=async id=>{
- const s=subjects.find(x=>x.id===id);if(!s||!confirm(`حذف مادة ${s.name}؟`))return;
- try{await deleteDoc(doc(db,"subjects",id));showToast("تم حذف المادة")}catch(err){showToast(firebaseError(err))}
-};
 
-window.editSubject=async id=>{
- const s=subjects.find(x=>x.id===id);if(!s)return;
- const name=prompt("اسم المادة:",s.name||"");if(!name?.trim())return;
- try{await updateDoc(doc(db,"subjects",id),{name:name.trim()});showToast("تم تعديل المادة")}catch(err){showToast(firebaseError(err))}
-};
+    const message =
+      document.getElementById(
+        "message"
+      );
 
-function fillSubjectSelect(id){const el=$(id);if(!el)return;el.innerHTML=subjects.length?subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;}
-window.toggleSubject=async(id,active)=>{try{await updateDoc(doc(db,"subjects",id),{active:!active});showToast(active?"تم إخفاء المادة":"تم إظهار المادة")}catch(err){showToast(firebaseError(err))}};
-window.openLessonModal=()=>{
- fillSubjectSelect("lessonSubject");
- $("lessonOrder").value=curriculumLessons.length;
- $("lessonTitle").value="";
- $("lessonDescription").value="";
- $("lessonYoutubeUrl").value="";
- $("lessonPrice").value="0";
- $("lessonAccessType").value="free";
- $("lessonActive").value="true";
- toggleLessonPrice();
- openModal("lessonModal");
-};
 
-window.toggleLessonPrice=()=>{
- const paid=$("lessonAccessType").value==="paid";
- $("lessonPrice").disabled=!paid;
- if(!paid) $("lessonPrice").value="0";
-};
+    function showMessage(
+      text,
+      type = "error"
+    ) {
 
-function getYouTubeId(url){
- try{
-  const value=String(url||"").trim();
-  if(!value)return "";
-  const parsed=new URL(value);
-  if(parsed.hostname.includes("youtu.be"))return parsed.pathname.split("/").filter(Boolean)[0]||"";
-  const watch=parsed.searchParams.get("v");
-  if(watch)return watch;
-  const parts=parsed.pathname.split("/").filter(Boolean);
-  const i=parts.findIndex(x=>["embed","shorts","live"].includes(x));
-  if(i!==-1)return parts[i+1]||"";
- }catch(e){}
- return "";
-}
+      message.textContent =
+        text;
 
-window.saveLesson=async e=>{
- e.preventDefault();
- const subjectId=$("lessonSubject").value;
- const subject=subjects.find(s=>s.id===subjectId);
- if(!subject){showToast("أضف مادة أولًا");return}
- const title=$("lessonTitle").value.trim();
- const description=$("lessonDescription").value.trim();
- const youtubeUrl=$("lessonYoutubeUrl").value.trim();
- const youtubeId=getYouTubeId(youtubeUrl);
- const accessType=$("lessonAccessType").value;
- const price=accessType==="paid"?Number($("lessonPrice").value||0):0;
- if(!title){showToast("اكتب عنوان الدرس");return}
- if(!youtubeId){showToast("أدخل رابط YouTube صحيح");return}
- if(accessType==="paid"&&price<=0){showToast("اكتب سعرًا صحيحًا للدرس المدفوع");return}
- const btn=$("saveLessonBtn");
- btn.disabled=true;
- btn.textContent="جاري الحفظ...";
- try{
-  await addDoc(collection(db,"curriculumLessons"),{
-   subjectId,
-   subjectName:subject.name,
-   title,
-   description,
-   contentType:"youtube",
-   youtubeUrl,
-   youtubeId,
-   accessType,
-   free:accessType==="free",
-   price,
-   order:Number($("lessonOrder").value||0),
-   active:$("lessonActive").value==="true",
-   createdAt:serverTimestamp(),
-   updatedAt:serverTimestamp()
-  });
-  closeModal("lessonModal");
-  showToast("تمت إضافة الدرس بنجاح");
- }catch(err){
-  console.error(err);
-  showToast(firebaseError(err));
- }finally{
-  btn.disabled=false;
-  btn.textContent="حفظ الدرس";
- }
-};
+      message.className =
+        `message ${type}`;
 
-window.renderCurriculum=()=>{
- const g=$("curriculumGrid");
- if(!g)return;
- if(!curriculumLessons.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📖</div>لا توجد دروس حاليًا</div></div>`;return}
- const arr=[...curriculumLessons].sort((a,b)=>Number(a.order??999999)-Number(b.order??999999));
- g.innerHTML=arr.map(l=>{
-  const paid=String(l.accessType||"").toLowerCase()==="paid" || (Number(l.price||0)>0&&!l.free);
-  return `<div class="subject-card"><div class="subject-icon">▶️</div><h3>${escapeHTML(l.title||"")}</h3><p>${escapeHTML(l.subjectName||"")} • ${escapeHTML(l.description||"")}</p><div class="content-meta"><span class="badge blue">YouTube</span><span class="badge ${paid?"yellow":"green"}">${paid?Number(l.price||0).toLocaleString("ar-EG")+" ج.م":"مجاني"}</span><span class="badge ${l.active!==false?"green":"red"}">${l.active!==false?"ظاهر":"مخفي"}</span></div><div class="card-actions"><button class="danger" onclick="deleteLesson('${l.id}')">حذف</button></div></div>`;
- }).join("");
-};
-
-window.deleteLesson=async id=>{if(!confirm("حذف هذا الدرس؟"))return;try{await deleteDoc(doc(db,"curriculumLessons",id));showToast("تم حذف الدرس")}catch(err){showToast(firebaseError(err))}};
-
-window.openTrainingModal=()=>{fillSubjectSelect("trainingSubject");populateTrainingLessons();openModal("trainingModal")};
-window.populateTrainingLessons=()=>{const sid=$("trainingSubject").value;const ls=curriculumLessons.filter(l=>l.subjectId===sid);$("trainingLesson").innerHTML=`<option value="">بدون درس محدد</option>`+ls.map(l=>`<option value="${l.id}">${escapeHTML(l.title)}</option>`).join("")};
-window.saveTraining=async e=>{e.preventDefault();const subjectId=$("trainingSubject").value,subject=subjects.find(s=>s.id===subjectId),lessonId=$("trainingLesson").value,lesson=curriculumLessons.find(l=>l.id===lessonId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"trainings"),{title:$("trainingTitle").value.trim(),subjectId,subjectName:subject.name,lessonId:lessonId||null,lessonTitle:lesson?.title||"",description:$("trainingDescription").value.trim(),difficulty:$("trainingDifficulty").value,order:Number($("trainingOrder").value||0),active:$("trainingActive").value==="true",createdAt:serverTimestamp()});closeModal("trainingModal");e.target.reset();showToast("تم إنشاء التدريب — أضف الأسئلة الآن")}catch(err){showToast(firebaseError(err))}};
-window.renderTrainings=()=>{const g=$("trainingsGrid");if(!trainings.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🧠</div>لا توجد تدريبات حاليًا</div></div>`;return}g.innerHTML=trainings.map(t=>`<div class="subject-card"><div class="subject-icon">🧠</div><h3>${escapeHTML(t.title||"")}</h3><p>${escapeHTML(t.subjectName||"")} • ${escapeHTML(t.description||"")}</p><div class="subject-meta"><span>${escapeHTML(t.difficulty||"متوسط")}</span><span class="badge ${t.active!==false?"green":"red"}">${t.active!==false?"ظاهر":"مخفي"}</span></div><div class="card-actions"><button class="primary" onclick="openQuestionManager('training','${t.id}')">الأسئلة</button><button class="danger" onclick="deleteTraining('${t.id}')">حذف</button></div></div>`).join("")};
-window.deleteTraining=async id=>{if(!confirm("حذف التدريب؟"))return;try{await deleteDoc(doc(db,"trainings",id));showToast("تم حذف التدريب")}catch(err){showToast(firebaseError(err))}};
-window.openExamModal=()=>{fillSubjectSelect("examSubject");openModal("examModal")};
-window.saveExam=async e=>{e.preventDefault();const subjectId=$("examSubject").value,subject=subjects.find(s=>s.id===subjectId);if(!subject){showToast("أضف مادة أولًا");return}try{await addDoc(collection(db,"exams"),{title:$("examTitle").value.trim(),subjectId,subjectName:subject.name,description:$("examDescription").value.trim(),duration:Number($("examDuration").value||30),totalMarks:Number($("examTotalMarks").value||0),active:$("examActive").value==="true",createdAt:serverTimestamp()});closeModal("examModal");e.target.reset();showToast("تم إنشاء الاختبار — أضف الأسئلة الآن")}catch(err){showToast(firebaseError(err))}};
-window.renderExams=()=>{const g=$("examsGrid");if(!exams.length){g.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📝</div>لا توجد اختبارات حاليًا</div></div>`;return}g.innerHTML=exams.map(x=>`<div class="subject-card"><div class="subject-icon">📝</div><h3>${escapeHTML(x.title||"")}</h3><p>${escapeHTML(x.subjectName||"")} • ${escapeHTML(x.description||"")}</p><div class="subject-meta"><span>⏱ ${Number(x.duration||0)} دقيقة</span><span>${Number(x.totalMarks||0)} درجة</span></div><div class="card-actions"><button class="primary" onclick="openQuestionManager('exam','${x.id}')">الأسئلة</button><button class="danger" onclick="deleteExam('${x.id}')">حذف</button></div></div>`).join("")};
-window.deleteExam=async id=>{if(!confirm("حذف الاختبار؟"))return;try{await deleteDoc(doc(db,"exams",id));showToast("تم حذف الاختبار")}catch(err){showToast(firebaseError(err))}};
-window.openQuestionManager=async(kind,parentId)=>{const parent=kind==='exam'?exams.find(x=>x.id===parentId):trainings.find(x=>x.id===parentId);if(!parent)return;const col=kind==='exam'?'examQuestions':'trainingQuestions';try{const snap=await getDocs(collection(db,col));const qs=snap.docs.map(d=>({id:d.id,...d.data()})).filter(q=>(kind==='exam'?q.examId:q.trainingId)===parentId).sort((a,b)=>Number(a.order||0)-Number(b.order||0));document.getElementById('questionManager')?.remove();const wrap=document.createElement('div');wrap.id='questionManager';wrap.className='modal-overlay open';wrap.innerHTML=`<div class="modal"><div class="modal-head"><h3>${kind==='exam'?'أسئلة الاختبار':'أسئلة التدريب'}: ${escapeHTML(parent.title)}</h3><button class="close" onclick="this.closest('.modal-overlay').remove()">×</button></div><div class="card-body" style="max-height:60vh;overflow:auto">${qs.length?qs.map((q,i)=>`<div style="padding:14px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><strong>${i+1}. ${escapeHTML(q.question)}</strong><div class="muted" style="font-size:10px">الصحيحة: ${escapeHTML(q.correctAnswer)} • الدرجة: ${Number(q.points||1)}</div><div style="margin-top:8px"><button class="secondary" onclick="editQuestion('${kind}','${parentId}','${q.id}')">تعديل</button> <button class="danger" onclick="deleteQuestion('${kind}','${q.id}','${parentId}')">حذف</button></div></div>`).join(''):`<div class="empty">لا توجد أسئلة بعد</div>`}</div><div class="modal-footer"><button class="primary" onclick="openQuestionModal('${kind}','${parentId}')">＋ إضافة سؤال</button><button class="secondary" onclick="this.closest('.modal-overlay').remove()">إغلاق</button></div></div>`;document.body.appendChild(wrap)}catch(err){showToast(firebaseError(err))}};
-window.openQuestionModal=(kind,parentId,q=null)=>{$("questionKind").value=kind;$('questionParentId').value=parentId;$('questionId').value=q?.id||'';$('questionText').value=q?.question||'';$('optionA').value=q?.options?.A||'';$('optionB').value=q?.options?.B||'';$('optionC').value=q?.options?.C||'';$('optionD').value=q?.options?.D||'';$('correctAnswer').value=q?.correctAnswer||'A';$('questionPoints').value=q?.points||1;$('questionExplanation').value=q?.explanation||'';$('questionOrder').value=q?.order||0;$('questionActive').value=String(q?.active!==false);$('questionModalTitle').textContent=q?'تعديل السؤال':'إضافة سؤال';openModal('questionModal')};
-window.editQuestion=async(kind,parentId,id)=>{const col=kind==='exam'?'examQuestions':'trainingQuestions';try{const snap=await getDocs(collection(db,col));const q=snap.docs.map(d=>({id:d.id,...d.data()})).find(x=>x.id===id);if(q)openQuestionModal(kind,parentId,q)}catch(err){showToast(firebaseError(err))}};
-window.saveQuestion=async e=>{e.preventDefault();const kind=$("questionKind").value,parentId=$("questionParentId").value,id=$("questionId").value,isExam=kind==='exam';const data={question:$("questionText").value.trim(),type:'mcq',options:{A:$("optionA").value.trim(),B:$("optionB").value.trim(),C:$("optionC").value.trim(),D:$("optionD").value.trim()},correctAnswer:$("correctAnswer").value,points:Number($("questionPoints").value||1),explanation:$("questionExplanation").value.trim(),order:Number($("questionOrder").value||0),active:$("questionActive").value==='true',createdAt:serverTimestamp()};if(isExam){data.examId=parentId;data.subjectId=exams.find(x=>x.id===parentId)?.subjectId||''}else{data.trainingId=parentId;data.subjectId=trainings.find(x=>x.id===parentId)?.subjectId||''}try{if(id)await updateDoc(doc(db,isExam?'examQuestions':'trainingQuestions',id),data);else await addDoc(collection(db,isExam?'examQuestions':'trainingQuestions'),data);closeModal('questionModal');showToast(id?'تم تعديل السؤال':'تمت إضافة السؤال')}catch(err){showToast(firebaseError(err))}};
-window.deleteQuestion=async(kind,id,parentId)=>{if(!confirm('حذف السؤال؟'))return;try{await deleteDoc(doc(db,kind==='exam'?'examQuestions':'trainingQuestions',id));showToast('تم حذف السؤال');openQuestionManager(kind,parentId)}catch(err){showToast(firebaseError(err))}};
-
-function populateClassSelects(){
-  const select = $("classSubject");
-  if(!select) return;
-  select.innerHTML = subjects.length
-    ? subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name||"")}</option>`).join("")
-    : `<option value="">أضف مادة أولًا</option>`;
-}
-
-window.toggleClassPrice=function(){
-  const type=$("classAccessType")?.value;
-  const input=$("classPrice");
-  if(!input) return;
-  const paid=type==="paid";
-  input.disabled=!paid;
-  input.required=paid;
-  if(!paid) input.value=0;
-  if(input.parentElement) input.parentElement.style.opacity=paid?"1":".5";
-};
-
-window.openClassModal=async function(id=null){
-  populateClassSelects();
-  const modal=$("classModal");
-  if(!modal) return;
-  $("classId").value="";
-  $("classTitle").value="";
-  $("classDescription").value="";
-  $("classPdfUrl").value="";
-  $("classAccessType").value="free";
-  $("classPrice").value=0;
-  $("classOrder").value=0;
-  $("classActive").value="true";
-  $("classModalTitle").textContent="إضافة حصة PDF";
-  if(id){
-    const c=classes.find(x=>x.id===id);
-    if(!c) return;
-    $("classId").value=c.id;
-    $("classSubject").value=c.subjectId||"";
-    $("classTitle").value=c.title||c.name||"";
-    $("classDescription").value=c.description||"";
-    $("classAccessType").value=c.accessType||((Number(c.price||0)>0)?"paid":"free");
-    $("classPrice").value=Number(c.price||0);
-    $("classOrder").value=Number(c.order||0);
-    $("classActive").value=c.active===false||c.published===false?"false":"true";
-    $("classModalTitle").textContent="تعديل الحصة";
-    try{
-      const snap=await getDoc(doc(db,"lessonContent",id));
-      if(snap.exists()) $("classPdfUrl").value=snap.data().pdfUrl||"";
-    }catch(err){console.error(err);showToast("تعذر تحميل رابط الـPDF");}
-  }
-  toggleClassPrice();
-  modal.classList.add("open");
-};
-
-window.saveClass=async function(event){
-  event.preventDefault();
-  const btn=$("saveClassBtn");
-  if(btn){btn.disabled=true;btn.textContent="جاري الحفظ...";}
-  try{
-    const id=$("classId").value.trim();
-    const subjectId=$("classSubject").value;
-    const title=$("classTitle").value.trim();
-    const description=$("classDescription").value.trim();
-    const pdfUrl=$("classPdfUrl").value.trim();
-    const accessType=$("classAccessType").value;
-    const price=accessType==="paid"?Number($("classPrice").value||0):0;
-    const order=Number($("classOrder").value||0);
-    const active=$("classActive").value==="true";
-    if(!subjectId) throw new Error("اختر المادة");
-    if(!title) throw new Error("اكتب عنوان الحصة");
-    if(!pdfUrl) throw new Error("أدخل رابط الـPDF");
-    try{new URL(pdfUrl);}catch{throw new Error("رابط الـPDF غير صحيح");}
-    if(accessType==="paid"&&price<=0) throw new Error("أدخل سعرًا صحيحًا للحصة المدفوعة");
-    const subject=subjects.find(s=>s.id===subjectId);
-    const data={subjectId,subjectName:subject?.name||"",title,description,order,active,accessType,price,contentType:"pdf",updatedAt:serverTimestamp()};
-    let classId=id;
-    if(!classId){
-      const ref=await addDoc(collection(db,"lessons"),{...data,createdAt:serverTimestamp()});
-      classId=ref.id;
-    }else{
-      await updateDoc(doc(db,"lessons",classId),data);
     }
-    await setDoc(doc(db,"lessonContent",classId),{pdfUrl,updatedAt:serverTimestamp()},{merge:true});
-    closeModal("classModal");
-    showToast(id?"تم تعديل الحصة بنجاح ✅":"تمت إضافة الحصة بنجاح ✅");
-  }catch(err){console.error("SAVE CLASS:",err);showToast(err.message||firebaseError(err));}
-  finally{if(btn){btn.disabled=false;btn.textContent="حفظ الحصة";}}
-};
 
-window.renderClasses=function(){
-  const grid=$("classesGrid");
-  if(!grid) return;
-  if(!classes.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🎓</div>لا توجد حصص حاليًا</div></div>`;return;}
-  const sorted=[...classes].sort((a,b)=>Number(a.order||0)-Number(b.order||0));
-  grid.innerHTML=sorted.map(c=>{
-    const active=c.active!==false&&c.published!==false;
-    const paid=c.accessType==="paid"||(Number(c.price||0)>0&&!c.free);
-    return `<div class="class-card">
-      <div class="class-head"><div><h3>${escapeHTML(c.title||c.name||"بدون عنوان")}</h3><p>${escapeHTML(c.subjectName||"بدون مادة")}</p></div><span class="badge ${active?"green":"yellow"}">${active?"ظاهرة":"مخفية"}</span></div>
-      <div class="class-info"><div class="info-box"><small>النوع</small><strong>${paid?"💰 مدفوعة":"🆓 مجانية"}</strong></div><div class="info-box"><small>السعر</small><strong>${paid?Number(c.price||0).toLocaleString("ar-EG")+" ج.م":"مجانية"}</strong></div><div class="info-box"><small>الترتيب</small><strong>${Number(c.order||0)}</strong></div></div>
-      ${c.description?`<p style="color:#9995a8;font-size:11px;line-height:1.8;margin-bottom:14px">${escapeHTML(c.description)}</p>`:""}
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap"><span class="muted" style="font-size:10px">📄 PDF خارجي</span><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="secondary" onclick="openClassModal('${c.id}')">تعديل</button><button class="${active?"danger":"success"}" onclick="toggleClassActive('${c.id}',${active})">${active?"إخفاء":"إظهار"}</button><button class="danger" onclick="deletePdfClass('${c.id}')">حذف</button></div></div>
-    </div>`;
-  }).join("");
-};
 
-window.toggleClassActive=async function(id,currentActive){
-  try{await updateDoc(doc(db,"lessons",id),{active:!currentActive,updatedAt:serverTimestamp()});showToast(currentActive?"تم إخفاء الحصة":"تم إظهار الحصة");}
-  catch(err){console.error(err);showToast(err.message||firebaseError(err));}
-};
+    function clearMessage() {
 
-window.deletePdfClass=async function(id){
-  const c=classes.find(x=>x.id===id);
-  if(!c) return;
-  if(!confirm(`هل تريد حذف الحصة "${c.title||c.name||""}"؟\n\nسيتم حذف بيانات الحصة ورابط الـPDF.`)) return;
-  try{
-    await deleteDoc(doc(db,"lessons",id));
-    try{await deleteDoc(doc(db,"lessonContent",id));}catch(e){console.warn("lessonContent delete",e);}
-    showToast("تم حذف الحصة بنجاح");
-  }catch(err){console.error("DELETE CLASS:",err);showToast(err.message||firebaseError(err));}
-};
+      message.textContent =
+        "";
 
-function populateTeacherSubject(){
- $("teacherSubject").innerHTML=subjects.length?subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;
-}
+      message.className =
+        "message";
 
-window.renderTeachers=()=>{
- const tbody=$("teachersTable");
- if(!teachers.length){tbody.innerHTML=emptyRow(5,"لا يوجد مدرسون حاليًا");return}
- tbody.innerHTML=teachers.map(t=>`<tr><td><div class="student-name"><div class="student-avatar">👨‍🏫</div><strong>${escapeHTML(t.name||"بدون اسم")}</strong></div></td><td>${escapeHTML(t.subjectName||t.subject||"—")}</td><td>${Number(t.classes||0)}</td><td><span class="badge ${t.active!==false?"green":"red"}">${t.active!==false?"نشط":"موقوف"}</span></td><td><button class="secondary" onclick="editTeacher('${t.id}')">تعديل</button> <button class="danger" onclick="deleteTeacher('${t.id}')">حذف</button></td></tr>`).join("");
-};
+    }
 
-window.addTeacher=async e=>{
- e.preventDefault();
- const name=$("teacherName").value.trim(),subjectId=$("teacherSubject").value,subject=subjects.find(s=>s.id===subjectId);
- if(!name||!subjectId){showToast("أكمل بيانات المدرس");return}
- try{await addDoc(collection(db,"teachers"),{name,subjectId,subjectName:subject?.name||"",classes:0,active:true,createdAt:serverTimestamp()});closeModal("teacherModal");e.target.reset();showToast("تمت إضافة المدرس")}catch(err){showToast(firebaseError(err))}
-};
 
-window.editTeacher=async id=>{
- const t=teachers.find(x=>x.id===id);if(!t)return;
- const name=prompt("اسم المدرس:",t.name||"");if(!name?.trim())return;
- try{await updateDoc(doc(db,"teachers",id),{name:name.trim()});showToast("تم تعديل المدرس")}catch(err){showToast(firebaseError(err))}
-};
+    function translateError(error) {
 
-window.deleteTeacher=async id=>{
- const t=teachers.find(x=>x.id===id);if(!t||!confirm(`حذف المدرس ${t.name}؟`))return;
- try{await deleteDoc(doc(db,"teachers",id));showToast("تم حذف المدرس")}catch(err){showToast(firebaseError(err))}
-};
+      const code =
+        error?.code || "";
 
-window.renderWallets=()=>{
- const tbody=$("walletsTable");
- if(!students.length){tbody.innerHTML=emptyRow(5,"لا يوجد طلاب حاليًا");return}
- tbody.innerHTML=students.map(s=>{const bal=Number(s.balance??s.wallet??0);const last=transactions.find(t=>t.studentId===s.id);return `<tr><td><div class="student-name"><div class="student-avatar">${escapeHTML((s.name||"?").charAt(0))}</div><strong>${escapeHTML(s.name||"بدون اسم")}</strong></div></td><td>${escapeHTML(s.code||s.studentCode||"—")}</td><td class="balance">${bal.toLocaleString("ar-EG")} ج.م</td><td class="muted">${last?escapeHTML(last.reason||"—"):"—"}</td><td><button class="primary" onclick="openWalletModal('${s.id}')">إدارة المحفظة</button></td></tr>`}).join("");
-};
 
-function transactionDate(t){
- if(t.createdAt?.toDate)return t.createdAt.toDate().toLocaleString("ar-EG");
- if(t.createdAt?.seconds)return new Date(t.createdAt.seconds*1000).toLocaleString("ar-EG");
- return t.date||"—";
-}
+      const errors = {
 
-window.renderTransactions=()=>{
- const tbody=$("transactionsTable");
- if(!transactions.length){tbody.innerHTML=emptyRow(5,"لا توجد معاملات حاليًا");return}
- const sorted=[...transactions].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
- tbody.innerHTML=sorted.map(t=>`<tr><td><strong>${escapeHTML(t.student||"")}</strong></td><td><span class="badge ${t.type==="add"?"green":"red"}">${t.type==="add"?"إضافة رصيد":"خصم"}</span></td><td style="font-weight:800;color:${Number(t.amount)>=0?"#4ade80":"#f87171"}">${Number(t.amount)>0?"+":""}${Number(t.amount||0).toLocaleString("ar-EG")} ج.م</td><td>${escapeHTML(t.reason||"—")}</td><td class="muted">${escapeHTML(transactionDate(t))}</td></tr>`).join("");
-};
+        "auth/invalid-email":
+          "البريد الإلكتروني غير صحيح.",
 
-function renderDashboard(){
- $("statStudents").textContent=students.length;
- $("statSubjects").textContent=subjects.length;
- $("statClasses").textContent=classes.length;
- const total=students.reduce((sum,s)=>sum+Number(s.balance??s.wallet??0),0);
- $("statBalance").innerHTML=`${total.toLocaleString("ar-EG")} <small>ج.م</small>`;
- const recent=[...students].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,6);
- $("dashboardStudentCount").textContent=`${recent.length}`;
- $("recentStudents").innerHTML=recent.length?recent.map(s=>`<tr><td><div class="student-name"><div class="student-avatar">${escapeHTML((s.name||"?").charAt(0))}</div><strong>${escapeHTML(s.name||"")}</strong></div></td><td>${escapeHTML(s.code||s.studentCode||"—")}</td><td>${Number(s.balance??s.wallet??0).toLocaleString("ar-EG")} ج.م</td></tr>`).join(""):emptyRow(3,"لا يوجد طلاب");
- const acts=[...transactions].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,6);
- $("dashboardActivityCount").textContent=`${acts.length}`;
- $("recentActivity").innerHTML=acts.length?acts.map(t=>`<div class="activity-item"><div class="activity-icon">${t.type==="add"?"💰":"💸"}</div><div class="activity-text"><strong>${escapeHTML(t.student||"طالب")} — ${Number(t.amount||0).toLocaleString("ar-EG")} ج.م</strong><span>${escapeHTML(t.reason||"عملية مالية")} • ${escapeHTML(transactionDate(t))}</span></div></div>`).join(""):`<div class="empty" style="padding:30px 10px"><div class="empty-icon">📋</div>لا توجد نشاطات</div>`;
-}
+        "auth/user-not-found":
+          "لا يوجد حساب بهذا البريد الإلكتروني.",
 
-function renderAll(){
- renderStudents();renderSubjects();populateClassSelects();renderCurriculum();renderTrainings();renderExams();renderClasses();renderTeachers();renderWallets();renderTransactions();renderDashboard();
- if(typeof renderWalletRequests === "function") renderWalletRequests();
- if(typeof renderPurchaseRequests === "function") renderPurchaseRequests();
- if(typeof renderPurchases === "function") renderPurchases();
-}
+        "auth/wrong-password":
+          "كلمة المرور غير صحيحة.",
 
-window.exportTransactions=()=>{
- if(!transactions.length){showToast("لا توجد معاملات للتصدير");return}
- const rows=[["الطالب","النوع","المبلغ","السبب","التاريخ"]];
- transactions.forEach(t=>rows.push([t.student||"",t.type==="add"?"إضافة":"خصم",Number(t.amount||0),t.reason||"",transactionDate(t)]));
- const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
- const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="mathix-transactions.csv";a.click();URL.revokeObjectURL(url);
-};
+        "auth/invalid-credential":
+          "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
 
-renderAll();
+        "auth/user-disabled":
+          "هذا الحساب تم تعطيله.",
 
-function addonDate(v){if(v?.toDate)return v.toDate().toLocaleString("ar-EG");if(v?.seconds)return new Date(v.seconds*1000).toLocaleString("ar-EG");return "—"}
-window.renderWalletRequests=()=>{const box=$("walletRequestsGrid");if(!box)return;const arr=[...walletRequests].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));if(!arr.length){box.innerHTML=`<div class="card"><div class="empty"><div class="empty-icon">💰</div>لا توجد طلبات شحن</div></div>`;return}box.innerHTML=arr.map(r=>{const status=r.status||"pending",label=status==="approved"?"مقبول":status==="rejected"?"مرفوض":"قيد المراجعة",cls=status==="approved"?"green":status==="rejected"?"red":"yellow";return `<div class="addon-request"><div class="addon-request-row"><span>الطالب</span><strong>${escapeHTML(r.studentName||r.uid||"—")}</strong></div><div class="addon-request-row"><span>المبلغ</span><strong>${Number(r.amount||0).toLocaleString("ar-EG")} ج.م</strong></div><div class="addon-request-row"><span>رقم التحويل</span><strong>${escapeHTML(r.senderPhone||"—")}</strong></div><div class="addon-request-row"><span>التاريخ</span><span>${escapeHTML(addonDate(r.createdAt))}</span></div><div class="addon-request-row"><span>الحالة</span><span class="badge ${cls}">${label}</span></div>${status==="pending"?`<div class="addon-action-row"><button class="success" onclick="approveWalletRequest('${r.id}')">✓ قبول وإضافة الرصيد</button><button class="danger" onclick="rejectWalletRequest('${r.id}')">رفض</button></div>`:""}</div>`}).join("")};
-window.renderPurchaseRequests=()=>{
- const box=$("purchaseRequestsGrid");
- const count=$("purchaseRequestsCount");
- if(!box)return;
- const arr=[...purchaseRequests].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
- const pending=arr.filter(r=>(r.status||"pending")==="pending").length;
- if(count)count.textContent=`${pending} طلب`;
- if(!arr.length){box.innerHTML=`<div class="card"><div class="empty"><div class="empty-icon">🛒</div>لا توجد طلبات شراء حاليًا</div></div>`;return;}
- box.innerHTML=arr.map(r=>{
-  const status=r.status||"pending";
-  const label=status==="approved"?"مقبول":status==="rejected"?"مرفوض":"قيد المراجعة";
-  const cls=status==="approved"?"green":status==="rejected"?"red":"yellow";
-  const type=r.itemType||"lesson";
-  const title=r.title||r.lessonTitle||"—";
-  const itemLabel=type==="class"?"الحصة":"الدرس";
-  const price=Number(r.price||0);
-  return `<div class="addon-request"><div class="addon-request-row"><span>الطالب</span><strong>${escapeHTML(r.studentName||r.uid||"—")}</strong></div><div class="addon-request-row"><span>${itemLabel}</span><strong>${escapeHTML(title)}</strong></div><div class="addon-request-row"><span>السعر المطلوب</span><strong>${price.toLocaleString("ar-EG")} ج.م</strong></div><div class="addon-request-row"><span>النوع</span><span class="badge purple">${type==="class"?"حصة PDF":"درس"}</span></div><div class="addon-request-row"><span>التاريخ</span><span>${escapeHTML(addonDate(r.createdAt))}</span></div><div class="addon-request-row"><span>الحالة</span><span class="badge ${cls}">${label}</span></div>${status==="pending"?`<div class="addon-action-row"><button class="success" onclick="approvePurchaseRequest('${r.id}')">✓ اعتماد وخصم الرصيد</button><button class="danger" onclick="rejectPurchaseRequest('${r.id}')">رفض</button></div>`:""}</div>`;
- }).join("");
-};
+        "auth/too-many-requests":
+          "تمت محاولات كثيرة. حاول مرة أخرى بعد قليل.",
 
-window.approvePurchaseRequest=async requestId=>{
- const r=purchaseRequests.find(x=>x.id===requestId);
- if(!r||r.status!=="pending"){showToast("هذا الطلب تمت معالجته بالفعل");return;}
- const itemType=r.itemType||"lesson";
- const itemId=r.itemType==="class"?(r.classId||r.itemId||r.lessonId):(r.lessonId||r.itemId);
- if(!itemId){showToast("الطلب لا يحتوي على معرف المحتوى");return;}
- if(!confirm(`اعتماد شراء "${r.title||r.lessonTitle||"المحتوى"}"؟`))return;
- try{
-  const requestRef=doc(db,"purchaseRequests",requestId);
-  const studentRef=doc(db,"students",r.uid);
-  const sourceCollection=itemType==="class"?"lessons":"curriculumLessons";
-  const sourceRef=doc(db,sourceCollection,itemId);
-  const purchaseId=itemType==="class"?`${r.uid}_class_${itemId}`:`${r.uid}_${itemId}`;
-  const purchaseRef=doc(db,"purchases",purchaseId);
-  const txRef=doc(collection(db,"transactions"));
-  const walletTxRef=doc(collection(db,"walletTransactions"));
-  await runTransaction(db,async tx=>{
-   const requestSnap=await tx.get(requestRef);
-   const studentSnap=await tx.get(studentRef);
-   const sourceSnap=await tx.get(sourceRef);
-   const purchaseSnap=await tx.get(purchaseRef);
-   if(!requestSnap.exists())throw new Error("طلب الشراء غير موجود");
-   if(requestSnap.data().status!=="pending")throw new Error("تمت معالجة الطلب بالفعل");
-   if(!studentSnap.exists())throw new Error("الطالب غير موجود");
-   if(!sourceSnap.exists())throw new Error("المحتوى غير موجود");
-   if(purchaseSnap.exists())throw new Error("المحتوى مملوك للطالب بالفعل");
-   const item=sourceSnap.data();
-   const price=Number(item.price??r.price??0);
-   const paid=String(item.accessType||"").toLowerCase()==="paid"||(price>0&&!item.free);
-   if(!paid||price<=0)throw new Error("هذا المحتوى مجاني أو سعره غير صحيح");
-   if(item.active===false||item.published===false)throw new Error("هذا المحتوى مخفي حاليًا");
-   const student=studentSnap.data();
-   const oldBalance=Number(student.balance??student.wallet??0);
-   if(oldBalance<price)throw new Error("رصيد الطالب غير كافٍ");
-   const newBalance=oldBalance-price;
-   const title=item.title||item.name||r.title||r.lessonTitle||"";
-   tx.update(studentRef,{balance:newBalance,wallet:newBalance});
-   tx.set(purchaseRef,{uid:r.uid,studentId:r.uid,studentName:student.name||r.studentName||"",itemType,itemId,title,lessonId:itemType==="class"?itemId:(r.lessonId||itemId),classId:itemType==="class"?itemId:null,price,status:"completed",purchasedAt:serverTimestamp(),approvedAt:serverTimestamp(),approvedBy:auth.currentUser?.uid||"admin"});
-   tx.update(requestRef,{status:"approved",approvedPrice:price,approvedAt:serverTimestamp(),approvedBy:auth.currentUser?.uid||"admin"});
-   tx.set(txRef,{studentId:r.uid,student:student.name||r.studentName||"",type:"purchase",amount:-price,reason:`شراء ${itemType==="class"?"حصة":"درس"}: ${title}`,itemType,itemId,lessonId:itemType==="class"?null:(r.lessonId||itemId),classId:itemType==="class"?itemId:null,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
-   tx.set(walletTxRef,{uid:r.uid,studentId:r.uid,type:"purchase",amount:-price,reason:`شراء ${itemType==="class"?"حصة":"درس"}: ${title}`,itemType,itemId,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
-  });
-  showToast("تم اعتماد الشراء وخصم الرصيد ✅");
- }catch(err){console.error("APPROVE PURCHASE:",err);showToast(err.message||firebaseError(err));}
-};
+        "auth/network-request-failed":
+          "حدثت مشكلة في الاتصال بالإنترنت.",
 
-window.rejectPurchaseRequest=async requestId=>{
- const r=purchaseRequests.find(x=>x.id===requestId);
- if(!r||r.status!=="pending")return;
- if(!confirm(`رفض طلب شراء "${r.title||r.lessonTitle||"المحتوى"}"؟`))return;
- try{await updateDoc(doc(db,"purchaseRequests",requestId),{status:"rejected",rejectedAt:serverTimestamp(),rejectedBy:auth.currentUser?.uid||"admin"});showToast("تم رفض طلب الشراء");}
- catch(err){console.error(err);showToast(firebaseError(err));}
-};
+        "auth/operation-not-allowed":
+          "تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase.",
 
-window.renderPurchases=()=>{
- const tbody=$("purchasesTable");
- if(!tbody)return;
- const arr=[...purchases].sort((a,b)=>(b.purchasedAt?.seconds||b.createdAt?.seconds||0)-(a.purchasedAt?.seconds||a.createdAt?.seconds||0));
- if(!arr.length){tbody.innerHTML=emptyRow(6,"لا توجد مشتريات حتى الآن");return;}
- tbody.innerHTML=arr.map(p=>`<tr><td>${escapeHTML(p.studentName||p.uid||"—")}</td><td>${escapeHTML(p.title||"—")}</td><td><span class="badge purple">${p.itemType==="class"?"حصة PDF":"درس"}</span></td><td>${Number(p.price||0).toLocaleString("ar-EG")} ج.م</td><td><span class="badge green">${escapeHTML(p.status||"completed")}</span></td><td class="muted">${escapeHTML(addonDate(p.purchasedAt||p.createdAt))}</td></tr>`).join("");
-};
+        "auth/missing-email":
+          "اكتب البريد الإلكتروني أولاً.",
 
-window.approveWalletRequest=async id=>{const r=walletRequests.find(x=>x.id===id);if(!r||r.status!=="pending")return;if(!confirm(`إضافة ${Number(r.amount||0).toLocaleString("ar-EG")} ج.م إلى محفظة ${r.studentName||"الطالب"}؟`))return;try{const studentRef=doc(db,"students",r.uid),requestRef=doc(db,"walletRequests",id),txRef=doc(collection(db,"walletTransactions"));await runTransaction(db,async tx=>{const ss=await tx.get(studentRef),rs=await tx.get(requestRef);if(!ss.exists())throw new Error("الطالب غير موجود");if(!rs.exists()||rs.data().status!=="pending")throw new Error("تم التعامل مع الطلب بالفعل");const old=Number(ss.data().wallet??ss.data().balance??0),amount=Number(rs.data().amount||0),next=old+amount;tx.update(studentRef,{wallet:next,balance:next});tx.update(requestRef,{status:"approved",processedAt:serverTimestamp(),processedBy:auth.currentUser?.uid||"admin"});tx.set(txRef,{uid:r.uid,type:"deposit",amount,balanceBefore:old,balanceAfter:next,referenceId:id,description:"شحن محفظة",createdAt:serverTimestamp()})});showToast("تم قبول طلب الشحن وإضافة الرصيد ✅")}catch(err){console.error(err);showToast(firebaseError(err))}};
-window.rejectWalletRequest=async id=>{if(!confirm("رفض طلب الشحن؟"))return;try{await updateDoc(doc(db,"walletRequests",id),{status:"rejected",processedAt:serverTimestamp(),processedBy:auth.currentUser?.uid||"admin"});showToast("تم رفض الطلب")}catch(err){showToast(firebaseError(err))}};
+        "auth/quota-exceeded":
+          "تم تجاوز الحد المسموح. حاول لاحقًا.",
 
-renderAll();
-</script>
+        "auth/unauthorized-continue-uri":
+          "رابط إعادة التعيين غير مسموح به في إعدادات Firebase.",
+
+        "auth/invalid-continue-uri":
+          "رابط إعادة التعيين غير صحيح."
+
+      };
+
+
+      return errors[code] ||
+        `حدث خطأ في Firebase: ${code || "unknown"}`;
+
+    }
+
+
+    function isAdmin(user) {
+
+      if (!user) {
+        return false;
+      }
+
+      if (!user.email) {
+        return false;
+      }
+
+      return (
+        user.email.toLowerCase() ===
+        ADMIN_EMAIL.toLowerCase()
+      );
+
+    }
+
+
+    togglePassword.addEventListener(
+      "click",
+      () => {
+
+        const hidden =
+          passwordInput.type ===
+          "password";
+
+
+        passwordInput.type =
+          hidden
+            ? "text"
+            : "password";
+
+
+        togglePassword.textContent =
+          hidden
+            ? "إخفاء"
+            : "إظهار";
+
+      }
+    );
+
+
+    loginForm.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        clearMessage();
+
+
+        const email =
+          emailInput.value.trim();
+
+
+        const password =
+          passwordInput.value;
+
+
+        if (!email || !password) {
+
+          showMessage(
+            "اكتب البريد الإلكتروني وكلمة المرور."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          ADMIN_EMAIL ===
+          "YOUR_ADMIN_EMAIL"
+        ) {
+
+          showMessage(
+            "لم يتم تحديد إيميل الأدمن داخل الملف بعد."
+          );
+
+          console.error(
+            "ADMIN_EMAIL is not configured."
+          );
+
+          return;
+
+        }
+
+
+        loginButton.disabled =
+          true;
+
+
+        loginButton.innerHTML = `
+          <span class="loading">
+            <span class="spinner"></span>
+            جاري التحقق...
+          </span>
+        `;
+
+
+        try {
+
+          const credential =
+            await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+
+          const user =
+            credential.user;
+
+
+          await user.reload();
+
+
+          if (!user.emailVerified) {
+
+            await signOut(auth);
+
+            showMessage(
+              "يجب تفعيل البريد الإلكتروني قبل الدخول إلى لوحة الإدارة."
+            );
+
+            return;
+
+          }
+
+
+          if (!isAdmin(user)) {
+
+            await signOut(auth);
+
+            showMessage(
+              "هذا الحساب ليس لديه صلاحية دخول إلى لوحة الإدارة."
+            );
+
+            return;
+
+          }
+
+
+          showMessage(
+            "تم تسجيل الدخول بنجاح. جاري فتح لوحة التحكم...",
+            "success"
+          );
+
+
+          setTimeout(
+            () => {
+
+              window.location.href =
+                "admin-dashboard.html";
+
+            },
+            500
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "ADMIN LOGIN ERROR:",
+            error
+          );
+
+
+          showMessage(
+            translateError(error)
+          );
+
+        } finally {
+
+          loginButton.disabled =
+            false;
+
+
+          loginButton.textContent =
+            "تسجيل الدخول";
+
+        }
+
+      }
+    );
+
+
+    forgotPassword.addEventListener(
+      "click",
+      async () => {
+
+        clearMessage();
+
+
+        const email =
+          emailInput.value.trim();
+
+
+        if (!email) {
+
+          showMessage(
+            "اكتب البريد الإلكتروني أولاً ثم اضغط نسيت كلمة المرور."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (
+          ADMIN_EMAIL !==
+          "YOUR_ADMIN_EMAIL"
+          &&
+          email.toLowerCase() !==
+          ADMIN_EMAIL.toLowerCase()
+        ) {
+
+          showMessage(
+            "استخدم البريد الإلكتروني الخاص بحساب الأدمن."
+          );
+
+          return;
+
+        }
+
+
+        forgotPassword.disabled =
+          true;
+
+
+        forgotPassword.textContent =
+          "جاري الإرسال...";
+
+
+        try {
+
+          await sendPasswordResetEmail(
+            auth,
+            email
+          );
+
+
+          showMessage(
+            "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريد الأدمن. افحص البريد الوارد والرسائل غير المرغوب فيها.",
+            "success"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "ADMIN PASSWORD RESET ERROR:",
+            error
+          );
+
+
+          showMessage(
+            `كود الخطأ: ${error?.code || "unknown"}`
+          );
+
+        } finally {
+
+          forgotPassword.disabled =
+            false;
+
+
+          forgotPassword.textContent =
+            "نسيت كلمة المرور؟";
+
+        }
+
+      }
+    );
+
+
+    onAuthStateChanged(
+      auth,
+      async user => {
+
+        if (!user) {
+          return;
+        }
+
+
+        try {
+
+          await user.reload();
+
+
+          if (
+            user.emailVerified &&
+            isAdmin(user)
+          ) {
+
+            window.location.href =
+              "admin-dashboard.html";
+
+            return;
+
+          }
+
+
+          await signOut(auth);
+
+        } catch (error) {
+
+          console.error(
+            "ADMIN AUTH CHECK ERROR:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
 </body>
+
 </html>
