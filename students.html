@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 
 <head>
@@ -631,6 +632,7 @@ tr:hover td{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -643,15 +645,17 @@ tr:hover td{
 
   <div class="brand">
 
-    <img src="logo.png" alt="Mathix">
+```
+<img src="logo.png" alt="Mathix">
 
-    <div class="brand-text">
-      <span>Math</span>ix
-    </div>
+<div class="brand-text">
+  <span>Math</span>ix
+</div>
 
-    <div class="admin-badge">
-      ADMIN
-    </div>
+<div class="admin-badge">
+  ADMIN
+</div>
+```
 
   </div>
 
@@ -661,45 +665,47 @@ tr:hover td{
 
   <nav class="nav">
 
-    <a href="admin-dashboard.html">
-      <span class="nav-icon">⌂</span>
-      الرئيسية
-    </a>
+```
+<a href="dashboard.html">
+  <span class="nav-icon">⌂</span>
+  الرئيسية
+</a>
 
-    <a href="admin-students.html" class="active">
-      <span class="nav-icon">♙</span>
-      الطلاب
-    </a>
+<a href="students.html" class="active">
+  <span class="nav-icon">♙</span>
+  الطلاب
+</a>
 
-    <a href="admin-subjects.html">
-      <span class="nav-icon">▦</span>
-      المواد
-    </a>
+<a href="subjects.html">
+  <span class="nav-icon">▦</span>
+  المواد
+</a>
 
-    <a href="admin-curriculum.html">
-      <span class="nav-icon">☷</span>
-      المنهج والدروس
-    </a>
+<a href="curriculum.html">
+  <span class="nav-icon">☷</span>
+  المنهج والدروس
+</a>
 
-    <a href="admin-classes.html">
-      <span class="nav-icon">▣</span>
-      الحصص
-    </a>
+<a href="classes.html">
+  <span class="nav-icon">▣</span>
+  الحصص
+</a>
 
-    <a href="admin-exams.html">
-      <span class="nav-icon">✎</span>
-      الامتحانات
-    </a>
+<a href="exams.html">
+  <span class="nav-icon">✎</span>
+  الامتحانات
+</a>
 
-    <a href="admin-wallet.html">
-      <span class="nav-icon">◈</span>
-      المحفظة
-    </a>
+<a href="wallet.html">
+  <span class="nav-icon">◈</span>
+  المحفظة
+</a>
 
-    <a href="admin-requests.html">
-      <span class="nav-icon">◉</span>
-      الطلبات
-    </a>
+<a href="requests.html">
+  <span class="nav-icon">◉</span>
+  الطلبات
+</a>
+```
 
   </nav>
 
@@ -709,160 +715,163 @@ tr:hover td{
 
   <nav class="nav">
 
-    <button class="logout-btn" id="logoutBtn">
-      <span class="nav-icon">↪</span>
-      تسجيل الخروج
-    </button>
+```
+<button class="logout-btn" id="logoutBtn">
+  <span class="nav-icon">↪</span>
+  تسجيل الخروج
+</button>
+```
 
   </nav>
 
 </aside>
 
-
 <main class="main">
 
   <div class="topbar">
 
-    <div style="display:flex;align-items:center;gap:12px;">
+```
+<div style="display:flex;align-items:center;gap:12px;">
 
-      <button
-        class="mobile-menu"
-        id="mobileMenu"
-        type="button"
-      >
-        ☰
-      </button>
+  <button
+    class="mobile-menu"
+    id="mobileMenu"
+    type="button"
+  >
+    ☰
+  </button>
 
-      <div class="page-title">
+  <div class="page-title">
 
-        <h1>
-          الطلاب
-        </h1>
+    <h1>
+      الطلاب
+    </h1>
 
-        <p>
-          إدارة حسابات وبيانات طلاب Mathix
-        </p>
+    <p>
+      إدارة حسابات وبيانات طلاب Mathix
+    </p>
 
-      </div>
+  </div>
 
+</div>
+
+
+<div class="account">
+
+  <div class="account-avatar">
+    M
+  </div>
+
+  <div>
+
+    <div style="font-size:11px;font-weight:700;">
+      مدير المنصة
     </div>
 
-
-    <div class="account">
-
-      <div class="account-avatar">
-        M
-      </div>
-
-      <div>
-
-        <div style="font-size:11px;font-weight:700;">
-          مدير المنصة
-        </div>
-
-        <div
-          class="account-email"
-          id="accountEmail"
-        >
-          —
-        </div>
-
-      </div>
-
+    <div
+      class="account-email"
+      id="accountEmail"
+    >
+      —
     </div>
 
   </div>
 
+</div>
+```
+
+  </div>
 
   <div
     class="message"
     id="message"
   ></div>
 
-
   <div class="toolbar">
 
-    <input
-      class="search"
-      id="searchInput"
-      type="search"
-      placeholder="ابحث بالاسم أو الإيميل أو كود الطالب..."
-    >
+```
+<input
+  class="search"
+  id="searchInput"
+  type="search"
+  placeholder="ابحث بالاسم أو الإيميل أو كود الطالب..."
+>
 
-    <button
-      class="primary-btn"
-      id="addStudentBtn"
-      type="button"
-    >
-      + إضافة طالب
-    </button>
+<button
+  class="primary-btn"
+  id="addStudentBtn"
+  type="button"
+>
+  + إضافة طالب
+</button>
+```
 
   </div>
 
-
   <div class="card">
 
-    <div class="table-wrap">
+```
+<div class="table-wrap">
 
-      <table>
+  <table>
 
-        <thead>
+    <thead>
 
-          <tr>
+      <tr>
 
-            <th>
-              الطالب
-            </th>
+        <th>
+          الطالب
+        </th>
 
-            <th>
-              الكود
-            </th>
+        <th>
+          الكود
+        </th>
 
-            <th>
-              الهاتف
-            </th>
+        <th>
+          الهاتف
+        </th>
 
-            <th>
-              المستوى
-            </th>
+        <th>
+          المستوى
+        </th>
 
-            <th>
-              الحالة
-            </th>
+        <th>
+          الحالة
+        </th>
 
-            <th>
-              الإجراءات
-            </th>
+        <th>
+          الإجراءات
+        </th>
 
-          </tr>
+      </tr>
 
-        </thead>
+    </thead>
 
-        <tbody id="studentsTable">
+    <tbody id="studentsTable">
 
-          <tr>
+      <tr>
 
-            <td
-              colspan="6"
-              class="loading"
-            >
-              جاري تحميل الطلاب...
-            </td>
+        <td
+          colspan="6"
+          class="loading"
+        >
+          جاري تحميل الطلاب...
+        </td>
 
-          </tr>
+      </tr>
 
-        </tbody>
+    </tbody>
 
-      </table>
+  </table>
 
-    </div>
+</div>
+```
 
   </div>
 
 </main>
 
 </div>
-
 
 <div
   class="modal"
@@ -871,185 +880,186 @@ tr:hover td{
 
   <div class="modal-box">
 
-    <div class="modal-header">
+```
+<div class="modal-header">
 
-      <h2 id="modalTitle">
-        إضافة طالب
-      </h2>
+  <h2 id="modalTitle">
+    إضافة طالب
+  </h2>
+
+  <button
+    class="close"
+    id="closeModal"
+    type="button"
+  >
+    ×
+  </button>
+
+</div>
+
+
+<div class="modal-body">
+
+  <div
+    class="message"
+    id="modalMessage"
+  ></div>
+
+
+  <form id="studentForm">
+
+    <div class="form-grid">
+
+      <div class="field">
+
+        <label>
+          الاسم الأول
+        </label>
+
+        <input
+          id="firstName"
+          type="text"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          الاسم الأخير
+        </label>
+
+        <input
+          id="lastName"
+          type="text"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          البريد الإلكتروني
+        </label>
+
+        <input
+          id="studentEmail"
+          type="email"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رقم الهاتف
+        </label>
+
+        <input
+          id="phone"
+          type="tel"
+          placeholder="01xxxxxxxxx"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          كود الطالب
+        </label>
+
+        <input
+          id="studentCode"
+          type="text"
+          placeholder="Mathix-XXXX"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          المستوى
+        </label>
+
+        <select id="level">
+
+          <option value="Beginner">
+            Beginner
+          </option>
+
+          <option value="Intermediate" selected>
+            Intermediate
+          </option>
+
+          <option value="Advanced">
+            Advanced
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          الحالة
+        </label>
+
+        <select id="status">
+
+          <option value="active">
+            نشط
+          </option>
+
+          <option value="inactive">
+            غير نشط
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
 
       <button
-        class="close"
-        id="closeModal"
-        type="button"
+        class="primary-btn"
+        type="submit"
+        id="saveStudentBtn"
       >
-        ×
+        حفظ الطالب
+      </button>
+
+      <button
+        class="secondary-btn"
+        type="button"
+        id="cancelModal"
+      >
+        إلغاء
       </button>
 
     </div>
 
+  </form>
 
-    <div class="modal-body">
-
-      <div
-        class="message"
-        id="modalMessage"
-      ></div>
-
-
-      <form id="studentForm">
-
-        <div class="form-grid">
-
-          <div class="field">
-
-            <label>
-              الاسم الأول
-            </label>
-
-            <input
-              id="firstName"
-              type="text"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              الاسم الأخير
-            </label>
-
-            <input
-              id="lastName"
-              type="text"
-            >
-
-          </div>
-
-
-          <div class="field full">
-
-            <label>
-              البريد الإلكتروني
-            </label>
-
-            <input
-              id="studentEmail"
-              type="email"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رقم الهاتف
-            </label>
-
-            <input
-              id="phone"
-              type="tel"
-              placeholder="01xxxxxxxxx"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              كود الطالب
-            </label>
-
-            <input
-              id="studentCode"
-              type="text"
-              placeholder="Mathix-XXXX"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              المستوى
-            </label>
-
-            <select id="level">
-
-              <option value="Beginner">
-                Beginner
-              </option>
-
-              <option value="Intermediate" selected>
-                Intermediate
-              </option>
-
-              <option value="Advanced">
-                Advanced
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              الحالة
-            </label>
-
-            <select id="status">
-
-              <option value="active">
-                نشط
-              </option>
-
-              <option value="inactive">
-                غير نشط
-              </option>
-
-            </select>
-
-          </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-          <button
-            class="primary-btn"
-            type="submit"
-            id="saveStudentBtn"
-          >
-            حفظ الطالب
-          </button>
-
-          <button
-            class="secondary-btn"
-            type="button"
-            id="cancelModal"
-          >
-            إلغاء
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
+</div>
+```
 
   </div>
 
 </div>
-
 
 <script type="module">
 
@@ -1072,7 +1082,6 @@ import {
   collection,
   getDocs,
   doc,
-  setDoc,
   updateDoc,
   deleteDoc,
   serverTimestamp
@@ -1123,99 +1132,67 @@ const db =
 
 
 const sidebar =
-  document.getElementById(
-    "sidebar"
-  );
+  document.getElementById("sidebar");
 
 
 const overlay =
-  document.getElementById(
-    "overlay"
-  );
+  document.getElementById("overlay");
 
 
 const mobileMenu =
-  document.getElementById(
-    "mobileMenu"
-  );
+  document.getElementById("mobileMenu");
 
 
 const logoutBtn =
-  document.getElementById(
-    "logoutBtn"
-  );
+  document.getElementById("logoutBtn");
 
 
 const accountEmail =
-  document.getElementById(
-    "accountEmail"
-  );
+  document.getElementById("accountEmail");
 
 
 const table =
-  document.getElementById(
-    "studentsTable"
-  );
+  document.getElementById("studentsTable");
 
 
 const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
+  document.getElementById("searchInput");
 
 
 const modal =
-  document.getElementById(
-    "studentModal"
-  );
+  document.getElementById("studentModal");
 
 
 const addStudentBtn =
-  document.getElementById(
-    "addStudentBtn"
-  );
+  document.getElementById("addStudentBtn");
 
 
 const closeModal =
-  document.getElementById(
-    "closeModal"
-  );
+  document.getElementById("closeModal");
 
 
 const cancelModal =
-  document.getElementById(
-    "cancelModal"
-  );
+  document.getElementById("cancelModal");
 
 
 const studentForm =
-  document.getElementById(
-    "studentForm"
-  );
+  document.getElementById("studentForm");
 
 
 const modalTitle =
-  document.getElementById(
-    "modalTitle"
-  );
+  document.getElementById("modalTitle");
 
 
 const message =
-  document.getElementById(
-    "message"
-  );
+  document.getElementById("message");
 
 
 const modalMessage =
-  document.getElementById(
-    "modalMessage"
-  );
+  document.getElementById("modalMessage");
 
 
 const saveStudentBtn =
-  document.getElementById(
-    "saveStudentBtn"
-  );
+  document.getElementById("saveStudentBtn");
 
 
 let students = [];
@@ -1783,7 +1760,7 @@ async function saveStudent(event){
     ).value.trim();
 
 
-  let studentCode =
+  const studentCode =
     document.getElementById(
       "studentCode"
     ).value.trim();
@@ -1826,10 +1803,14 @@ async function saveStudent(event){
   }
 
 
-  if (!editingId && !studentCode){
+  if (!editingId){
 
-    studentCode =
-      generateStudentCode();
+    showModalMessage(
+      "لا يمكن إنشاء حساب Firebase Authentication من لوحة الإدارة باستخدام Firestore فقط. أنشئ حساب الطالب من Firebase Authentication أولًا، ثم أضف بياناته هنا باستخدام UID الخاص به.",
+      "error"
+    );
+
+    return;
 
   }
 
@@ -1879,33 +1860,20 @@ async function saveStudent(event){
     };
 
 
-    if (editingId){
-
-      await updateDoc(
-        doc(
-          db,
-          "students",
-          editingId
-        ),
-        data
-      );
+    await updateDoc(
+      doc(
+        db,
+        "students",
+        editingId
+      ),
+      data
+    );
 
 
-      showMessage(
-        "تم تحديث بيانات الطالب بنجاح.",
-        "success"
-      );
-
-    } else {
-
-      showModalMessage(
-        "لا يمكن إنشاء حساب Firebase Authentication من لوحة الإدارة باستخدام Firestore فقط. أنشئ حساب الطالب من Firebase Authentication أولًا، ثم أضف بياناته هنا باستخدام UID الخاص به.",
-        "error"
-      );
-
-      return;
-
-    }
+    showMessage(
+      "تم تحديث بيانات الطالب بنجاح.",
+      "success"
+    );
 
 
     closeStudentModal();
@@ -1938,20 +1906,6 @@ async function saveStudent(event){
       "حفظ الطالب";
 
   }
-
-}
-
-
-function generateStudentCode(){
-
-  const random =
-    Math.random()
-      .toString(36)
-      .substring(2,8)
-      .toUpperCase();
-
-
-  return `Mathix-${random}`;
 
 }
 
@@ -2171,10 +2125,21 @@ logoutBtn.addEventListener(
   "click",
   async () => {
 
-    await signOut(auth);
+    try{
 
-    window.location.href =
-      "index.html";
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+    }catch(error){
+
+      console.error(
+        "LOGOUT ERROR:",
+        error
+      );
+
+    }
 
   }
 );
@@ -2185,31 +2150,6 @@ onAuthStateChanged(
   async user => {
 
     if (!user){
-
-      window.location.href =
-        "index.html";
-
-      return;
-
-    }
-
-
-    try {
-
-      await user.reload();
-
-    } catch(error){
-
-      console.error(
-        error
-      );
-
-    }
-
-
-    if (!user.emailVerified){
-
-      await signOut(auth);
 
       window.location.href =
         "index.html";
