@@ -126,7 +126,7 @@
 </section>
 
 <section class="view" id="view-classes">
-  <div class="toolbar"><div><h3 style="font-size:15px">إدارة الحصص</h3><p class="muted" style="font-size:11px;margin-top:3px">إنشاء وإدارة الحصص التعليمية</p></div><button class="primary" onclick="openClassModal()">＋ فتح حصة</button></div>
+  <div class="toolbar"><div><h3 style="font-size:15px">إدارة الحصص</h3><p class="muted" style="font-size:11px;margin-top:3px">إنشاء وإدارة الحصص التعليمية</p></div><button class="primary" onclick="openClassModal()">＋ إضافة حصة PDF</button></div>
   <div class="class-grid" id="classesGrid"></div>
 </section>
 
@@ -208,20 +208,38 @@
 <div class="modal-footer"><button class="primary" id="saveLessonBtn">حفظ الدرس</button><button type="button" class="secondary" onclick="closeModal('lessonModal')">إلغاء</button></div>
 </form></div></div>
 
-<!-- CLASS -->
-<div class="modal-overlay" id="classModal"><div class="modal large"><div class="modal-head"><h3 id="classModalTitle">إضافة حصة</h3><button class="close" onclick="closeModal('classModal')">×</button></div>
-<form class="form" onsubmit="saveClass(event)">
-<input type="hidden" id="classId">
-<div class="form-note">الحصة مرتبطة بالمادة. الـPDF المدفوع يُحفظ في مستند محمي ويُتاح للطالب بعد امتلاك الحصة فقط.</div>
-<div class="form-row"><div class="field"><label>المادة</label><select id="classSubject" required></select></div><div class="field"><label>المدرس</label><select id="classTeacher"><option value="">بدون مدرس</option></select></div></div>
-<div class="field"><label>عنوان الحصة</label><input id="className" placeholder="مثال: المتتابعات — الحصة الأولى" required></div>
-<div class="field"><label>الوصف</label><textarea id="classDescription" placeholder="وصف مختصر للحصة"></textarea></div>
-<div class="form-row"><div class="field"><label>نوع الوصول</label><select id="classAccessType" onchange="toggleClassPrice()"><option value="free">مجانية</option><option value="paid">مدفوعة</option></select></div><div class="field"><label>السعر بالجنيه</label><input type="number" id="classPrice" min="0" step="0.01" value="0"></div></div>
-<div class="field"><label>رابط PDF خارجي</label><input id="classPdfUrl" type="url" placeholder="https://...pdf" required></div>
-<div class="form-row"><div class="field"><label>الترتيب</label><input type="number" id="classOrder" value="0"></div><div class="field"><label>الحالة</label><select id="classActive"><option value="true">ظاهرة للطلاب</option><option value="false">مخفية</option></select></div></div>
-<div class="field"><label>الأكواد</label><textarea id="classCode" placeholder="الكود يظهر للطالب كنص قابل للنسخ"></textarea></div>
-<div class="modal-footer"><button class="primary" id="saveClassBtn">حفظ الحصة</button><button type="button" class="secondary" onclick="closeModal('classModal')">إلغاء</button></div>
-</form></div></div>
+<!-- CLASS / PDF -->
+<div class="modal-overlay" id="classModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="classModalTitle">إضافة حصة PDF</h3>
+      <button class="close" type="button" onclick="closeModal('classModal')">×</button>
+    </div>
+    <form class="form" onsubmit="saveClass(event)">
+      <input type="hidden" id="classId">
+      <div class="field"><label>المادة</label><select id="classSubject" required></select></div>
+      <div class="field"><label>عنوان الحصة</label><input id="classTitle" placeholder="مثال: المتتابعات — الحصة الأولى" required></div>
+      <div class="field"><label>وصف الحصة</label><textarea id="classDescription" placeholder="وصف مختصر للحصة"></textarea></div>
+      <div class="field">
+        <label>رابط PDF الخارجي</label>
+        <input id="classPdfUrl" type="url" placeholder="https://example.com/lesson.pdf" required>
+        <small style="display:block;color:#777384;font-size:9px;margin-top:6px">سيتم حفظ الرابط في lessonContent وليس داخل بيانات الحصة العامة.</small>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>نوع الوصول</label><select id="classAccessType" onchange="toggleClassPrice()"><option value="free">مجانية</option><option value="paid">مدفوعة</option></select></div>
+        <div class="field"><label>السعر</label><input id="classPrice" type="number" min="0" step="1" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>ترتيب الحصة</label><input id="classOrder" type="number" min="0" value="0"></div>
+        <div class="field"><label>الحالة</label><select id="classActive"><option value="true">ظاهرة للطلاب</option><option value="false">مخفية</option></select></div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary" id="saveClassBtn" type="submit">حفظ الحصة</button>
+        <button type="button" class="secondary" onclick="closeModal('classModal')">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- TEACHER -->
 <div class="modal-overlay" id="teacherModal"><div class="modal"><div class="modal-head"><h3>إضافة مدرس</h3><button class="close" onclick="closeModal('teacherModal')">×</button></div>
@@ -235,7 +253,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot, serverTimestamp, runTransaction, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot, serverTimestamp, runTransaction, getDocs, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 const firebaseConfig={
@@ -622,77 +640,126 @@ window.editQuestion=async(kind,parentId,id)=>{const col=kind==='exam'?'examQuest
 window.saveQuestion=async e=>{e.preventDefault();const kind=$("questionKind").value,parentId=$("questionParentId").value,id=$("questionId").value,isExam=kind==='exam';const data={question:$("questionText").value.trim(),type:'mcq',options:{A:$("optionA").value.trim(),B:$("optionB").value.trim(),C:$("optionC").value.trim(),D:$("optionD").value.trim()},correctAnswer:$("correctAnswer").value,points:Number($("questionPoints").value||1),explanation:$("questionExplanation").value.trim(),order:Number($("questionOrder").value||0),active:$("questionActive").value==='true',createdAt:serverTimestamp()};if(isExam){data.examId=parentId;data.subjectId=exams.find(x=>x.id===parentId)?.subjectId||''}else{data.trainingId=parentId;data.subjectId=trainings.find(x=>x.id===parentId)?.subjectId||''}try{if(id)await updateDoc(doc(db,isExam?'examQuestions':'trainingQuestions',id),data);else await addDoc(collection(db,isExam?'examQuestions':'trainingQuestions'),data);closeModal('questionModal');showToast(id?'تم تعديل السؤال':'تمت إضافة السؤال')}catch(err){showToast(firebaseError(err))}};
 window.deleteQuestion=async(kind,id,parentId)=>{if(!confirm('حذف السؤال؟'))return;try{await deleteDoc(doc(db,kind==='exam'?'examQuestions':'trainingQuestions',id));showToast('تم حذف السؤال');openQuestionManager(kind,parentId)}catch(err){showToast(firebaseError(err))}};
 
-function populateClassSelects(selectedSubjectId="",selectedTeacherId=""){
- const ss=$("classSubject"),ts=$("classTeacher");
- if(ss) ss.innerHTML=subjects.length?subjects.filter(s=>s.active!==false).map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;
- if(ts) ts.innerHTML=`<option value="">بدون مدرس</option>`+(teachers.filter(t=>t.active!==false).map(t=>`<option value="${t.id}">${escapeHTML(t.name)} — ${escapeHTML(t.subjectName||t.subject||"")}</option>`).join(""));
- if(selectedSubjectId&&ss) ss.value=selectedSubjectId;
- if(selectedTeacherId&&ts) ts.value=selectedTeacherId;
+function populateClassSelects(){
+  const select = $("classSubject");
+  if(!select) return;
+  select.innerHTML = subjects.length
+    ? subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name||"")}</option>`).join("")
+    : `<option value="">أضف مادة أولًا</option>`;
 }
 
-window.toggleClassPrice=()=>{
- const paid=$("classAccessType")?.value==="paid";
- if($("classPrice")){ $("classPrice").disabled=!paid; if(!paid)$("classPrice").value="0"; }
+window.toggleClassPrice=function(){
+  const type=$("classAccessType")?.value;
+  const input=$("classPrice");
+  if(!input) return;
+  const paid=type==="paid";
+  input.disabled=!paid;
+  input.required=paid;
+  if(!paid) input.value=0;
+  if(input.parentElement) input.parentElement.style.opacity=paid?"1":".5";
 };
 
-window.openClassModal=(id="")=>{
- const c=id?classes.find(x=>x.id===id):null;
- $("classModalTitle").textContent=c?"تعديل الحصة":"إضافة حصة";
- $("classId").value=c?.id||"";
- populateClassSelects(c?.subjectId||"",c?.teacherId||"");
- $("className").value=c?.name||c?.title||"";
- $("classDescription").value=c?.description||"";
- $("classAccessType").value=c?.accessType||((Number(c?.price||0)>0)?"paid":"free");
- $("classPrice").value=Number(c?.price||0);
- $("classPdfUrl").value=c?.pdfUrl||"";
- $("classOrder").value=Number(c?.order||0);
- $("classActive").value=String(c?.active!==false && c?.published!==false);
- $("classCode").value=c?.code||"";
- toggleClassPrice();
- openModal("classModal");
+window.openClassModal=async function(id=null){
+  populateClassSelects();
+  const modal=$("classModal");
+  if(!modal) return;
+  $("classId").value="";
+  $("classTitle").value="";
+  $("classDescription").value="";
+  $("classPdfUrl").value="";
+  $("classAccessType").value="free";
+  $("classPrice").value=0;
+  $("classOrder").value=0;
+  $("classActive").value="true";
+  $("classModalTitle").textContent="إضافة حصة PDF";
+  if(id){
+    const c=classes.find(x=>x.id===id);
+    if(!c) return;
+    $("classId").value=c.id;
+    $("classSubject").value=c.subjectId||"";
+    $("classTitle").value=c.title||c.name||"";
+    $("classDescription").value=c.description||"";
+    $("classAccessType").value=c.accessType||((Number(c.price||0)>0)?"paid":"free");
+    $("classPrice").value=Number(c.price||0);
+    $("classOrder").value=Number(c.order||0);
+    $("classActive").value=c.active===false||c.published===false?"false":"true";
+    $("classModalTitle").textContent="تعديل الحصة";
+    try{
+      const snap=await getDoc(doc(db,"lessonContent",id));
+      if(snap.exists()) $("classPdfUrl").value=snap.data().pdfUrl||"";
+    }catch(err){console.error(err);showToast("تعذر تحميل رابط الـPDF");}
+  }
+  toggleClassPrice();
+  modal.classList.add("open");
 };
 
-window.renderClasses=()=>{
- const grid=$("classesGrid"); if(!grid)return;
- const arr=[...classes].sort((a,b)=>Number(a.order??0)-Number(b.order??0));
- if(!arr.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🎓</div>لا توجد حصص حاليًا</div></div>`;return;}
- grid.innerHTML=arr.map(c=>{
-   const subject=subjects.find(s=>s.id===c.subjectId), teacher=teachers.find(t=>t.id===c.teacherId);
-   const active=c.active!==false && c.published!==false;
-   const paid=String(c.accessType||"").toLowerCase()==="paid" || Number(c.price||0)>0;
-   return `<div class="class-card"><div class="class-head"><div><h3>${escapeHTML(c.name||c.title||"بدون اسم")}</h3><p>${escapeHTML(subject?.name||c.subjectName||"بدون مادة")} ${teacher?.name?`• ${escapeHTML(teacher.name)}`:""}</p></div><span class="badge ${active?"green":"yellow"}">${active?"ظاهرة":"مخفية"}</span></div><div class="class-info"><div class="info-box"><small>الوصول</small><strong>${paid?`${Number(c.price||0).toLocaleString("ar-EG")} ج.م`:`مجانية`}</strong></div><div class="info-box"><small>الترتيب</small><strong>${Number(c.order||0)}</strong></div><div class="info-box"><small>PDF</small><strong>${c.pdfUrl?"متاح":"غير موجود"}</strong></div></div><div style="display:flex;justify-content:space-between;align-items:center;gap:7px"><span class="muted" style="font-size:10px">${escapeHTML(c.description||"")}</span><div><button class="secondary" onclick="openClassModal('${c.id}')">تعديل</button> <button class="${active?"danger":"success"}" onclick="toggleClass('${c.id}',${active})">${active?"إخفاء":"نشر"}</button> <button class="danger" onclick="deleteClass('${c.id}')">حذف</button></div></div></div>`;
- }).join("");
+window.saveClass=async function(event){
+  event.preventDefault();
+  const btn=$("saveClassBtn");
+  if(btn){btn.disabled=true;btn.textContent="جاري الحفظ...";}
+  try{
+    const id=$("classId").value.trim();
+    const subjectId=$("classSubject").value;
+    const title=$("classTitle").value.trim();
+    const description=$("classDescription").value.trim();
+    const pdfUrl=$("classPdfUrl").value.trim();
+    const accessType=$("classAccessType").value;
+    const price=accessType==="paid"?Number($("classPrice").value||0):0;
+    const order=Number($("classOrder").value||0);
+    const active=$("classActive").value==="true";
+    if(!subjectId) throw new Error("اختر المادة");
+    if(!title) throw new Error("اكتب عنوان الحصة");
+    if(!pdfUrl) throw new Error("أدخل رابط الـPDF");
+    try{new URL(pdfUrl);}catch{throw new Error("رابط الـPDF غير صحيح");}
+    if(accessType==="paid"&&price<=0) throw new Error("أدخل سعرًا صحيحًا للحصة المدفوعة");
+    const subject=subjects.find(s=>s.id===subjectId);
+    const data={subjectId,subjectName:subject?.name||"",title,description,order,active,accessType,price,contentType:"pdf",updatedAt:serverTimestamp()};
+    let classId=id;
+    if(!classId){
+      const ref=await addDoc(collection(db,"lessons"),{...data,createdAt:serverTimestamp()});
+      classId=ref.id;
+    }else{
+      await updateDoc(doc(db,"lessons",classId),data);
+    }
+    await setDoc(doc(db,"lessonContent",classId),{pdfUrl,updatedAt:serverTimestamp()},{merge:true});
+    closeModal("classModal");
+    showToast(id?"تم تعديل الحصة بنجاح ✅":"تمت إضافة الحصة بنجاح ✅");
+  }catch(err){console.error("SAVE CLASS:",err);showToast(err.message||firebaseError(err));}
+  finally{if(btn){btn.disabled=false;btn.textContent="حفظ الحصة";}}
 };
 
-window.saveClass=async e=>{
- e.preventDefault();
- const id=$("classId").value.trim(),subjectId=$("classSubject").value,teacherId=$("classTeacher").value||"";
- const subject=subjects.find(s=>s.id===subjectId),teacher=teachers.find(t=>t.id===teacherId);
- const title=$("className").value.trim(),description=$("classDescription").value.trim(),pdfUrl=$("classPdfUrl").value.trim();
- const accessType=$("classAccessType").value,price=accessType==="paid"?Number($("classPrice").value||0):0;
- if(!subject){showToast("أضف مادة أولًا");return}
- if(!title){showToast("اكتب عنوان الحصة");return}
- if(!pdfUrl){showToast("أدخل رابط PDF");return}
- if(!/^https?:\\/\\//i.test(pdfUrl)){showToast("رابط PDF غير صحيح");return}
- if(accessType==="paid"&&price<=0){showToast("اكتب سعرًا صحيحًا للحصة المدفوعة");return}
- const data={name:title,title,description,subjectId,subjectName:subject.name,teacherId,teacherName:teacher?.name||"",accessType,price,order:Number($("classOrder").value||0),active:$("classActive").value==="true",published:$("classActive").value==="true",code:$("classCode").value,updatedAt:serverTimestamp()};
- const btn=$("saveClassBtn");btn.disabled=true;btn.textContent="جاري الحفظ...";
- try{
-   if(id){
-     await updateDoc(doc(db,"lessons",id),data);
-     await setDoc(doc(db,"lessonContent",id),{pdfUrl,updatedAt:serverTimestamp()},{merge:true});
-     showToast("تم تعديل الحصة");
-   }else{
-     const ref=await addDoc(collection(db,"lessons"),{...data,createdAt:serverTimestamp()});
-     await setDoc(doc(db,"lessonContent",ref.id),{pdfUrl,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
-     showToast("تم إنشاء الحصة");
-   }
-   closeModal("classModal");e.target.reset();$("classId").value="";
- }catch(err){console.error(err);showToast(firebaseError(err));}finally{btn.disabled=false;btn.textContent="حفظ الحصة";}
+window.renderClasses=function(){
+  const grid=$("classesGrid");
+  if(!grid) return;
+  if(!classes.length){grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🎓</div>لا توجد حصص حاليًا</div></div>`;return;}
+  const sorted=[...classes].sort((a,b)=>Number(a.order||0)-Number(b.order||0));
+  grid.innerHTML=sorted.map(c=>{
+    const active=c.active!==false&&c.published!==false;
+    const paid=c.accessType==="paid"||(Number(c.price||0)>0&&!c.free);
+    return `<div class="class-card">
+      <div class="class-head"><div><h3>${escapeHTML(c.title||c.name||"بدون عنوان")}</h3><p>${escapeHTML(c.subjectName||"بدون مادة")}</p></div><span class="badge ${active?"green":"yellow"}">${active?"ظاهرة":"مخفية"}</span></div>
+      <div class="class-info"><div class="info-box"><small>النوع</small><strong>${paid?"💰 مدفوعة":"🆓 مجانية"}</strong></div><div class="info-box"><small>السعر</small><strong>${paid?Number(c.price||0).toLocaleString("ar-EG")+" ج.م":"مجانية"}</strong></div><div class="info-box"><small>الترتيب</small><strong>${Number(c.order||0)}</strong></div></div>
+      ${c.description?`<p style="color:#9995a8;font-size:11px;line-height:1.8;margin-bottom:14px">${escapeHTML(c.description)}</p>`:""}
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap"><span class="muted" style="font-size:10px">📄 PDF خارجي</span><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="secondary" onclick="openClassModal('${c.id}')">تعديل</button><button class="${active?"danger":"success"}" onclick="toggleClassActive('${c.id}',${active})">${active?"إخفاء":"إظهار"}</button><button class="danger" onclick="deletePdfClass('${c.id}')">حذف</button></div></div>
+    </div>`;
+  }).join("");
 };
 
-window.toggleClass=async(id,active)=>{try{await updateDoc(doc(db,"lessons",id),{active:!active,published:!active,updatedAt:serverTimestamp()});showToast(active?"تم إخفاء الحصة":"تم نشر الحصة")}catch(err){showToast(firebaseError(err))}};
-window.deleteClass=async id=>{if(!confirm("حذف الحصة؟ سيتم حذف بياناتها العامة والمحتوى المحمي."))return;try{await deleteDoc(doc(db,"lessons",id));await deleteDoc(doc(db,"lessonContent",id));showToast("تم حذف الحصة")}catch(err){console.error(err);showToast(firebaseError(err))}};
+window.toggleClassActive=async function(id,currentActive){
+  try{await updateDoc(doc(db,"lessons",id),{active:!currentActive,updatedAt:serverTimestamp()});showToast(currentActive?"تم إخفاء الحصة":"تم إظهار الحصة");}
+  catch(err){console.error(err);showToast(err.message||firebaseError(err));}
+};
+
+window.deletePdfClass=async function(id){
+  const c=classes.find(x=>x.id===id);
+  if(!c) return;
+  if(!confirm(`هل تريد حذف الحصة "${c.title||c.name||""}"؟\n\nسيتم حذف بيانات الحصة ورابط الـPDF.`)) return;
+  try{
+    await deleteDoc(doc(db,"lessons",id));
+    try{await deleteDoc(doc(db,"lessonContent",id));}catch(e){console.warn("lessonContent delete",e);}
+    showToast("تم حذف الحصة بنجاح");
+  }catch(err){console.error("DELETE CLASS:",err);showToast(err.message||firebaseError(err));}
+};
 
 function populateTeacherSubject(){
  $("teacherSubject").innerHTML=subjects.length?subjects.map(s=>`<option value="${s.id}">${escapeHTML(s.icon||"📚")} ${escapeHTML(s.name)}</option>`).join(""):`<option value="">أضف مادة أولًا</option>`;
@@ -756,7 +823,7 @@ function renderDashboard(){
 }
 
 function renderAll(){
- renderStudents();renderSubjects();renderCurriculum();renderTrainings();renderExams();renderClasses();renderTeachers();renderWallets();renderTransactions();renderDashboard();
+ renderStudents();renderSubjects();populateClassSelects();renderCurriculum();renderTrainings();renderExams();renderClasses();renderTeachers();renderWallets();renderTransactions();renderDashboard();
  if(typeof renderWalletRequests === "function") renderWalletRequests();
  if(typeof renderPurchaseRequests === "function") renderPurchaseRequests();
  if(typeof renderPurchases === "function") renderPurchases();
@@ -782,61 +849,82 @@ window.renderPurchaseRequests=()=>{
  if(!box)return;
  const arr=[...purchaseRequests].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
  const pending=arr.filter(r=>(r.status||"pending")==="pending").length;
- if(count)count.textContent=`${pending} طلب` ;
- if(!arr.length){box.innerHTML=`<div class="card"><div class="empty"><div class="empty-icon">🛒</div>لا توجد طلبات شراء حاليًا</div></div>`;return}
+ if(count)count.textContent=`${pending} طلب`;
+ if(!arr.length){box.innerHTML=`<div class="card"><div class="empty"><div class="empty-icon">🛒</div>لا توجد طلبات شراء حاليًا</div></div>`;return;}
  box.innerHTML=arr.map(r=>{
   const status=r.status||"pending";
   const label=status==="approved"?"مقبول":status==="rejected"?"مرفوض":"قيد المراجعة";
   const cls=status==="approved"?"green":status==="rejected"?"red":"yellow";
+  const type=r.itemType||"lesson";
+  const title=r.title||r.lessonTitle||"—";
+  const itemLabel=type==="class"?"الحصة":"الدرس";
   const price=Number(r.price||0);
-  return `<div class="addon-request"><div class="addon-request-row"><span>الطالب</span><strong>${escapeHTML(r.studentName||r.uid||"—")}</strong></div><div class="addon-request-row"><span>الدرس</span><strong>${escapeHTML(r.lessonTitle||"—")}</strong></div><div class="addon-request-row"><span>السعر المطلوب</span><strong>${price.toLocaleString("ar-EG")} ج.م</strong></div><div class="addon-request-row"><span>التاريخ</span><span>${escapeHTML(addonDate(r.createdAt))}</span></div><div class="addon-request-row"><span>الحالة</span><span class="badge ${cls}">${label}</span></div>${status==="pending"?`<div class="addon-action-row"><button class="success" onclick="approvePurchaseRequest('${r.id}')">✓ اعتماد وخصم الرصيد</button><button class="danger" onclick="rejectPurchaseRequest('${r.id}')">رفض</button></div>`:""}</div>`;
+  return `<div class="addon-request"><div class="addon-request-row"><span>الطالب</span><strong>${escapeHTML(r.studentName||r.uid||"—")}</strong></div><div class="addon-request-row"><span>${itemLabel}</span><strong>${escapeHTML(title)}</strong></div><div class="addon-request-row"><span>السعر المطلوب</span><strong>${price.toLocaleString("ar-EG")} ج.م</strong></div><div class="addon-request-row"><span>النوع</span><span class="badge purple">${type==="class"?"حصة PDF":"درس"}</span></div><div class="addon-request-row"><span>التاريخ</span><span>${escapeHTML(addonDate(r.createdAt))}</span></div><div class="addon-request-row"><span>الحالة</span><span class="badge ${cls}">${label}</span></div>${status==="pending"?`<div class="addon-action-row"><button class="success" onclick="approvePurchaseRequest('${r.id}')">✓ اعتماد وخصم الرصيد</button><button class="danger" onclick="rejectPurchaseRequest('${r.id}')">رفض</button></div>`:""}</div>`;
  }).join("");
 };
 
 window.approvePurchaseRequest=async requestId=>{
  const r=purchaseRequests.find(x=>x.id===requestId);
- if(!r||r.status!=="pending"){showToast("هذا الطلب تمت معالجته بالفعل");return}
- const itemId=r.itemId||r.lessonId; const itemType=r.itemType||"lesson";
- if(!itemId){showToast("الطلب لا يحتوي على معرف المحتوى");return}
- if(!confirm(`اعتماد شراء "${r.lessonTitle||r.title||"المحتوى"}"؟`))return;
+ if(!r||r.status!=="pending"){showToast("هذا الطلب تمت معالجته بالفعل");return;}
+ const itemType=r.itemType||"lesson";
+ const itemId=r.itemType==="class"?(r.classId||r.itemId||r.lessonId):(r.lessonId||r.itemId);
+ if(!itemId){showToast("الطلب لا يحتوي على معرف المحتوى");return;}
+ if(!confirm(`اعتماد شراء "${r.title||r.lessonTitle||"المحتوى"}"؟`))return;
  try{
-  const requestRef=doc(db,"purchaseRequests",requestId),studentRef=doc(db,"students",r.uid);
-  const purchaseId=`${r.uid}_${itemType}_${itemId}`,purchaseRef=doc(db,"purchases",purchaseId);
-  const txRef=doc(collection(db,"transactions")),walletTxRef=doc(collection(db,"walletTransactions"));
+  const requestRef=doc(db,"purchaseRequests",requestId);
+  const studentRef=doc(db,"students",r.uid);
+  const sourceCollection=itemType==="class"?"lessons":"curriculumLessons";
+  const sourceRef=doc(db,sourceCollection,itemId);
+  const purchaseId=itemType==="class"?`${r.uid}_class_${itemId}`:`${r.uid}_${itemId}`;
+  const purchaseRef=doc(db,"purchases",purchaseId);
+  const txRef=doc(collection(db,"transactions"));
+  const walletTxRef=doc(collection(db,"walletTransactions"));
   await runTransaction(db,async tx=>{
-   const lessonRef=doc(db,itemType==="class"?"lessons":"curriculumLessons",itemId);
-   const [rs,ss,ls,ps]=await Promise.all([tx.get(requestRef),tx.get(studentRef),tx.get(lessonRef),tx.get(purchaseRef)]);
-   if(!rs.exists()||rs.data().status!=="pending")throw new Error("تمت معالجة الطلب بالفعل");
-   if(!ss.exists())throw new Error("الطالب غير موجود");
-   if(!ls.exists())throw new Error("المحتوى غير موجود");
-   if(ps.exists())throw new Error("المحتوى مملوك للطالب بالفعل");
-   const item=ls.data(),price=Number(item.price||0);
-   const paid=String(item.accessType||"").toLowerCase()==="paid" || (price>0&&!item.free);
+   const requestSnap=await tx.get(requestRef);
+   const studentSnap=await tx.get(studentRef);
+   const sourceSnap=await tx.get(sourceRef);
+   const purchaseSnap=await tx.get(purchaseRef);
+   if(!requestSnap.exists())throw new Error("طلب الشراء غير موجود");
+   if(requestSnap.data().status!=="pending")throw new Error("تمت معالجة الطلب بالفعل");
+   if(!studentSnap.exists())throw new Error("الطالب غير موجود");
+   if(!sourceSnap.exists())throw new Error("المحتوى غير موجود");
+   if(purchaseSnap.exists())throw new Error("المحتوى مملوك للطالب بالفعل");
+   const item=sourceSnap.data();
+   const price=Number(item.price??r.price??0);
+   const paid=String(item.accessType||"").toLowerCase()==="paid"||(price>0&&!item.free);
    if(!paid||price<=0)throw new Error("هذا المحتوى مجاني أو سعره غير صحيح");
-   const student=ss.data(),oldBalance=Number(student.balance??student.wallet??0);
+   if(item.active===false||item.published===false)throw new Error("هذا المحتوى مخفي حاليًا");
+   const student=studentSnap.data();
+   const oldBalance=Number(student.balance??student.wallet??0);
    if(oldBalance<price)throw new Error("رصيد الطالب غير كافٍ");
    const newBalance=oldBalance-price;
+   const title=item.title||item.name||r.title||r.lessonTitle||"";
    tx.update(studentRef,{balance:newBalance,wallet:newBalance});
-   tx.set(purchaseRef,{uid:r.uid,studentId:r.uid,studentName:student.name||r.studentName||"",itemType,itemId,lessonId:itemId,lessonTitle:item.title||item.name||r.lessonTitle||"",title:item.title||item.name||r.lessonTitle||"",price,status:"completed",purchasedAt:serverTimestamp(),approvedAt:serverTimestamp(),approvedBy:auth.currentUser?.uid||"admin"});
+   tx.set(purchaseRef,{uid:r.uid,studentId:r.uid,studentName:student.name||r.studentName||"",itemType,itemId,title,lessonId:itemType==="class"?itemId:(r.lessonId||itemId),classId:itemType==="class"?itemId:null,price,status:"completed",purchasedAt:serverTimestamp(),approvedAt:serverTimestamp(),approvedBy:auth.currentUser?.uid||"admin"});
    tx.update(requestRef,{status:"approved",approvedPrice:price,approvedAt:serverTimestamp(),approvedBy:auth.currentUser?.uid||"admin"});
-   tx.set(txRef,{studentId:r.uid,student:student.name||r.studentName||"",type:itemType==="class"?"class_purchase":"lesson_purchase",amount:-price,reason:`شراء: ${item.title||item.name||r.lessonTitle||""}`,itemType,itemId,lessonId:itemId,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
-   tx.set(walletTxRef,{uid:r.uid,studentId:r.uid,type:itemType==="class"?"class_purchase":"lesson_purchase",amount:-price,reason:`شراء: ${item.title||item.name||r.lessonTitle||""}`,itemType,itemId,lessonId:itemId,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
+   tx.set(txRef,{studentId:r.uid,student:student.name||r.studentName||"",type:"purchase",amount:-price,reason:`شراء ${itemType==="class"?"حصة":"درس"}: ${title}`,itemType,itemId,lessonId:itemType==="class"?null:(r.lessonId||itemId),classId:itemType==="class"?itemId:null,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
+   tx.set(walletTxRef,{uid:r.uid,studentId:r.uid,type:"purchase",amount:-price,reason:`شراء ${itemType==="class"?"حصة":"درس"}: ${title}`,itemType,itemId,purchaseId,oldBalance,newBalance,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||"admin"});
   });
   showToast("تم اعتماد الشراء وخصم الرصيد ✅");
- }catch(err){console.error("APPROVE PURCHASE:",err);showToast(err.message||firebaseError(err))}
+ }catch(err){console.error("APPROVE PURCHASE:",err);showToast(err.message||firebaseError(err));}
 };
 
 window.rejectPurchaseRequest=async requestId=>{
  const r=purchaseRequests.find(x=>x.id===requestId);
  if(!r||r.status!=="pending")return;
- if(!confirm(`رفض طلب شراء "${r.lessonTitle||"الدرس"}"؟`))return;
- try{
-  await updateDoc(doc(db,"purchaseRequests",requestId),{status:"rejected",rejectedAt:serverTimestamp(),rejectedBy:auth.currentUser?.uid||"admin"});
-  showToast("تم رفض طلب الشراء");
- }catch(err){console.error(err);showToast(firebaseError(err))}
+ if(!confirm(`رفض طلب شراء "${r.title||r.lessonTitle||"المحتوى"}"؟`))return;
+ try{await updateDoc(doc(db,"purchaseRequests",requestId),{status:"rejected",rejectedAt:serverTimestamp(),rejectedBy:auth.currentUser?.uid||"admin"});showToast("تم رفض طلب الشراء");}
+ catch(err){console.error(err);showToast(firebaseError(err));}
 };
 
-window.renderPurchases=()=>{const tbody=$("purchasesTable");if(!tbody)return;const arr=[...purchases].sort((a,b)=>(b.purchasedAt?.seconds||b.createdAt?.seconds||0)-(a.purchasedAt?.seconds||a.createdAt?.seconds||0));if(!arr.length){tbody.innerHTML=emptyRow(6,"لا توجد مشتريات حتى الآن");return}tbody.innerHTML=arr.map(p=>`<tr><td>${escapeHTML(p.studentName||p.uid||"—")}</td><td>${escapeHTML(p.title||"—")}</td><td>${p.itemType==="class"?"حصة":"درس"}</td><td>${Number(p.price||0).toLocaleString("ar-EG")} ج.م</td><td><span class="badge green">${escapeHTML(p.status||"completed")}</span></td><td class="muted">${escapeHTML(addonDate(p.purchasedAt||p.createdAt))}</td></tr>`).join("")};
+window.renderPurchases=()=>{
+ const tbody=$("purchasesTable");
+ if(!tbody)return;
+ const arr=[...purchases].sort((a,b)=>(b.purchasedAt?.seconds||b.createdAt?.seconds||0)-(a.purchasedAt?.seconds||a.createdAt?.seconds||0));
+ if(!arr.length){tbody.innerHTML=emptyRow(6,"لا توجد مشتريات حتى الآن");return;}
+ tbody.innerHTML=arr.map(p=>`<tr><td>${escapeHTML(p.studentName||p.uid||"—")}</td><td>${escapeHTML(p.title||"—")}</td><td><span class="badge purple">${p.itemType==="class"?"حصة PDF":"درس"}</span></td><td>${Number(p.price||0).toLocaleString("ar-EG")} ج.م</td><td><span class="badge green">${escapeHTML(p.status||"completed")}</span></td><td class="muted">${escapeHTML(addonDate(p.purchasedAt||p.createdAt))}</td></tr>`).join("");
+};
+
 window.approveWalletRequest=async id=>{const r=walletRequests.find(x=>x.id===id);if(!r||r.status!=="pending")return;if(!confirm(`إضافة ${Number(r.amount||0).toLocaleString("ar-EG")} ج.م إلى محفظة ${r.studentName||"الطالب"}؟`))return;try{const studentRef=doc(db,"students",r.uid),requestRef=doc(db,"walletRequests",id),txRef=doc(collection(db,"walletTransactions"));await runTransaction(db,async tx=>{const ss=await tx.get(studentRef),rs=await tx.get(requestRef);if(!ss.exists())throw new Error("الطالب غير موجود");if(!rs.exists()||rs.data().status!=="pending")throw new Error("تم التعامل مع الطلب بالفعل");const old=Number(ss.data().wallet??ss.data().balance??0),amount=Number(rs.data().amount||0),next=old+amount;tx.update(studentRef,{wallet:next,balance:next});tx.update(requestRef,{status:"approved",processedAt:serverTimestamp(),processedBy:auth.currentUser?.uid||"admin"});tx.set(txRef,{uid:r.uid,type:"deposit",amount,balanceBefore:old,balanceAfter:next,referenceId:id,description:"شحن محفظة",createdAt:serverTimestamp()})});showToast("تم قبول طلب الشحن وإضافة الرصيد ✅")}catch(err){console.error(err);showToast(firebaseError(err))}};
 window.rejectWalletRequest=async id=>{if(!confirm("رفض طلب الشحن؟"))return;try{await updateDoc(doc(db,"walletRequests",id),{status:"rejected",processedAt:serverTimestamp(),processedBy:auth.currentUser?.uid||"admin"});showToast("تم رفض الطلب")}catch(err){showToast(firebaseError(err))}};
 
