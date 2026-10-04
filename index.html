@@ -867,21 +867,22 @@
 
 
         try {
+const credential = await signInWithEmailAndPassword(
+  auth,
+  email,
+  password
+);
 
-          const credential =
-            await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
+const user = credential.user;
 
+await user.reload();
 
-          const user =
-            credential.user;
+console.log("LOGIN SUCCESS");
+console.log("UID:", user.uid);
+console.log("EMAIL:", user.email);
+console.log("VERIFIED:", user.emailVerified);
 
-
-          await user.reload();
-
+alert("LOGIN SUCCESS");
 
           /*
            * مهم:
