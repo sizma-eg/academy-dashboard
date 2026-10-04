@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07070b">
-  <title>الحصص</title>
+  <title>الحصص - Mathix Admin</title>
 
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
@@ -26,7 +27,6 @@
       --purple2: #a78bfa;
       --green: #22c55e;
       --red: #ef4444;
-      --yellow: #f59e0b;
     }
 
     * {
@@ -498,14 +498,15 @@
     }
 
     .checkbox {
-      display: flex;
+      display: flex !important;
       align-items: center;
       gap: 8px;
-      color: #c7c7d0;
-      font-size: 11px;
+      color: #c7c7d0 !important;
+      font-size: 11px !important;
     }
 
     .checkbox input {
+      width: auto !important;
       accent-color: var(--purple);
     }
 
@@ -620,1481 +621,1335 @@
 
 <body>
 
-<aside class="sidebar" id="sidebar">
-
-  <div class="brand">
-    <img src="logo.png" alt="Mathix">
+  <aside class="sidebar" id="sidebar">
 
 ```
-<div>
-  <strong>Mathix</strong>
-  <span>لوحة التحكم</span>
+<div class="brand">
+  <img src="logo.png" alt="Mathix">
+
+  <div>
+    <strong>Mathix</strong>
+    <span>لوحة التحكم</span>
+  </div>
 </div>
+
+<div class="nav-title">الرئيسية</div>
+
+<nav class="nav">
+
+  <a href="dashboard.html">
+    <span class="nav-icon">⌂</span>
+    <span>الرئيسية</span>
+  </a>
+
+  <a href="students.html">
+    <span class="nav-icon">♙</span>
+    <span>الطلاب</span>
+  </a>
+
+  <a href="subjects.html">
+    <span class="nav-icon">▣</span>
+    <span>المواد</span>
+  </a>
+
+  <a href="curriculum.html">
+    <span class="nav-icon">☷</span>
+    <span>المنهج والدروس</span>
+  </a>
+
+  <a href="classes.html" class="active">
+    <span class="nav-icon">▤</span>
+    <span>الحصص</span>
+  </a>
+
+  <a href="exams.html">
+    <span class="nav-icon">✓</span>
+    <span>الامتحانات</span>
+  </a>
+
+  <a href="wallet.html">
+    <span class="nav-icon">◇</span>
+    <span>المحفظة</span>
+  </a>
+
+  <a href="requests.html">
+    <span class="nav-icon">◌</span>
+    <span>الطلبات</span>
+  </a>
+
+</nav>
+
+<button class="logout" id="logoutBtn" type="button">
+  تسجيل الخروج
+</button>
 ```
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+
+```
+<div class="topbar">
+
+  <div class="title-wrap">
+
+    <button class="mobile-menu" id="mobileMenu" type="button">
+      ☰
+    </button>
+
+    <div class="title">
+      <h1>الحصص</h1>
+      <p>إضافة وإدارة الحصص والملفات الخارجية</p>
+    </div>
 
   </div>
 
-  <div class="nav-title">الرئيسية</div>
-
-  <nav class="nav">
-
-```
-<a href="dashboard.html">
-  <span class="nav-icon">⌂</span>
-  <span>الرئيسية</span>
-</a>
-
-<a href="students.html">
-  <span class="nav-icon">♙</span>
-  <span>الطلاب</span>
-</a>
-
-<a href="subjects.html">
-  <span class="nav-icon">▣</span>
-  <span>المواد</span>
-</a>
-
-<a href="curriculum.html">
-  <span class="nav-icon">☷</span>
-  <span>المنهج والدروس</span>
-</a>
-
-<a href="classes.html" class="active">
-  <span class="nav-icon">▤</span>
-  <span>الحصص</span>
-</a>
-
-<a href="exams.html">
-  <span class="nav-icon">✓</span>
-  <span>الامتحانات</span>
-</a>
-
-<a href="wallet.html">
-  <span class="nav-icon">◇</span>
-  <span>المحفظة</span>
-</a>
-
-<a href="requests.html">
-  <span class="nav-icon">◌</span>
-  <span>الطلبات</span>
-</a>
-```
-
-  </nav>
-
-  <button class="logout" id="logoutBtn">
-    تسجيل الخروج
-  </button>
-
-</aside>
-
-<div class="overlay" id="overlay"></div>
-
-<main class="main">
-
-  <div class="topbar">
-
-```
-<div class="title-wrap">
-
-  <button class="mobile-menu" id="mobileMenu">
-    ☰
-  </button>
-
-  <div class="title">
-    <h1>الحصص</h1>
-    <p>إضافة وإدارة الحصص والملفات الخارجية</p>
+  <div class="top-actions">
+    <button class="btn btn-primary" id="addClassBtn" type="button">
+      + إضافة حصة
+    </button>
   </div>
 
 </div>
 
-<div class="top-actions">
-  <button class="btn btn-primary" id="addClassBtn">
-    + إضافة حصة
-  </button>
+<div class="toolbar">
+
+  <div class="search">
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="ابحث باسم الحصة أو المدرس أو المادة..."
+      autocomplete="off"
+    >
+  </div>
+
+  <select id="subjectFilter">
+    <option value="">كل المواد</option>
+  </select>
+
 </div>
+
+<section class="classes-grid" id="classesGrid">
+
+  <div class="empty">
+    جاري تحميل الحصص...
+  </div>
+
+</section>
 ```
+
+  </main>
+
+  <div class="modal" id="classModal">
+
+```
+<div class="modal-box">
+
+  <div class="modal-head">
+
+    <h2 id="modalTitle">
+      إضافة حصة
+    </h2>
+
+    <button
+      class="close"
+      id="closeModal"
+      type="button"
+    >
+      ×
+    </button>
 
   </div>
 
-  <div class="toolbar">
+  <form id="classForm">
 
-```
-<div class="search">
-  <input
-    type="search"
-    id="searchInput"
-    placeholder="ابحث باسم الحصة أو المدرس أو المادة..."
-    autocomplete="off"
-  >
-</div>
+    <div class="form-grid">
 
-<select id="subjectFilter">
-  <option value="">كل المواد</option>
-</select>
-```
+      <div class="field full">
 
-  </div>
-
-  <section class="classes-grid" id="classesGrid">
-
-```
-<div class="empty">
-  جاري تحميل الحصص...
-</div>
-```
-
-  </section>
-
-</main>
-
-<div class="modal" id="classModal">
-
-  <div class="modal-box">
-
-```
-<div class="modal-head">
-
-  <h2 id="modalTitle">
-    إضافة حصة
-  </h2>
-
-  <button
-    class="close"
-    id="closeModal"
-    type="button"
-  >
-    ×
-  </button>
-
-</div>
-
-<form id="classForm">
-
-  <div class="form-grid">
-
-    <div class="field full">
-
-      <label for="classTitle">
-        اسم الحصة
-      </label>
-
-      <input
-        id="classTitle"
-        type="text"
-        placeholder="مثال: الحصة الأولى - التفاضل"
-        required
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label for="classSubject">
-        المادة
-      </label>
-
-      <select
-        id="classSubject"
-        required
-      >
-        <option value="">
-          اختر المادة
-        </option>
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label for="classTeacher">
-        اسم المدرس
-      </label>
-
-      <input
-        id="classTeacher"
-        type="text"
-        placeholder="مثال: أ/ محمد"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label for="classDate">
-        التاريخ
-      </label>
-
-      <input
-        id="classDate"
-        type="date"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label for="classTime">
-        الوقت
-      </label>
-
-      <input
-        id="classTime"
-        type="time"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label for="classPrice">
-        السعر
-      </label>
-
-      <input
-        id="classPrice"
-        type="number"
-        min="0"
-        step="0.01"
-        value="0"
-        placeholder="0 = مجانية"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label for="classOrder">
-        الترتيب
-      </label>
-
-      <input
-        id="classOrder"
-        type="number"
-        min="0"
-        value="0"
-      >
-
-    </div>
-
-    <div class="field full">
-
-      <label for="classPdf">
-        رابط ملف الحصة PDF
-      </label>
-
-      <input
-        id="classPdf"
-        type="url"
-        placeholder="https://..."
-        required
-      >
-
-      <span class="hint">
-        الرابط خارجي. لن يتم رفع ملف PDF إلى Firebase Storage.
-      </span>
-
-    </div>
-
-    <div class="field full">
-
-      <label for="classDescription">
-        وصف الحصة
-      </label>
-
-      <textarea
-        id="classDescription"
-        placeholder="اكتب وصفًا مختصرًا للحصة..."
-      ></textarea>
-
-    </div>
-
-    <div class="field full">
-
-      <label class="checkbox">
+        <label for="classTitle">
+          اسم الحصة
+        </label>
 
         <input
-          type="checkbox"
-          id="classPublished"
-          checked
+          id="classTitle"
+          type="text"
+          placeholder="مثال: الحصة الأولى - التفاضل"
+          required
         >
 
-        <span>
-          الحصة ظاهرة للطلاب
+      </div>
+
+      <div class="field">
+
+        <label for="classSubject">
+          المادة
+        </label>
+
+        <select
+          id="classSubject"
+          required
+        >
+          <option value="">
+            اختر المادة
+          </option>
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="classTeacher">
+          اسم المدرس
+        </label>
+
+        <input
+          id="classTeacher"
+          type="text"
+          placeholder="مثال: أ/ محمد"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label for="classDate">
+          التاريخ
+        </label>
+
+        <input
+          id="classDate"
+          type="date"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label for="classTime">
+          الوقت
+        </label>
+
+        <input
+          id="classTime"
+          type="time"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label for="classPrice">
+          السعر
+        </label>
+
+        <input
+          id="classPrice"
+          type="number"
+          min="0"
+          step="0.01"
+          value="0"
+          placeholder="0 = مجانية"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label for="classOrder">
+          الترتيب
+        </label>
+
+        <input
+          id="classOrder"
+          type="number"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+      <div class="field full">
+
+        <label for="classPdf">
+          رابط ملف الحصة PDF
+        </label>
+
+        <input
+          id="classPdf"
+          type="url"
+          placeholder="https://..."
+          required
+        >
+
+        <span class="hint">
+          الرابط خارجي. لن يتم رفع ملف PDF إلى Firebase Storage.
         </span>
 
-      </label>
+      </div>
+
+      <div class="field full">
+
+        <label for="classDescription">
+          وصف الحصة
+        </label>
+
+        <textarea
+          id="classDescription"
+          placeholder="اكتب وصفًا مختصرًا للحصة..."
+        ></textarea>
+
+      </div>
+
+      <div class="field full">
+
+        <label class="checkbox">
+
+          <input
+            type="checkbox"
+            id="classPublished"
+            checked
+          >
+
+          <span>
+            الحصة ظاهرة للطلاب
+          </span>
+
+        </label>
+
+      </div>
 
     </div>
 
-  </div>
+    <div class="modal-actions">
 
-  <div class="modal-actions">
+      <button
+        class="btn"
+        type="button"
+        id="cancelBtn"
+      >
+        إلغاء
+      </button>
 
-    <button
-      class="btn"
-      type="button"
-      id="cancelBtn"
-    >
-      إلغاء
-    </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        id="saveBtn"
+      >
+        حفظ الحصة
+      </button>
 
-    <button
-      class="btn btn-primary"
-      type="submit"
-      id="saveBtn"
-    >
-      حفظ الحصة
-    </button>
+    </div>
 
-  </div>
+  </form>
 
-</form>
+</div>
 ```
 
   </div>
 
-</div>
+  <div class="toast" id="toast"></div>
 
-<div class="toast" id="toast"></div>
+  <script type="module">
 
-<script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      signOut,
+      setPersistence,
+      browserLocalPersistence
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      onSnapshot,
+      query,
+      orderBy,
+      updateDoc,
+      deleteDoc,
+      doc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    onSnapshot,
-    query,
-    orderBy,
-    updateDoc,
-    deleteDoc,
-    doc,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+      authDomain: "mathix-88811.firebaseapp.com",
+      projectId: "mathix-88811",
+      storageBucket: "mathix-88811.firebasestorage.app",
+      messagingSenderId: "1043867239139",
+      appId: "1:1043867239139:web:da19abef81f052682bbbd6",
+      measurementId: "G-T17ZDVBLM2"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
-    authDomain: "mathix-88811.firebaseapp.com",
-    projectId: "mathix-88811",
-    storageBucket: "mathix-88811.firebasestorage.app",
-    messagingSenderId: "1043867239139",
-    appId: "1:1043867239139:web:da19abef81f052682bbbd6",
-    measurementId: "G-T17ZDVBLM2"
-  };
+    const ADMIN_EMAIL = "z1wae12008@gmail.com";
 
-  const ADMIN_EMAIL =
-    "z1wae12008@gmail.com";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  const app =
-    initializeApp(firebaseConfig);
+    const classesGrid = document.getElementById("classesGrid");
+    const searchInput = document.getElementById("searchInput");
+    const subjectFilter = document.getElementById("subjectFilter");
 
-  const auth =
-    getAuth(app);
+    const classModal = document.getElementById("classModal");
+    const classForm = document.getElementById("classForm");
+    const modalTitle = document.getElementById("modalTitle");
 
-  const db =
-    getFirestore(app);
+    const addClassBtn = document.getElementById("addClassBtn");
+    const closeModal = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const saveBtn = document.getElementById("saveBtn");
 
-  const classesGrid =
-    document.getElementById("classesGrid");
+    const classTitle = document.getElementById("classTitle");
+    const classSubject = document.getElementById("classSubject");
+    const classTeacher = document.getElementById("classTeacher");
+    const classDate = document.getElementById("classDate");
+    const classTime = document.getElementById("classTime");
+    const classPrice = document.getElementById("classPrice");
+    const classOrder = document.getElementById("classOrder");
+    const classPdf = document.getElementById("classPdf");
+    const classDescription = document.getElementById("classDescription");
+    const classPublished = document.getElementById("classPublished");
 
-  const searchInput =
-    document.getElementById("searchInput");
+    const toast = document.getElementById("toast");
 
-  const subjectFilter =
-    document.getElementById("subjectFilter");
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const overlay = document.getElementById("overlay");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-  const classModal =
-    document.getElementById("classModal");
+    let classes = [];
+    let subjects = [];
+    let editingId = null;
 
-  const classForm =
-    document.getElementById("classForm");
+    function showToast(message, type = "") {
+      toast.textContent = message;
+      toast.className = "toast show " + type;
 
-  const modalTitle =
-    document.getElementById("modalTitle");
+      clearTimeout(window.toastTimer);
 
-  const addClassBtn =
-    document.getElementById("addClassBtn");
-
-  const closeModal =
-    document.getElementById("closeModal");
-
-  const cancelBtn =
-    document.getElementById("cancelBtn");
-
-  const saveBtn =
-    document.getElementById("saveBtn");
-
-  const classTitle =
-    document.getElementById("classTitle");
-
-  const classSubject =
-    document.getElementById("classSubject");
-
-  const classTeacher =
-    document.getElementById("classTeacher");
-
-  const classDate =
-    document.getElementById("classDate");
-
-  const classTime =
-    document.getElementById("classTime");
-
-  const classPrice =
-    document.getElementById("classPrice");
-
-  const classOrder =
-    document.getElementById("classOrder");
-
-  const classPdf =
-    document.getElementById("classPdf");
-
-  const classDescription =
-    document.getElementById("classDescription");
-
-  const classPublished =
-    document.getElementById("classPublished");
-
-  const toast =
-    document.getElementById("toast");
-
-  const sidebar =
-    document.getElementById("sidebar");
-
-  const mobileMenu =
-    document.getElementById("mobileMenu");
-
-  const overlay =
-    document.getElementById("overlay");
-
-  const logoutBtn =
-    document.getElementById("logoutBtn");
-
-  let classes = [];
-  let subjects = [];
-  let editingId = null;
-
-  function showToast(message, type = "") {
-
-    toast.textContent = message;
-
-    toast.className =
-      "toast show " + type;
-
-    clearTimeout(
-      window.toastTimer
-    );
-
-    window.toastTimer =
-      setTimeout(() => {
-
-        toast.className =
-          "toast";
-
+      window.toastTimer = setTimeout(() => {
+        toast.className = "toast";
       }, 3200);
-  }
-
-  function escapeHTML(value) {
-
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function formatDate(value) {
-
-    if (!value) {
-      return "غير محدد";
     }
 
-    const date =
-      new Date(
-        `${value}T00:00:00`
-      );
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return value;
+    function escapeHTML(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
-    return new Intl.DateTimeFormat(
-      "ar-EG",
-      {
+    function formatDate(value) {
+      if (!value) {
+        return "غير محدد";
+      }
+
+      const date = new Date(`${value}T00:00:00`);
+
+      if (Number.isNaN(date.getTime())) {
+        return value;
+      }
+
+      return new Intl.DateTimeFormat("ar-EG", {
         year: "numeric",
         month: "long",
         day: "numeric"
-      }
-    ).format(date);
-  }
+      }).format(date);
+    }
 
-  function fillSubjects() {
+    function fillSubjects() {
 
-    const currentClassSubject =
-      classSubject.value;
+      const currentClassSubject = classSubject.value;
+      const currentFilter = subjectFilter.value;
 
-    const currentFilter =
-      subjectFilter.value;
-
-    const options =
-      subjects
+      const sortedSubjects = subjects
         .slice()
         .sort(
-          (a,b) =>
-            Number(a.order ?? 0) -
-            Number(b.order ?? 0)
-        )
-        .map(subject => {
-
-          return `
-            <option value="${escapeHTML(subject.id)}">
-              ${escapeHTML(
-                subject.name ||
-                "بدون اسم"
-              )}
-            </option>
-          `;
-
-        })
-        .join("");
-
-    classSubject.innerHTML =
-      `<option value="">اختر المادة</option>${options}`;
-
-    subjectFilter.innerHTML =
-      `<option value="">كل المواد</option>${options}`;
-
-    if (
-      subjects.some(
-        item =>
-          item.id ===
-          currentClassSubject
-      )
-    ) {
-      classSubject.value =
-        currentClassSubject;
-    }
-
-    if (
-      subjects.some(
-        item =>
-          item.id ===
-          currentFilter
-      )
-    ) {
-      subjectFilter.value =
-        currentFilter;
-    }
-
-  }
-
-  function openModal(item = null) {
-
-    editingId =
-      item?.id || null;
-
-    modalTitle.textContent =
-      editingId
-        ? "تعديل الحصة"
-        : "إضافة حصة";
-
-    classTitle.value =
-      item?.title ||
-      item?.name ||
-      "";
-
-    classSubject.value =
-      item?.subjectId ||
-      "";
-
-    classTeacher.value =
-      item?.teacherName ||
-      item?.teacher ||
-      "";
-
-    classDate.value =
-      item?.date ||
-      item?.classDate ||
-      "";
-
-    classTime.value =
-      item?.time ||
-      "";
-
-    classPrice.value =
-      Number(
-        item?.price ?? 0
-      );
-
-    classOrder.value =
-      Number(
-        item?.order ?? 0
-      );
-
-    classPdf.value =
-      item?.pdfUrl ||
-      item?.pdf ||
-      item?.url ||
-      "";
-
-    classDescription.value =
-      item?.description ||
-      "";
-
-    classPublished.checked =
-      item?.isPublished !== false;
-
-    classModal.classList.add(
-      "show"
-    );
-
-    setTimeout(
-      () =>
-        classTitle.focus(),
-      100
-    );
-  }
-
-  function closeClassModal() {
-
-    classModal.classList.remove(
-      "show"
-    );
-
-    classForm.reset();
-
-    editingId = null;
-
-    classPrice.value = 0;
-    classOrder.value = 0;
-    classPublished.checked = true;
-  }
-
-  function renderClasses() {
-
-    const search =
-      searchInput.value
-        .trim()
-        .toLowerCase();
-
-    const filter =
-      subjectFilter.value;
-
-    const filtered =
-      classes
-        .filter(item => {
-
-          const text = [
-            item.title,
-            item.name,
-            item.description,
-            item.teacherName,
-            item.teacher,
-            item.subjectName,
-            item.subject
-          ]
-            .map(value =>
-              String(
-                value || ""
-              ).toLowerCase()
-            )
-            .join(" ");
-
-          return (
-            (!search ||
-              text.includes(search)) &&
-            (!filter ||
-              item.subjectId === filter)
-          );
-
-        })
-        .sort(
-          (a,b) =>
+          (a, b) =>
             Number(a.order ?? 0) -
             Number(b.order ?? 0)
         );
 
-    if (!filtered.length) {
+      const options = sortedSubjects
+        .map(subject => `
+          <option value="${escapeHTML(subject.id)}">
+            ${escapeHTML(subject.name || "بدون اسم")}
+          </option>
+        `)
+        .join("");
 
-      classesGrid.innerHTML = `
-        <div class="empty">
+      classSubject.innerHTML =
+        `<option value="">اختر المادة</option>${options}`;
 
-          <strong>
-            لا توجد حصص
-          </strong>
+      subjectFilter.innerHTML =
+        `<option value="">كل المواد</option>${options}`;
 
-          <span>
-            ${
-              search ||
-              filter
-                ? "لا توجد نتائج مطابقة."
-                : "ابدأ بإضافة أول حصة."
-            }
-          </span>
+      if (
+        subjects.some(
+          item => item.id === currentClassSubject
+        )
+      ) {
+        classSubject.value = currentClassSubject;
+      }
 
-        </div>
-      `;
-
-      return;
+      if (
+        subjects.some(
+          item => item.id === currentFilter
+        )
+      ) {
+        subjectFilter.value = currentFilter;
+      }
     }
 
-    classesGrid.innerHTML =
-      filtered
-        .map(item => {
+    function openModal(item = null) {
 
-          const title =
-            item.title ||
-            item.name ||
-            "بدون عنوان";
+      editingId = item?.id || null;
 
-          const description =
-            item.description ||
-            "لا يوجد وصف.";
+      modalTitle.textContent =
+        editingId
+          ? "تعديل الحصة"
+          : "إضافة حصة";
 
-          const subject =
-            item.subjectName ||
-            item.subject ||
-            "غير محدد";
+      classTitle.value =
+        item?.title ||
+        item?.name ||
+        "";
 
-          const teacher =
-            item.teacherName ||
-            item.teacher ||
-            "غير محدد";
+      classSubject.value =
+        item?.subjectId ||
+        "";
 
-          const date =
-            item.date ||
-            item.classDate ||
-            "";
+      classTeacher.value =
+        item?.teacherName ||
+        item?.teacher ||
+        "";
 
-          const time =
-            item.time ||
-            "غير محدد";
+      classDate.value =
+        item?.date ||
+        item?.classDate ||
+        "";
 
-          const price =
-            Number(
-              item.price ?? 0
+      classTime.value =
+        item?.time ||
+        "";
+
+      classPrice.value =
+        Number(item?.price ?? 0);
+
+      classOrder.value =
+        Number(item?.order ?? 0);
+
+      classPdf.value =
+        item?.pdfUrl ||
+        item?.pdf ||
+        item?.url ||
+        "";
+
+      classDescription.value =
+        item?.description ||
+        "";
+
+      classPublished.checked =
+        item?.isPublished !== false;
+
+      classModal.classList.add("show");
+
+      setTimeout(() => {
+        classTitle.focus();
+      }, 100);
+    }
+
+    function closeClassModal() {
+
+      classModal.classList.remove("show");
+
+      classForm.reset();
+
+      editingId = null;
+
+      classPrice.value = 0;
+      classOrder.value = 0;
+      classPublished.checked = true;
+    }
+
+    function renderClasses() {
+
+      const search =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const filter =
+        subjectFilter.value;
+
+      const filtered =
+        classes
+          .filter(item => {
+
+            const text = [
+              item.title,
+              item.name,
+              item.description,
+              item.teacherName,
+              item.teacher,
+              item.subjectName,
+              item.subject
+            ]
+              .map(value =>
+                String(value || "").toLowerCase()
+              )
+              .join(" ");
+
+            return (
+              (!search || text.includes(search)) &&
+              (!filter || item.subjectId === filter)
             );
+          })
+          .sort(
+            (a, b) =>
+              Number(a.order ?? 0) -
+              Number(b.order ?? 0)
+          );
 
-          const pdf =
-            item.pdfUrl ||
-            item.pdf ||
-            item.url ||
-            "";
+      if (!filtered.length) {
 
-          const published =
-            item.isPublished !== false;
+        classesGrid.innerHTML = `
+          <div class="empty">
+            <strong>لا توجد حصص</strong>
+            <span>
+              ${
+                search || filter
+                  ? "لا توجد نتائج مطابقة."
+                  : "ابدأ بإضافة أول حصة."
+              }
+            </span>
+          </div>
+        `;
 
-          return `
-            <article class="class-card">
+        return;
+      }
 
-              <div class="class-head">
+      classesGrid.innerHTML =
+        filtered
+          .map(item => {
 
-                <div class="class-icon">
-                  ▤
-                </div>
+            const title =
+              item.title ||
+              item.name ||
+              "بدون عنوان";
 
-                <span
-                  class="status ${
+            const description =
+              item.description ||
+              "لا يوجد وصف.";
+
+            const subject =
+              item.subjectName ||
+              item.subject ||
+              "غير محدد";
+
+            const teacher =
+              item.teacherName ||
+              item.teacher ||
+              "غير محدد";
+
+            const date =
+              item.date ||
+              item.classDate ||
+              "";
+
+            const time =
+              item.time ||
+              "غير محدد";
+
+            const price =
+              Number(item.price ?? 0);
+
+            const pdf =
+              item.pdfUrl ||
+              item.pdf ||
+              item.url ||
+              "";
+
+            const published =
+              item.isPublished !== false;
+
+            return `
+              <article class="class-card">
+
+                <div class="class-head">
+
+                  <div class="class-icon">
+                    ▤
+                  </div>
+
+                  <span class="status ${
                     published
                       ? "active"
                       : "hidden"
-                  }"
-                >
+                  }">
+                    ${
+                      published
+                        ? "ظاهرة"
+                        : "مخفية"
+                    }
+                  </span>
+
+                </div>
+
+                <h3>
+                  ${escapeHTML(title)}
+                </h3>
+
+                <div class="description">
+                  ${escapeHTML(description)}
+                </div>
+
+                <div class="meta">
+
+                  <div class="meta-item">
+                    <span>المادة</span>
+                    <strong>
+                      ${escapeHTML(subject)}
+                    </strong>
+                  </div>
+
+                  <div class="meta-item">
+                    <span>المدرس</span>
+                    <strong>
+                      ${escapeHTML(teacher)}
+                    </strong>
+                  </div>
+
+                  <div class="meta-item">
+                    <span>التاريخ</span>
+                    <strong>
+                      ${escapeHTML(formatDate(date))}
+                    </strong>
+                  </div>
+
+                  <div class="meta-item">
+                    <span>الوقت</span>
+                    <strong>
+                      ${escapeHTML(time)}
+                    </strong>
+                  </div>
+
+                </div>
+
+                <div class="price">
                   ${
-                    published
-                      ? "ظاهرة"
-                      : "مخفية"
+                    price > 0
+                      ? `${price.toFixed(2)} جنيه`
+                      : "مجانية"
                   }
-                </span>
-
-              </div>
-
-              <h3>
-                ${escapeHTML(title)}
-              </h3>
-
-              <div class="description">
-                ${escapeHTML(
-                  description
-                )}
-              </div>
-
-              <div class="meta">
-
-                <div class="meta-item">
-                  <span>المادة</span>
-                  <strong>
-                    ${escapeHTML(subject)}
-                  </strong>
                 </div>
 
-                <div class="meta-item">
-                  <span>المدرس</span>
-                  <strong>
-                    ${escapeHTML(teacher)}
-                  </strong>
+                <div class="actions">
+
+                  ${
+                    pdf
+                      ? `
+                        <a
+                          class="pdf"
+                          href="${escapeHTML(pdf)}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          فتح PDF
+                        </a>
+                      `
+                      : `
+                        <button
+                          type="button"
+                          disabled
+                        >
+                          بدون PDF
+                        </button>
+                      `
+                  }
+
+                  <button
+                    class="edit"
+                    type="button"
+                    data-action="edit"
+                    data-id="${escapeHTML(item.id)}"
+                  >
+                    تعديل
+                  </button>
+
+                  <button
+                    class="delete"
+                    type="button"
+                    data-action="delete"
+                    data-id="${escapeHTML(item.id)}"
+                  >
+                    حذف
+                  </button>
+
                 </div>
 
-                <div class="meta-item">
-                  <span>التاريخ</span>
-                  <strong>
-                    ${escapeHTML(
-                      formatDate(date)
-                    )}
-                  </strong>
-                </div>
-
-                <div class="meta-item">
-                  <span>الوقت</span>
-                  <strong>
-                    ${escapeHTML(time)}
-                  </strong>
-                </div>
-
-              </div>
-
-              <div class="price">
-                ${
-                  price > 0
-                    ? `${price.toFixed(2)} جنيه`
-                    : "مجانية"
-                }
-              </div>
-
-              <div class="actions">
-
-                ${
-                  pdf
-                    ? `
-                      <a
-                        class="pdf"
-                        href="${escapeHTML(pdf)}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        فتح PDF
-                      </a>
-                    `
-                    : `
-                      <button
-                        type="button"
-                        disabled
-                      >
-                        بدون PDF
-                      </button>
-                    `
-                }
-
-                <button
-                  class="edit"
-                  type="button"
-                  data-action="edit"
-                  data-id="${escapeHTML(item.id)}"
-                >
-                  تعديل
-                </button>
-
-                <button
-                  class="delete"
-                  type="button"
-                  data-action="delete"
-                  data-id="${escapeHTML(item.id)}"
-                >
-                  حذف
-                </button>
-
-              </div>
-
-            </article>
-          `;
-
-        })
-        .join("");
-  }
-
-  async function saveClass(event) {
-
-    event.preventDefault();
-
-    const title =
-      classTitle.value.trim();
-
-    const subjectId =
-      classSubject.value;
-
-    const subject =
-      subjects.find(
-        item =>
-          item.id === subjectId
-      );
-
-    const pdf =
-      classPdf.value.trim();
-
-    if (!title) {
-
-      showToast(
-        "اكتب اسم الحصة.",
-        "error"
-      );
-
-      return;
-    }
-
-    if (!subjectId) {
-
-      showToast(
-        "اختر المادة.",
-        "error"
-      );
-
-      return;
-    }
-
-    if (!pdf) {
-
-      showToast(
-        "أدخل رابط PDF للحصة.",
-        "error"
-      );
-
-      return;
-    }
-
-    try {
-
-      new URL(pdf);
-
-    } catch {
-
-      showToast(
-        "رابط PDF غير صحيح.",
-        "error"
-      );
-
-      return;
-    }
-
-    const price =
-      Math.max(
-        0,
-        Number(
-          classPrice.value || 0
-        )
-      );
-
-    const order =
-      Math.max(
-        0,
-        Number(
-          classOrder.value || 0
-        )
-      );
-
-    const data = {
-
-      title,
-
-      name: title,
-
-      description:
-        classDescription.value.trim(),
-
-      subjectId,
-
-      subjectName:
-        subject?.name || "",
-
-      subject:
-        subject?.name || "",
-
-      teacherName:
-        classTeacher.value.trim(),
-
-      teacher:
-        classTeacher.value.trim(),
-
-      date:
-        classDate.value,
-
-      classDate:
-        classDate.value,
-
-      time:
-        classTime.value,
-
-      price,
-
-      pdfUrl: pdf,
-
-      pdf,
-
-      isPublished:
-        classPublished.checked,
-
-      order
-
-    };
-
-    saveBtn.disabled = true;
-
-    saveBtn.textContent =
-      "جاري الحفظ...";
-
-    try {
-
-      if (editingId) {
-
-        await updateDoc(
-          doc(
-            db,
-            "classes",
-            editingId
-          ),
-          {
-            ...data,
-            updatedAt:
-              serverTimestamp()
-          }
-        );
-
-        showToast(
-          "تم تعديل الحصة بنجاح.",
-          "success"
-        );
-
-      } else {
-
-        await addDoc(
-          collection(
-            db,
-            "classes"
-          ),
-          {
-            ...data,
-            createdAt:
-              serverTimestamp(),
-            updatedAt:
-              serverTimestamp()
-          }
-        );
-
-        showToast(
-          "تمت إضافة الحصة بنجاح.",
-          "success"
-        );
-      }
-
-      closeClassModal();
-
-    } catch(error) {
-
-      console.error(
-        "SAVE CLASS ERROR:",
-        error
-      );
-
-      showToast(
-        "حدث خطأ أثناء حفظ الحصة.",
-        "error"
-      );
-
-    } finally {
-
-      saveBtn.disabled = false;
-
-      saveBtn.textContent =
-        "حفظ الحصة";
-    }
-  }
-
-  async function deleteClass(id) {
-
-    const item =
-      classes.find(
-        classItem =>
-          classItem.id === id
-      );
-
-    if (!item) return;
-
-    const title =
-      item.title ||
-      item.name ||
-      "هذه الحصة";
-
-    if (
-      !confirm(
-        `هل أنت متأكد من حذف "${title}"؟`
-      )
-    ) {
-      return;
-    }
-
-    try {
-
-      await deleteDoc(
-        doc(
-          db,
-          "classes",
-          id
-        )
-      );
-
-      showToast(
-        "تم حذف الحصة.",
-        "success"
-      );
-
-    } catch(error) {
-
-      console.error(
-        "DELETE CLASS ERROR:",
-        error
-      );
-
-      showToast(
-        "تعذر حذف الحصة.",
-        "error"
-      );
-    }
-  }
-
-  function startListeners() {
-
-    const subjectsRef =
-      collection(
-        db,
-        "subjects"
-      );
-
-    const classesRef =
-      collection(
-        db,
-        "classes"
-      );
-
-    onSnapshot(
-      subjectsRef,
-      snapshot => {
-
-        subjects =
-          snapshot.docs.map(
-            item => ({
-              id: item.id,
-              ...item.data()
-            })
-          );
-
-        fillSubjects();
-
-        renderClasses();
-
-      },
-      error => {
-
-        console.error(
-          "SUBJECTS ERROR:",
-          error
-        );
-
-      }
-    );
-
-    const orderedQuery =
-      query(
-        classesRef,
-        orderBy(
-          "order",
-          "asc"
-        )
-      );
-
-    onSnapshot(
-      orderedQuery,
-      snapshot => {
-
-        classes =
-          snapshot.docs.map(
-            item => ({
-              id: item.id,
-              ...item.data()
-            })
-          );
-
-        renderClasses();
-
-      },
-      error => {
-
-        console.error(
-          "ORDERED CLASSES ERROR:",
-          error
-        );
-
-        onSnapshot(
-          classesRef,
-          fallbackSnapshot => {
-
-            classes =
-              fallbackSnapshot.docs
-                .map(
-                  item => ({
-                    id: item.id,
-                    ...item.data()
-                  })
-                )
-                .sort(
-                  (a,b) =>
-                    Number(a.order ?? 0) -
-                    Number(b.order ?? 0)
-                );
-
-            renderClasses();
-
-          },
-          fallbackError => {
-
-            console.error(
-              "CLASSES ERROR:",
-              fallbackError
-            );
-
-            classesGrid.innerHTML = `
-              <div class="empty">
-
-                <strong>
-                  تعذر تحميل الحصص
-                </strong>
-
-                <span>
-                  تأكد من Firestore Rules والاتصال بقاعدة البيانات.
-                </span>
-
-              </div>
+              </article>
             `;
-          }
+          })
+          .join("");
+    }
+
+    async function saveClass(event) {
+
+      event.preventDefault();
+
+      const title =
+        classTitle.value.trim();
+
+      const subjectId =
+        classSubject.value;
+
+      const subject =
+        subjects.find(
+          item => item.id === subjectId
         );
-      }
-    );
-  }
 
-  onAuthStateChanged(
-    auth,
-    user => {
+      const pdf =
+        classPdf.value.trim();
 
-      if (!user) {
-
-        window.location.href =
-          "index.html";
-
+      if (!title) {
+        showToast("اكتب اسم الحصة.", "error");
         return;
       }
 
-      if (
-        String(
-          user.email || ""
-        ).toLowerCase() !==
-        ADMIN_EMAIL.toLowerCase()
-      ) {
-
-        signOut(auth).finally(() => {
-
-          window.location.href =
-            "index.html";
-
-        });
-
+      if (!subjectId) {
+        showToast("اختر المادة.", "error");
         return;
       }
 
-      startListeners();
-
-    }
-  );
-
-  addClassBtn.addEventListener(
-    "click",
-    () => openModal()
-  );
-
-  closeModal.addEventListener(
-    "click",
-    closeClassModal
-  );
-
-  cancelBtn.addEventListener(
-    "click",
-    closeClassModal
-  );
-
-  classModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        classModal
-      ) {
-        closeClassModal();
+      if (!pdf) {
+        showToast("أدخل رابط PDF للحصة.", "error");
+        return;
       }
 
-    }
-  );
+      try {
+        new URL(pdf);
+      } catch {
+        showToast("رابط PDF غير صحيح.", "error");
+        return;
+      }
 
-  classForm.addEventListener(
-    "submit",
-    saveClass
-  );
-
-  searchInput.addEventListener(
-    "input",
-    renderClasses
-  );
-
-  subjectFilter.addEventListener(
-    "change",
-    renderClasses
-  );
-
-  classesGrid.addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest(
-          "button[data-action]"
+      const price =
+        Math.max(
+          0,
+          Number(classPrice.value || 0)
         );
 
-      if (!button) return;
+      const order =
+        Math.max(
+          0,
+          Number(classOrder.value || 0)
+        );
 
-      const action =
-        button.dataset.action;
+      const teacher =
+        classTeacher.value.trim();
 
-      const id =
-        button.dataset.id;
+      const date =
+        classDate.value;
 
-      if (
-        action === "edit"
-      ) {
+      const time =
+        classTime.value;
 
-        const item =
-          classes.find(
-            classItem =>
-              classItem.id === id
-          );
+      const data = {
 
-        if (item) {
-          openModal(item);
-        }
+        title,
 
-      }
+        name: title,
 
-      if (
-        action === "delete"
-      ) {
+        description:
+          classDescription.value.trim(),
 
-        deleteClass(id);
+        subjectId,
 
-      }
+        subjectName:
+          subject?.name || "",
 
-    }
-  );
+        subject:
+          subject?.name || "",
 
-  logoutBtn.addEventListener(
-    "click",
-    async () => {
+        teacherName:
+          teacher,
+
+        teacher,
+
+        date,
+
+        classDate:
+          date,
+
+        time,
+
+        price,
+
+        pdfUrl:
+          pdf,
+
+        pdf:
+          pdf,
+
+        isPublished:
+          classPublished.checked,
+
+        order
+      };
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = "جاري الحفظ...";
 
       try {
 
-        await signOut(auth);
+        if (editingId) {
 
-        window.location.href =
-          "index.html";
+          await updateDoc(
+            doc(
+              db,
+              "classes",
+              editingId
+            ),
+            {
+              ...data,
+              updatedAt: serverTimestamp()
+            }
+          );
 
-      } catch(error) {
+          showToast(
+            "تم تعديل الحصة بنجاح.",
+            "success"
+          );
+
+        } else {
+
+          await addDoc(
+            collection(
+              db,
+              "classes"
+            ),
+            {
+              ...data,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp()
+            }
+          );
+
+          showToast(
+            "تمت إضافة الحصة بنجاح.",
+            "success"
+          );
+        }
+
+        closeClassModal();
+
+      } catch (error) {
 
         console.error(
-          "LOGOUT ERROR:",
+          "SAVE CLASS ERROR:",
           error
         );
 
         showToast(
-          "تعذر تسجيل الخروج.",
+          "حدث خطأ أثناء حفظ الحصة.",
+          "error"
+        );
+
+      } finally {
+
+        saveBtn.disabled = false;
+        saveBtn.textContent = "حفظ الحصة";
+      }
+    }
+
+    async function deleteClass(id) {
+
+      const item =
+        classes.find(
+          classItem => classItem.id === id
+        );
+
+      if (!item) {
+        return;
+      }
+
+      const title =
+        item.title ||
+        item.name ||
+        "هذه الحصة";
+
+      if (
+        !confirm(
+          `هل أنت متأكد من حذف "${title}"؟`
+        )
+      ) {
+        return;
+      }
+
+      try {
+
+        await deleteDoc(
+          doc(
+            db,
+            "classes",
+            id
+          )
+        );
+
+        showToast(
+          "تم حذف الحصة.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "DELETE CLASS ERROR:",
+          error
+        );
+
+        showToast(
+          "تعذر حذف الحصة.",
           "error"
         );
       }
-
     }
-  );
 
-  mobileMenu.addEventListener(
-    "click",
-    () => {
+    function startListeners() {
 
-      sidebar.classList.add(
-        "open"
-      );
+      const subjectsRef =
+        collection(
+          db,
+          "subjects"
+        );
 
-      overlay.classList.add(
-        "show"
-      );
+      const classesRef =
+        collection(
+          db,
+          "classes"
+        );
 
-    }
-  );
+      onSnapshot(
+        subjectsRef,
+        snapshot => {
 
-  overlay.addEventListener(
-    "click",
-    () => {
+          subjects =
+            snapshot.docs.map(item => ({
+              id: item.id,
+              ...item.data()
+            }));
 
-      sidebar.classList.remove(
-        "open"
-      );
+          fillSubjects();
+          renderClasses();
 
-      overlay.classList.remove(
-        "show"
-      );
+        },
+        error => {
 
-    }
-  );
-
-  document
-    .querySelectorAll(".nav a")
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          sidebar.classList.remove(
-            "open"
+          console.error(
+            "SUBJECTS ERROR:",
+            error
           );
 
-          overlay.classList.remove(
-            "show"
+          showToast(
+            "تعذر تحميل المواد.",
+            "error"
           );
-
         }
       );
 
-    });
+      const orderedQuery =
+        query(
+          classesRef,
+          orderBy("order", "asc")
+        );
 
-</script>
+      onSnapshot(
+        orderedQuery,
+        snapshot => {
+
+          classes =
+            snapshot.docs.map(item => ({
+              id: item.id,
+              ...item.data()
+            }));
+
+          renderClasses();
+
+        },
+        error => {
+
+          console.error(
+            "ORDERED CLASSES ERROR:",
+            error
+          );
+
+          onSnapshot(
+            classesRef,
+            fallbackSnapshot => {
+
+              classes =
+                fallbackSnapshot.docs
+                  .map(item => ({
+                    id: item.id,
+                    ...item.data()
+                  }))
+                  .sort(
+                    (a, b) =>
+                      Number(a.order ?? 0) -
+                      Number(b.order ?? 0)
+                  );
+
+              renderClasses();
+
+            },
+            fallbackError => {
+
+              console.error(
+                "CLASSES ERROR:",
+                fallbackError
+              );
+
+              classesGrid.innerHTML = `
+                <div class="empty">
+                  <strong>
+                    تعذر تحميل الحصص
+                  </strong>
+
+                  <span>
+                    تأكد من Firestore Rules والاتصال بقاعدة البيانات.
+                  </span>
+                </div>
+              `;
+            }
+          );
+        }
+      );
+    }
+
+    async function initAuth() {
+
+      try {
+
+        await setPersistence(
+          auth,
+          browserLocalPersistence
+        );
+
+        await auth.authStateReady();
+
+        const user =
+          auth.currentUser;
+
+        if (!user) {
+
+          window.location.replace(
+            "index.html"
+          );
+
+          return;
+        }
+
+        const email =
+          String(
+            user.email || ""
+          ).toLowerCase();
+
+        if (
+          email !==
+          ADMIN_EMAIL.toLowerCase()
+        ) {
+
+          await signOut(auth);
+
+          window.location.replace(
+            "index.html"
+          );
+
+          return;
+        }
+
+        startListeners();
+
+      } catch (error) {
+
+        console.error(
+          "AUTH INIT ERROR:",
+          error
+        );
+
+        classesGrid.innerHTML = `
+          <div class="empty">
+            <strong>
+              تعذر التحقق من تسجيل الدخول
+            </strong>
+
+            <span>
+              افتح Console لمعرفة تفاصيل الخطأ.
+            </span>
+          </div>
+        `;
+      }
+    }
+
+    addClassBtn.addEventListener(
+      "click",
+      () => openModal()
+    );
+
+    closeModal.addEventListener(
+      "click",
+      closeClassModal
+    );
+
+    cancelBtn.addEventListener(
+      "click",
+      closeClassModal
+    );
+
+    classModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          classModal
+        ) {
+          closeClassModal();
+        }
+
+      }
+    );
+
+    classForm.addEventListener(
+      "submit",
+      saveClass
+    );
+
+    searchInput.addEventListener(
+      "input",
+      renderClasses
+    );
+
+    subjectFilter.addEventListener(
+      "change",
+      renderClasses
+    );
+
+    classesGrid.addEventListener(
+      "click",
+      event => {
+
+        const button =
+          event.target.closest(
+            "button[data-action]"
+          );
+
+        if (!button) {
+          return;
+        }
+
+        const action =
+          button.dataset.action;
+
+        const id =
+          button.dataset.id;
+
+        if (action === "edit") {
+
+          const item =
+            classes.find(
+              classItem =>
+                classItem.id === id
+            );
+
+          if (item) {
+            openModal(item);
+          }
+        }
+
+        if (action === "delete") {
+          deleteClass(id);
+        }
+      }
+    );
+
+    logoutBtn.addEventListener(
+      "click",
+      async () => {
+
+        try {
+
+          await signOut(auth);
+
+          window.location.replace(
+            "index.html"
+          );
+
+        } catch (error) {
+
+          console.error(
+            "LOGOUT ERROR:",
+            error
+          );
+
+          showToast(
+            "تعذر تسجيل الخروج.",
+            "error"
+          );
+        }
+      }
+    );
+
+    mobileMenu.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+
+      }
+    );
+
+    overlay.addEventListener(
+      "click",
+      () => {
+
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+
+      }
+    );
+
+    document
+      .querySelectorAll(".nav a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            sidebar.classList.remove("open");
+            overlay.classList.remove("show");
+
+          }
+        );
+
+      });
+
+    initAuth();
+
+  </script>
 
 </body>
 </html>
