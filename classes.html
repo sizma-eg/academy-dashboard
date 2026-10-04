@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07070b">
+  <title>الحصص</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #07070b;
+      --panel: #101016;
+      --panel2: #15151d;
+      --border: rgba(255,255,255,.08);
+      --text: #f7f7fb;
+      --muted: #9797a5;
+      --purple: #8b5cf6;
+      --purple2: #a78bfa;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 85% 5%, rgba(139,92,246,.12), transparent 28%),
+        radial-gradient(circle at 10% 90%, rgba(139,92,246,.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .sidebar {
+      width: 260px;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      padding: 22px 16px;
+      overflow-y: auto;
+      background: rgba(9,9,14,.95);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 8px 23px;
+      margin-bottom: 17px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand img {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 13px;
+    }
+
+    .brand strong {
+      display: block;
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 22px;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .nav-title {
+      color: #666673;
+      font-size: 11px;
+      margin: 18px 10px 8px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 13px;
+      border-radius: 12px;
+      color: #aaaab7;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    .nav a:hover {
+      color: white;
+      background: rgba(255,255,255,.05);
+    }
+
+    .nav a.active {
+      color: #c4b5fd;
+      background: rgba(139,92,246,.15);
+      border: 1px solid rgba(139,92,246,.22);
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+    }
+
+    .logout {
+      width: 100%;
+      margin-top: 22px;
+      padding: 11px;
+      border-radius: 12px;
+      color: #fca5a5;
+      background: rgba(239,68,68,.07);
+      border: 1px solid rgba(239,68,68,.18);
+    }
+
+    .main {
+      width: calc(100% - 260px);
+      margin-right: 260px;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title h1 {
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: var(--panel);
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .btn {
+      padding: 11px 15px;
+      border-radius: 11px;
+      background: var(--panel);
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .btn:hover {
+      border-color: rgba(139,92,246,.4);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,#7c3aed,#8b5cf6);
+      border-color: rgba(139,92,246,.35);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .search {
+      flex: 1;
+    }
+
+    .search input,
+    .toolbar select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: white;
+      outline: none;
+    }
+
+    .toolbar select {
+      width: 220px;
+    }
+
+    .search input:focus,
+    .toolbar select:focus {
+      border-color: rgba(139,92,246,.5);
+    }
+
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(290px,1fr));
+      gap: 15px;
+    }
+
+    .class-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(145deg,rgba(21,21,29,.97),rgba(11,11,16,.97));
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,.28);
+    }
+
+    .class-card::before {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      left: -35px;
+      top: -45px;
+      background: rgba(139,92,246,.1);
+      filter: blur(35px);
+      pointer-events: none;
+    }
+
+    .class-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 13px;
+    }
+
+    .class-icon {
+      width: 47px;
+      height: 47px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(139,92,246,.12);
+      border: 1px solid rgba(139,92,246,.18);
+      font-size: 20px;
+    }
+
+    .status {
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 9px;
+    }
+
+    .status.active {
+      color: #86efac;
+      background: rgba(34,197,94,.08);
+      border: 1px solid rgba(34,197,94,.15);
+    }
+
+    .status.hidden {
+      color: #fca5a5;
+      background: rgba(239,68,68,.07);
+      border: 1px solid rgba(239,68,68,.15);
+    }
+
+    .class-card h3 {
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+      min-height: 40px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .meta-item {
+      padding: 9px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .meta-item span {
+      display: block;
+      color: #777783;
+      font-size: 9px;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+    }
+
+    .price {
+      margin-top: 12px;
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .actions button,
+    .actions a {
+      flex: 1;
+      text-align: center;
+      padding: 8px 9px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      color: white;
+      font-size: 10px;
+    }
+
+    .actions .edit:hover {
+      color: #c4b5fd;
+      border-color: rgba(139,92,246,.4);
+    }
+
+    .actions .delete {
+      color: #fca5a5;
+    }
+
+    .actions .delete:hover {
+      background: rgba(239,68,68,.07);
+      border-color: rgba(239,68,68,.25);
+    }
+
+    .actions .pdf {
+      color: #c4b5fd;
+    }
+
+    .empty {
+      grid-column: 1/-1;
+      padding: 55px 20px;
+      text-align: center;
+      border-radius: 17px;
+      border: 1px dashed var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+
+    .empty strong {
+      display: block;
+      color: white;
+      margin-bottom: 5px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      padding: 18px;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(610px,100%);
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 22px;
+      border-radius: 20px;
+      background: #111117;
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 19px;
+    }
+
+    .modal-head h2 {
+      font-size: 19px;
+    }
+
+    .close {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      color: white;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      font-size: 19px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1/-1;
+    }
+
+    .field label {
+      color: #aaaab6;
+      font-size: 11px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      background: #09090e;
+      color: white;
+      border: 1px solid var(--border);
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(139,92,246,.5);
+    }
+
+    .hint {
+      color: #777783;
+      font-size: 9px;
+      line-height: 1.7;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #c7c7d0;
+      font-size: 11px;
+    }
+
+    .checkbox input {
+      accent-color: var(--purple);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 9px;
+      margin-top: 19px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+    }
+
+    .toast {
+      position: fixed;
+      left: 25px;
+      bottom: 25px;
+      min-width: 250px;
+      max-width: 400px;
+      z-index: 1000;
+      padding: 13px 16px;
+      border-radius: 13px;
+      background: #15151c;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: .25s;
+      font-size: 12px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.success {
+      border-color: rgba(34,197,94,.25);
+    }
+
+    .toast.error {
+      border-color: rgba(239,68,68,.25);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(0,0,0,.55);
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    @media(max-width:900px) {
+      .sidebar {
+        transform: translateX(105%);
+        transition: .25s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        width: 100%;
+        margin-right: 0;
+        padding: 20px;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+    }
+
+    @media(max-width:650px) {
+      .topbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .top-actions {
+        width: 100%;
+      }
+
+      .top-actions .btn {
+        width: 100%;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .toolbar select {
+        width: 100%;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <img src="logo.png" alt="Mathix">
+
+```
+<div>
+  <strong>Mathix</strong>
+  <span>لوحة التحكم</span>
+</div>
+```
+
+  </div>
+
+  <div class="nav-title">الرئيسية</div>
+
+  <nav class="nav">
+
+```
+<a href="admin-dashboard.html">
+  <span class="nav-icon">⌂</span>
+  <span>الرئيسية</span>
+</a>
+
+<a href="admin-students.html">
+  <span class="nav-icon">♙</span>
+  <span>الطلاب</span>
+</a>
+
+<a href="admin-subjects.html">
+  <span class="nav-icon">▣</span>
+  <span>المواد</span>
+</a>
+
+<a href="admin-curriculum.html">
+  <span class="nav-icon">☷</span>
+  <span>المنهج والدروس</span>
+</a>
+
+<a href="admin-classes.html" class="active">
+  <span class="nav-icon">▤</span>
+  <span>الحصص</span>
+</a>
+
+<a href="admin-exams.html">
+  <span class="nav-icon">✓</span>
+  <span>الامتحانات</span>
+</a>
+
+<a href="admin-wallet.html">
+  <span class="nav-icon">◇</span>
+  <span>المحفظة</span>
+</a>
+
+<a href="admin-requests.html">
+  <span class="nav-icon">◌</span>
+  <span>الطلبات</span>
+</a>
+```
+
+  </nav>
+
+  <button class="logout" id="logoutBtn">
+    تسجيل الخروج
+  </button>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<main class="main">
+
+  <div class="topbar">
+
+```
+<div class="title-wrap">
+
+  <button class="mobile-menu" id="mobileMenu">
+    ☰
+  </button>
+
+  <div class="title">
+    <h1>الحصص</h1>
+    <p>إضافة وإدارة الحصص والملفات الخارجية</p>
+  </div>
+
+</div>
+
+<div class="top-actions">
+  <button class="btn btn-primary" id="addClassBtn">
+    + إضافة حصة
+  </button>
+</div>
+```
+
+  </div>
+
+  <div class="toolbar">
+
+```
+<div class="search">
+  <input
+    type="search"
+    id="searchInput"
+    placeholder="ابحث باسم الحصة أو المدرس أو المادة..."
+    autocomplete="off"
+  >
+</div>
+
+<select id="subjectFilter">
+  <option value="">كل المواد</option>
+</select>
+```
+
+  </div>
+
+  <section class="classes-grid" id="classesGrid">
+
+```
+<div class="empty">
+  جاري تحميل الحصص...
+</div>
+```
+
+  </section>
+
+</main>
+
+<div class="modal" id="classModal">
+
+  <div class="modal-box">
+
+```
+<div class="modal-head">
+
+  <h2 id="modalTitle">
+    إضافة حصة
+  </h2>
+
+  <button
+    class="close"
+    id="closeModal"
+    type="button"
+  >
+    ×
+  </button>
+
+</div>
+
+
+<form id="classForm">
+
+  <div class="form-grid">
+
+    <div class="field full">
+
+      <label for="classTitle">
+        اسم الحصة
+      </label>
+
+      <input
+        id="classTitle"
+        type="text"
+        placeholder="مثال: الحصة الأولى - التفاضل"
+        required
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classSubject">
+        المادة
+      </label>
+
+      <select
+        id="classSubject"
+        required
+      >
+        <option value="">
+          اختر المادة
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classTeacher">
+        اسم المدرس
+      </label>
+
+      <input
+        id="classTeacher"
+        type="text"
+        placeholder="مثال: أ/ محمد"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classDate">
+        التاريخ
+      </label>
+
+      <input
+        id="classDate"
+        type="date"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classTime">
+        الوقت
+      </label>
+
+      <input
+        id="classTime"
+        type="time"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classPrice">
+        السعر
+      </label>
+
+      <input
+        id="classPrice"
+        type="number"
+        min="0"
+        step="0.01"
+        value="0"
+        placeholder="0 = مجانية"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label for="classOrder">
+        الترتيب
+      </label>
+
+      <input
+        id="classOrder"
+        type="number"
+        min="0"
+        value="0"
+      >
+
+    </div>
+
+
+    <div class="field full">
+
+      <label for="classPdf">
+        رابط ملف الحصة PDF
+      </label>
+
+      <input
+        id="classPdf"
+        type="url"
+        placeholder="https://..."
+        required
+      >
+
+      <span class="hint">
+        الرابط خارجي. لن يتم رفع ملف PDF إلى Firebase Storage.
+      </span>
+
+    </div>
+
+
+    <div class="field full">
+
+      <label for="classDescription">
+        وصف الحصة
+      </label>
+
+      <textarea
+        id="classDescription"
+        placeholder="اكتب وصفًا مختصرًا للحصة..."
+      ></textarea>
+
+    </div>
+
+
+    <div class="field full">
+
+      <label class="checkbox">
+
+        <input
+          type="checkbox"
+          id="classPublished"
+          checked
+        >
+
+        <span>
+          الحصة ظاهرة للطلاب
+        </span>
+
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <div class="modal-actions">
+
+    <button
+      class="btn"
+      type="button"
+      id="cancelBtn"
+    >
+      إلغاء
+    </button>
+
+    <button
+      class="btn btn-primary"
+      type="submit"
+      id="saveBtn"
+    >
+      حفظ الحصة
+    </button>
+
+  </div>
+
+</form>
+```
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    query,
+    orderBy,
+    updateDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+    authDomain: "mathix-88811.firebaseapp.com",
+    projectId: "mathix-88811",
+    storageBucket: "mathix-88811.firebasestorage.app",
+    messagingSenderId: "1043867239139",
+    appId: "1:1043867239139:web:da19abef81f052682bbbd6",
+    measurementId: "G-T17ZDVBLM2"
+  };
+
+
+  const ADMIN_EMAIL =
+    "z1wae12008@gmail.com";
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  const classesGrid =
+    document.getElementById("classesGrid");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  const subjectFilter =
+    document.getElementById("subjectFilter");
+
+
+  const classModal =
+    document.getElementById("classModal");
+
+  const classForm =
+    document.getElementById("classForm");
+
+  const modalTitle =
+    document.getElementById("modalTitle");
+
+  const addClassBtn =
+    document.getElementById("addClassBtn");
+
+  const closeModal =
+    document.getElementById("closeModal");
+
+  const cancelBtn =
+    document.getElementById("cancelBtn");
+
+  const saveBtn =
+    document.getElementById("saveBtn");
+
+
+  const classTitle =
+    document.getElementById("classTitle");
+
+  const classSubject =
+    document.getElementById("classSubject");
+
+  const classTeacher =
+    document.getElementById("classTeacher");
+
+  const classDate =
+    document.getElementById("classDate");
+
+  const classTime =
+    document.getElementById("classTime");
+
+  const classPrice =
+    document.getElementById("classPrice");
+
+  const classOrder =
+    document.getElementById("classOrder");
+
+  const classPdf =
+    document.getElementById("classPdf");
+
+  const classDescription =
+    document.getElementById("classDescription");
+
+  const classPublished =
+    document.getElementById("classPublished");
+
+
+  const toast =
+    document.getElementById("toast");
+
+  const sidebar =
+    document.getElementById("sidebar");
+
+  const mobileMenu =
+    document.getElementById("mobileMenu");
+
+  const overlay =
+    document.getElementById("overlay");
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+
+  let classes = [];
+  let subjects = [];
+  let editingId = null;
+
+
+  function showToast(message, type = "") {
+
+    toast.textContent = message;
+
+    toast.className =
+      "toast show " + type;
+
+    clearTimeout(
+      window.toastTimer
+    );
+
+    window.toastTimer =
+      setTimeout(() => {
+
+        toast.className =
+          "toast";
+
+      }, 3200);
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "غير محدد";
+    }
+
+    const date =
+      new Date(
+        `${value}T00:00:00`
+      );
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return value;
+    }
+
+    return new Intl.DateTimeFormat(
+      "ar-EG",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }
+    ).format(date);
+  }
+
+
+  function fillSubjects() {
+
+    const currentClassSubject =
+      classSubject.value;
+
+    const currentFilter =
+      subjectFilter.value;
+
+
+    const options =
+      subjects
+        .slice()
+        .sort(
+          (a,b) =>
+            Number(a.order ?? 0) -
+            Number(b.order ?? 0)
+        )
+        .map(subject => {
+
+          return `
+            <option value="${escapeHTML(subject.id)}">
+              ${escapeHTML(
+                subject.name ||
+                "بدون اسم"
+              )}
+            </option>
+          `;
+
+        })
+        .join("");
+
+
+    classSubject.innerHTML =
+      `<option value="">اختر المادة</option>${options}`;
+
+    subjectFilter.innerHTML =
+      `<option value="">كل المواد</option>${options}`;
+
+
+    if (
+      subjects.some(
+        item =>
+          item.id ===
+          currentClassSubject
+      )
+    ) {
+      classSubject.value =
+        currentClassSubject;
+    }
+
+
+    if (
+      subjects.some(
+        item =>
+          item.id ===
+          currentFilter
+      )
+    ) {
+      subjectFilter.value =
+        currentFilter;
+    }
+
+  }
+
+
+  function openModal(item = null) {
+
+    editingId =
+      item?.id || null;
+
+
+    modalTitle.textContent =
+      editingId
+        ? "تعديل الحصة"
+        : "إضافة حصة";
+
+
+    classTitle.value =
+      item?.title ||
+      item?.name ||
+      "";
+
+    classSubject.value =
+      item?.subjectId ||
+      "";
+
+    classTeacher.value =
+      item?.teacherName ||
+      item?.teacher ||
+      "";
+
+    classDate.value =
+      item?.date ||
+      item?.classDate ||
+      "";
+
+    classTime.value =
+      item?.time ||
+      "";
+
+    classPrice.value =
+      Number(
+        item?.price ?? 0
+      );
+
+    classOrder.value =
+      Number(
+        item?.order ?? 0
+      );
+
+    classPdf.value =
+      item?.pdfUrl ||
+      item?.pdf ||
+      item?.url ||
+      "";
+
+    classDescription.value =
+      item?.description ||
+      "";
+
+    classPublished.checked =
+      item?.isPublished !== false;
+
+
+    classModal.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      () =>
+        classTitle.focus(),
+      100
+    );
+  }
+
+
+  function closeClassModal() {
+
+    classModal.classList.remove(
+      "show"
+    );
+
+    classForm.reset();
+
+    editingId = null;
+
+    classPrice.value = 0;
+    classOrder.value = 0;
+    classPublished.checked = true;
+  }
+
+
+  function renderClasses() {
+
+    const search =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+    const filter =
+      subjectFilter.value;
+
+
+    const filtered =
+      classes
+        .filter(item => {
+
+          const text = [
+            item.title,
+            item.name,
+            item.description,
+            item.teacherName,
+            item.teacher,
+            item.subjectName,
+            item.subject
+          ]
+            .map(value =>
+              String(
+                value || ""
+              ).toLowerCase()
+            )
+            .join(" ");
+
+
+          return (
+            (!search ||
+              text.includes(search)) &&
+            (!filter ||
+              item.subjectId === filter)
+          );
+
+        })
+        .sort(
+          (a,b) =>
+            Number(a.order ?? 0) -
+            Number(b.order ?? 0)
+        );
+
+
+    if (!filtered.length) {
+
+      classesGrid.innerHTML = `
+        <div class="empty">
+
+          <strong>
+            لا توجد حصص
+          </strong>
+
+          <span>
+            ${
+              search ||
+              filter
+                ? "لا توجد نتائج مطابقة."
+                : "ابدأ بإضافة أول حصة."
+            }
+          </span>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    classesGrid.innerHTML =
+      filtered
+        .map(item => {
+
+          const title =
+            item.title ||
+            item.name ||
+            "بدون عنوان";
+
+
+          const description =
+            item.description ||
+            "لا يوجد وصف.";
+
+
+          const subject =
+            item.subjectName ||
+            item.subject ||
+            "غير محدد";
+
+
+          const teacher =
+            item.teacherName ||
+            item.teacher ||
+            "غير محدد";
+
+
+          const date =
+            item.date ||
+            item.classDate ||
+            "";
+
+
+          const time =
+            item.time ||
+            "غير محدد";
+
+
+          const price =
+            Number(
+              item.price ?? 0
+            );
+
+
+          const pdf =
+            item.pdfUrl ||
+            item.pdf ||
+            item.url ||
+            "";
+
+
+          const published =
+            item.isPublished !== false;
+
+
+          return `
+            <article class="class-card">
+
+              <div class="class-head">
+
+                <div class="class-icon">
+                  ▤
+                </div>
+
+                <span
+                  class="status ${
+                    published
+                      ? "active"
+                      : "hidden"
+                  }"
+                >
+                  ${
+                    published
+                      ? "ظاهرة"
+                      : "مخفية"
+                  }
+                </span>
+
+              </div>
+
+
+              <h3>
+                ${escapeHTML(title)}
+              </h3>
+
+
+              <div class="description">
+                ${escapeHTML(
+                  description
+                )}
+              </div>
+
+
+              <div class="meta">
+
+                <div class="meta-item">
+                  <span>المادة</span>
+                  <strong>
+                    ${escapeHTML(subject)}
+                  </strong>
+                </div>
+
+                <div class="meta-item">
+                  <span>المدرس</span>
+                  <strong>
+                    ${escapeHTML(teacher)}
+                  </strong>
+                </div>
+
+                <div class="meta-item">
+                  <span>التاريخ</span>
+                  <strong>
+                    ${escapeHTML(
+                      formatDate(date)
+                    )}
+                  </strong>
+                </div>
+
+                <div class="meta-item">
+                  <span>الوقت</span>
+                  <strong>
+                    ${escapeHTML(time)}
+                  </strong>
+                </div>
+
+              </div>
+
+
+              <div class="price">
+                ${
+                  price > 0
+                    ? `${price.toFixed(2)} جنيه`
+                    : "مجانية"
+                }
+              </div>
+
+
+              <div class="actions">
+
+                ${
+                  pdf
+                    ? `
+                      <a
+                        class="pdf"
+                        href="${escapeHTML(pdf)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        فتح PDF
+                      </a>
+                    `
+                    : `
+                      <button
+                        type="button"
+                        disabled
+                      >
+                        بدون PDF
+                      </button>
+                    `
+                }
+
+
+                <button
+                  class="edit"
+                  type="button"
+                  data-action="edit"
+                  data-id="${escapeHTML(item.id)}"
+                >
+                  تعديل
+                </button>
+
+
+                <button
+                  class="delete"
+                  type="button"
+                  data-action="delete"
+                  data-id="${escapeHTML(item.id)}"
+                >
+                  حذف
+                </button>
+
+              </div>
+
+            </article>
+          `;
+
+        })
+        .join("");
+  }
+
+
+  async function saveClass(event) {
+
+    event.preventDefault();
+
+
+    const title =
+      classTitle.value.trim();
+
+    const subjectId =
+      classSubject.value;
+
+    const subject =
+      subjects.find(
+        item =>
+          item.id === subjectId
+      );
+
+
+    const pdf =
+      classPdf.value.trim();
+
+
+    if (!title) {
+
+      showToast(
+        "اكتب اسم الحصة.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (!subjectId) {
+
+      showToast(
+        "اختر المادة.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (!pdf) {
+
+      showToast(
+        "أدخل رابط PDF للحصة.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    try {
+
+      new URL(pdf);
+
+    } catch {
+
+      showToast(
+        "رابط PDF غير صحيح.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    const price =
+      Math.max(
+        0,
+        Number(
+          classPrice.value || 0
+        )
+      );
+
+
+    const order =
+      Math.max(
+        0,
+        Number(
+          classOrder.value || 0
+        )
+      );
+
+
+    const data = {
+
+      title,
+
+      name: title,
+
+      description:
+        classDescription.value.trim(),
+
+      subjectId,
+
+      subjectName:
+        subject?.name || "",
+
+      subject:
+        subject?.name || "",
+
+      teacherName:
+        classTeacher.value.trim(),
+
+      teacher:
+        classTeacher.value.trim(),
+
+      date:
+        classDate.value,
+
+      classDate:
+        classDate.value,
+
+      time:
+        classTime.value,
+
+      price,
+
+      pdfUrl: pdf,
+
+      pdf,
+
+      isPublished:
+        classPublished.checked,
+
+      order
+
+    };
+
+
+    saveBtn.disabled = true;
+
+    saveBtn.textContent =
+      "جاري الحفظ...";
+
+
+    try {
+
+      if (editingId) {
+
+        await updateDoc(
+          doc(
+            db,
+            "classes",
+            editingId
+          ),
+          {
+            ...data,
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+        showToast(
+          "تم تعديل الحصة بنجاح.",
+          "success"
+        );
+
+      } else {
+
+        await addDoc(
+          collection(
+            db,
+            "classes"
+          ),
+          {
+            ...data,
+            createdAt:
+              serverTimestamp(),
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+        showToast(
+          "تمت إضافة الحصة بنجاح.",
+          "success"
+        );
+      }
+
+
+      closeClassModal();
+
+    } catch(error) {
+
+      console.error(
+        "SAVE CLASS ERROR:",
+        error
+      );
+
+      showToast(
+        "حدث خطأ أثناء حفظ الحصة.",
+        "error"
+      );
+
+    } finally {
+
+      saveBtn.disabled = false;
+
+      saveBtn.textContent =
+        "حفظ الحصة";
+    }
+  }
+
+
+  async function deleteClass(id) {
+
+    const item =
+      classes.find(
+        classItem =>
+          classItem.id === id
+      );
+
+
+    if (!item) return;
+
+
+    const title =
+      item.title ||
+      item.name ||
+      "هذه الحصة";
+
+
+    if (
+      !confirm(
+        `هل أنت متأكد من حذف "${title}"؟`
+      )
+    ) {
+      return;
+    }
+
+
+    try {
+
+      await deleteDoc(
+        doc(
+          db,
+          "classes",
+          id
+        )
+      );
+
+
+      showToast(
+        "تم حذف الحصة.",
+        "success"
+      );
+
+    } catch(error) {
+
+      console.error(
+        "DELETE CLASS ERROR:",
+        error
+      );
+
+      showToast(
+        "تعذر حذف الحصة.",
+        "error"
+      );
+    }
+  }
+
+
+  function startListeners() {
+
+    const subjectsRef =
+      collection(
+        db,
+        "subjects"
+      );
+
+
+    const classesRef =
+      collection(
+        db,
+        "classes"
+      );
+
+
+    onSnapshot(
+      subjectsRef,
+      snapshot => {
+
+        subjects =
+          snapshot.docs.map(
+            item => ({
+              id: item.id,
+              ...item.data()
+            })
+          );
+
+
+        fillSubjects();
+
+        renderClasses();
+
+      },
+      error => {
+
+        console.error(
+          "SUBJECTS ERROR:",
+          error
+        );
+
+      }
+    );
+
+
+    const orderedQuery =
+      query(
+        classesRef,
+        orderBy(
+          "order",
+          "asc"
+        )
+      );
+
+
+    onSnapshot(
+      orderedQuery,
+      snapshot => {
+
+        classes =
+          snapshot.docs.map(
+            item => ({
+              id: item.id,
+              ...item.data()
+            })
+          );
+
+
+        renderClasses();
+
+      },
+      error => {
+
+        console.error(
+          "ORDERED CLASSES ERROR:",
+          error
+        );
+
+
+        onSnapshot(
+          classesRef,
+          fallbackSnapshot => {
+
+            classes =
+              fallbackSnapshot.docs
+                .map(
+                  item => ({
+                    id: item.id,
+                    ...item.data()
+                  })
+                )
+                .sort(
+                  (a,b) =>
+                    Number(a.order ?? 0) -
+                    Number(b.order ?? 0)
+                );
+
+
+            renderClasses();
+
+          },
+          fallbackError => {
+
+            console.error(
+              "CLASSES ERROR:",
+              fallbackError
+            );
+
+
+            classesGrid.innerHTML = `
+              <div class="empty">
+
+                <strong>
+                  تعذر تحميل الحصص
+                </strong>
+
+                <span>
+                  تأكد من Firestore Rules والاتصال بقاعدة البيانات.
+                </span>
+
+              </div>
+            `;
+          }
+        );
+      }
+    );
+  }
+
+
+  onAuthStateChanged(
+    auth,
+    user => {
+
+      if (!user) {
+
+        window.location.href =
+          "index.html";
+
+        return;
+      }
+
+
+      if (!user.emailVerified) {
+
+        signOut(auth);
+
+        window.location.href =
+          "index.html";
+
+        return;
+      }
+
+
+      if (
+        String(
+          user.email || ""
+        ).toLowerCase() !==
+        ADMIN_EMAIL.toLowerCase()
+      ) {
+
+        signOut(auth);
+
+        window.location.href =
+          "index.html";
+
+        return;
+      }
+
+
+      startListeners();
+
+    }
+  );
+
+
+  addClassBtn.addEventListener(
+    "click",
+    () => openModal()
+  );
+
+
+  closeModal.addEventListener(
+    "click",
+    closeClassModal
+  );
+
+
+  cancelBtn.addEventListener(
+    "click",
+    closeClassModal
+  );
+
+
+  classModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        classModal
+      ) {
+        closeClassModal();
+      }
+
+    }
+  );
+
+
+  classForm.addEventListener(
+    "submit",
+    saveClass
+  );
+
+
+  searchInput.addEventListener(
+    "input",
+    renderClasses
+  );
+
+
+  subjectFilter.addEventListener(
+    "change",
+    renderClasses
+  );
+
+
+  classesGrid.addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          "button[data-action]"
+        );
+
+
+      if (!button) return;
+
+
+      const action =
+        button.dataset.action;
+
+      const id =
+        button.dataset.id;
+
+
+      if (
+        action === "edit"
+      ) {
+
+        const item =
+          classes.find(
+            classItem =>
+              classItem.id === id
+          );
+
+
+        if (item) {
+          openModal(item);
+        }
+
+      }
+
+
+      if (
+        action === "delete"
+      ) {
+
+        deleteClass(id);
+
+      }
+
+    }
+  );
+
+
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        await signOut(auth);
+
+        window.location.href =
+          "index.html";
+
+      } catch(error) {
+
+        console.error(
+          "LOGOUT ERROR:",
+          error
+        );
+
+        showToast(
+          "تعذر تسجيل الخروج.",
+          "error"
+        );
+      }
+
+    }
+  );
+
+
+  mobileMenu.addEventListener(
+    "click",
+    () => {
+
+      sidebar.classList.add(
+        "open"
+      );
+
+      overlay.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+
+  overlay.addEventListener(
+    "click",
+    () => {
+
+      sidebar.classList.remove(
+        "open"
+      );
+
+      overlay.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+
+  document
+    .querySelectorAll(".nav a")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          sidebar.classList.remove(
+            "open"
+          );
+
+          overlay.classList.remove(
+            "show"
+          );
+
+        }
+      );
+
+    });
+
+</script>
+
+</body>
+</html>
