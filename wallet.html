@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07070b">
+  <title>المحفظة</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07070b;
+      --panel: #101016;
+      --panel2: #15151d;
+      --border: rgba(255,255,255,.08);
+      --text: #fff;
+      --muted: #9999a8;
+      --purple: #8b5cf6;
+      --purple2: #a78bfa;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    body {
+      font-family: "Cairo", sans-serif;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(139,92,246,.13), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(10,10,15,.96);
+      border-left: 1px solid var(--border);
+      padding: 22px 15px;
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px 25px;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .brand span {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #a8a8b5;
+      padding: 12px 14px;
+      border-radius: 12px;
+      transition: .2s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: rgba(139,92,246,.13);
+      color: #fff;
+    }
+
+    .nav a.active {
+      border: 1px solid rgba(139,92,246,.25);
+    }
+
+    .logout {
+      width: 100%;
+      border: 1px solid rgba(239,68,68,.2);
+      background: rgba(239,68,68,.06);
+      color: #fca5a5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 20px;
+    }
+
+    .main {
+      flex: 1;
+      margin-right: 250px;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .title p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .admin-email {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 12px;
+      color: #bbb;
+      font-size: 13px;
+      direction: ltr;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: linear-gradient(145deg, rgba(139,92,246,.10), rgba(16,16,22,.95));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 29px;
+      font-weight: 700;
+    }
+
+    .panel {
+      background: rgba(16,16,22,.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h2 {
+      font-size: 18px;
+    }
+
+    .tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: #0b0b10;
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 11px;
+      padding: 11px 13px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(139,92,246,.7);
+    }
+
+    .search {
+      max-width: 320px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th,
+    td {
+      padding: 13px 10px;
+      text-align: right;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: 13px;
+    }
+
+    th {
+      color: #888895;
+      font-weight: 600;
+    }
+
+    td {
+      color: #ddd;
+    }
+
+    .student-name {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .student-code {
+      color: #888;
+      font-size: 11px;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    .balance {
+      font-family: "Chakra Petch", sans-serif;
+      font-weight: 700;
+      color: var(--green);
+      direction: ltr;
+      display: inline-block;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .btn-purple {
+      background: rgba(139,92,246,.2);
+      border: 1px solid rgba(139,92,246,.3);
+    }
+
+    .btn-green {
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.2);
+      color: #86efac;
+    }
+
+    .btn-red {
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.2);
+      color: #fca5a5;
+    }
+
+    .btn:hover {
+      filter: brightness(1.2);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 35px;
+      color: var(--muted);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 300;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111118;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.5);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-head h3 {
+      font-size: 19px;
+    }
+
+    .close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: #0b0b10;
+      color: #aaa;
+      border-radius: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .selected-student {
+      background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.18);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 15px;
+    }
+
+    .selected-student strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .selected-student span {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .current-balance {
+      text-align: center;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #0b0b10;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .current-balance small {
+      color: #888;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .current-balance strong {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 28px;
+      color: var(--green);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 11px;
+      border: 0;
+    }
+
+    .save {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .cancel {
+      background: #20202a;
+      color: #ccc;
+    }
+
+    .message {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 500;
+      max-width: 360px;
+      padding: 13px 17px;
+      border-radius: 12px;
+      display: none;
+      font-size: 13px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(34,197,94,.15);
+      border: 1px solid rgba(34,197,94,.25);
+      color: #86efac;
+    }
+
+    .message.error {
+      background: rgba(239,68,68,.15);
+      border: 1px solid rgba(239,68,68,.25);
+      color: #fca5a5;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 220px;
+      }
+
+      .main {
+        margin-right: 220px;
+        padding: 20px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        border-left: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .main {
+        margin-right: 0;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .admin-email {
+        max-width: 100%;
+        overflow: hidden;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="logo.png" alt="Mathix">
+      <span>Mathix</span>
+    </div>
+
+```
+<nav class="nav">
+  <a href="dashboard.html">لوحة التحكم</a>
+  <a href="students.html">الطلاب</a>
+  <a href="subjects.html">المواد</a>
+  <a href="curriculum.html">المنهج</a>
+  <a href="classes.html">الحصص</a>
+  <a href="exams.html">الامتحانات</a>
+  <a href="wallet.html" class="active">المحفظة</a>
+  <a href="requests.html">الطلبات</a>
+</nav>
+
+<button class="logout" id="logoutBtn">تسجيل الخروج</button>
+```
+
+  </aside>
+
+  <main class="main">
+
+```
+<div class="topbar">
+  <div class="title">
+    <h1>المحفظة</h1>
+    <p>إدارة أرصدة الطلاب وحركات المحفظة</p>
+  </div>
+
+  <div class="admin-email" id="adminEmail">...</div>
+</div>
+
+<section class="stats">
+  <div class="stat">
+    <div class="stat-label">عدد الطلاب</div>
+    <div class="stat-value" id="studentsCount">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">إجمالي الأرصدة</div>
+    <div class="stat-value" id="totalBalance">0 ج.م</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">عدد الحركات</div>
+    <div class="stat-value" id="transactionsCount">0</div>
+  </div>
+</section>
+
+<section class="panel">
+
+  <div class="panel-head">
+    <h2>أرصدة الطلاب</h2>
+
+    <div class="tools">
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="ابحث بالاسم أو الكود أو الإيميل..."
+      >
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>الطالب</th>
+          <th>الكود</th>
+          <th>الإيميل</th>
+          <th>الرصيد</th>
+          <th>آخر تحديث</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+
+      <tbody id="walletTable">
+        <tr>
+          <td colspan="6" class="loading">جاري التحميل...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+```
+
+  </main>
+</div>
+
+<div class="modal" id="walletModal">
+  <div class="modal-box">
+
+```
+<div class="modal-head">
+  <h3>تعديل رصيد الطالب</h3>
+  <button class="close" id="closeModal">×</button>
+</div>
+
+<div class="selected-student">
+  <strong id="modalStudentName">—</strong>
+  <span id="modalStudentCode">—</span>
+</div>
+
+<div class="current-balance">
+  <small>الرصيد الحالي</small>
+  <strong id="modalCurrentBalance">0 ج.م</strong>
+</div>
+
+<div class="form-group">
+  <label for="operationType">نوع العملية</label>
+  <select id="operationType">
+    <option value="add">إضافة رصيد</option>
+    <option value="deduct">خصم رصيد</option>
+    <option value="set">تحديد الرصيد</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="amount">المبلغ</label>
+  <input
+    id="amount"
+    type="number"
+    min="0"
+    step="0.01"
+    placeholder="مثال: 100"
+  >
+</div>
+
+<div class="form-group">
+  <label for="description">وصف العملية</label>
+  <textarea
+    id="description"
+    rows="3"
+    placeholder="مثال: شحن محفظة الطالب"
+  ></textarea>
+</div>
+
+<div class="modal-actions">
+  <button class="save" id="saveWallet">حفظ العملية</button>
+  <button class="cancel" id="cancelModal">إلغاء</button>
+</div>
+```
+
+  </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<script type="module">
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  orderBy,
+  runTransaction,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+  authDomain: "mathix-88811.firebaseapp.com",
+  projectId: "mathix-88811",
+  storageBucket: "mathix-88811.firebasestorage.app",
+  messagingSenderId: "1043867239139",
+  appId: "1:1043867239139:web:da19abef81f052682bbbd6",
+  measurementId: "G-T17ZDVBLM2"
+};
+
+const ADMIN_EMAIL = "z1wae12008@gmail.com";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+const walletTable = document.getElementById("walletTable");
+const searchInput = document.getElementById("searchInput");
+
+const studentsCount = document.getElementById("studentsCount");
+const totalBalance = document.getElementById("totalBalance");
+const transactionsCount = document.getElementById("transactionsCount");
+
+const walletModal = document.getElementById("walletModal");
+const closeModal = document.getElementById("closeModal");
+const cancelModal = document.getElementById("cancelModal");
+
+const modalStudentName = document.getElementById("modalStudentName");
+const modalStudentCode = document.getElementById("modalStudentCode");
+const modalCurrentBalance = document.getElementById("modalCurrentBalance");
+
+const operationType = document.getElementById("operationType");
+const amountInput = document.getElementById("amount");
+const descriptionInput = document.getElementById("description");
+const saveWallet = document.getElementById("saveWallet");
+
+const messageBox = document.getElementById("message");
+
+const adminEmailBox = document.getElementById("adminEmail");
+const logoutBtn = document.getElementById("logoutBtn");
+
+
+let students = [];
+let wallets = [];
+let selectedStudent = null;
+let unsubscribeStudents = null;
+let unsubscribeWallets = null;
+let unsubscribeTransactions = null;
+
+
+function showMessage(text, type = "success") {
+
+  messageBox.textContent = text;
+  messageBox.className = `message show ${type}`;
+
+  setTimeout(() => {
+    messageBox.className = "message";
+  }, 3500);
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function formatMoney(value) {
+
+  const number = Number(value || 0);
+
+  return `${number.toLocaleString("ar-EG")} ج.م`;
+}
+
+
+function getStudentName(student) {
+
+  return (
+    student.fullName ||
+    student.name ||
+    [student.firstName, student.lastName].filter(Boolean).join(" ") ||
+    "بدون اسم"
+  );
+}
+
+
+function getStudentCode(student) {
+
+  return student.studentCode || student.code || "—";
+}
+
+
+function getWalletBalance(studentId) {
+
+  const wallet = wallets.find(item => item.id === studentId);
+
+  return Number(wallet?.balance || 0);
+}
+
+
+function formatDate(timestamp) {
+
+  if (!timestamp) return "—";
+
+  try {
+
+    const date = timestamp.toDate
+      ? timestamp.toDate()
+      : new Date(timestamp);
+
+    return date.toLocaleString("ar-EG", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  } catch {
+    return "—";
+  }
+}
+
+
+function renderWallets() {
+
+  const search = searchInput.value.trim().toLowerCase();
+
+  const filtered = students.filter(student => {
+
+    const name = getStudentName(student).toLowerCase();
+    const code = getStudentCode(student).toLowerCase();
+    const email = String(student.email || "").toLowerCase();
+
+    return (
+      !search ||
+      name.includes(search) ||
+      code.includes(search) ||
+      email.includes(search)
+    );
+  });
+
+  if (!filtered.length) {
+
+    walletTable.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          لا يوجد طلاب مطابقون للبحث
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  walletTable.innerHTML = filtered.map(student => {
+
+    const balance = getWalletBalance(student.id);
+
+    const wallet = wallets.find(item => item.id === student.id);
+
+    return `
+      <tr>
+
+        <td>
+          <div class="student-name">
+            ${escapeHTML(getStudentName(student))}
+          </div>
+        </td>
+
+        <td>
+          <span class="student-code">
+            ${escapeHTML(getStudentCode(student))}
+          </span>
+        </td>
+
+        <td>
+          ${escapeHTML(student.email || "—")}
+        </td>
+
+        <td>
+          <span class="balance">
+            ${escapeHTML(formatMoney(balance))}
+          </span>
+        </td>
+
+        <td>
+          ${escapeHTML(formatDate(wallet?.updatedAt))}
+        </td>
+
+        <td>
+          <div class="actions">
+            <button
+              class="btn btn-purple"
+              data-action="edit"
+              data-id="${escapeHTML(student.id)}"
+            >
+              تعديل
+            </button>
+          </div>
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+}
+
+
+function updateStats() {
+
+  studentsCount.textContent = students.length.toLocaleString("ar-EG");
+
+  const total = students.reduce(
+    (sum, student) => sum + getWalletBalance(student.id),
+    0
+  );
+
+  totalBalance.textContent = formatMoney(total);
+}
+
+
+async function loadStudents() {
+
+  try {
+
+    const snapshot = await getDocs(collection(db, "students"));
+
+    students = snapshot.docs.map(item => ({
+      id: item.id,
+      ...item.data()
+    }));
+
+    students.sort((a, b) =>
+      getStudentName(a).localeCompare(
+        getStudentName(b),
+        "ar"
+      )
+    );
+
+    renderWallets();
+    updateStats();
+
+  } catch (error) {
+
+    console.error("LOAD STUDENTS ERROR:", error);
+
+    walletTable.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          حدث خطأ أثناء تحميل الطلاب
+        </td>
+      </tr>
+    `;
+
+    showMessage("تعذر تحميل بيانات الطلاب", "error");
+  }
+}
+
+
+function listenWallets() {
+
+  if (unsubscribeWallets) {
+    unsubscribeWallets();
+  }
+
+  unsubscribeWallets = onSnapshot(
+    collection(db, "wallets"),
+    snapshot => {
+
+      wallets = snapshot.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }));
+
+      renderWallets();
+      updateStats();
+
+    },
+    error => {
+
+      console.error("WALLETS LISTENER ERROR:", error);
+
+      showMessage("تعذر قراءة المحافظ", "error");
+    }
+  );
+}
+
+
+function listenTransactions() {
+
+  if (unsubscribeTransactions) {
+    unsubscribeTransactions();
+  }
+
+  const transactionsQuery = query(
+    collection(db, "walletTransactions"),
+    orderBy("createdAt", "desc")
+  );
+
+  unsubscribeTransactions = onSnapshot(
+    transactionsQuery,
+    snapshot => {
+
+      transactionsCount.textContent =
+        snapshot.size.toLocaleString("ar-EG");
+
+    },
+    error => {
+
+      console.error(
+        "TRANSACTIONS LISTENER ERROR:",
+        error
+      );
+
+      transactionsCount.textContent = "—";
+    }
+  );
+}
+
+
+function openWalletModal(studentId) {
+
+  const student = students.find(
+    item => item.id === studentId
+  );
+
+  if (!student) {
+    showMessage("الطالب غير موجود", "error");
+    return;
+  }
+
+  selectedStudent = student;
+
+  const balance = getWalletBalance(studentId);
+
+  modalStudentName.textContent = getStudentName(student);
+
+  modalStudentCode.textContent =
+    `${getStudentCode(student)} • ${student.email || "بدون إيميل"}`;
+
+  modalCurrentBalance.textContent =
+    formatMoney(balance);
+
+  operationType.value = "add";
+  amountInput.value = "";
+  descriptionInput.value = "";
+
+  walletModal.classList.add("show");
+}
+
+
+function closeWalletModal() {
+
+  walletModal.classList.remove("show");
+
+  selectedStudent = null;
+
+  amountInput.value = "";
+  descriptionInput.value = "";
+}
+
+
+async function saveWalletOperation() {
+
+  if (!selectedStudent) {
+    showMessage("اختر طالبًا أولًا", "error");
+    return;
+  }
+
+  const amount = Number(amountInput.value);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showMessage("أدخل مبلغًا صحيحًا أكبر من صفر", "error");
+    return;
+  }
+
+  const type = operationType.value;
+
+  const description =
+    descriptionInput.value.trim() ||
+    (
+      type === "add"
+        ? "إضافة رصيد"
+        : type === "deduct"
+          ? "خصم من الرصيد"
+          : "تعديل الرصيد"
+    );
+
+  const studentId = selectedStudent.id;
+
+  saveWallet.disabled = true;
+  saveWallet.textContent = "جاري الحفظ...";
+
+  try {
+
+    const walletRef = doc(
+      db,
+      "wallets",
+      studentId
+    );
+
+    const transactionRef = doc(
+      collection(db, "walletTransactions")
+    );
+
+    await runTransaction(db, async transaction => {
+
+      const walletSnap =
+        await transaction.get(walletRef);
+
+      const currentBalance =
+        Number(walletSnap.data()?.balance || 0);
+
+      let newBalance = currentBalance;
+      let transactionType = "adjustment";
+      let transactionAmount = amount;
+
+      if (type === "add") {
+
+        newBalance = currentBalance + amount;
+        transactionType = "topup";
+
+      } else if (type === "deduct") {
+
+        if (amount > currentBalance) {
+          throw new Error("INSUFFICIENT_BALANCE");
+        }
+
+        newBalance = currentBalance - amount;
+        transactionType = "deduct";
+
+      } else if (type === "set") {
+
+        newBalance = amount;
+        transactionType = "adjustment";
+        transactionAmount =
+          Math.abs(newBalance - currentBalance);
+      }
+
+      transaction.set(
+        walletRef,
+        {
+          studentId,
+          balance: newBalance,
+          updatedAt: serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+      transaction.set(
+        transactionRef,
+        {
+          studentId,
+          type: transactionType,
+          amount: transactionAmount,
+          balanceBefore: currentBalance,
+          balanceAfter: newBalance,
+          description,
+          createdAt: serverTimestamp(),
+          createdBy: auth.currentUser.email
+        }
+      );
+
+    });
+
+    showMessage("تم تحديث رصيد الطالب بنجاح");
+
+    closeWalletModal();
+
+  } catch (error) {
+
+    console.error(
+      "SAVE WALLET ERROR:",
+      error
+    );
+
+    if (error.message === "INSUFFICIENT_BALANCE") {
+
+      showMessage(
+        "لا يمكن خصم مبلغ أكبر من الرصيد الحالي",
+        "error"
+      );
+
+    } else {
+
+      showMessage(
+        "حدث خطأ أثناء تحديث المحفظة",
+        "error"
+      );
+    }
+
+  } finally {
+
+    saveWallet.disabled = false;
+    saveWallet.textContent = "حفظ العملية";
+  }
+}
+
+
+walletTable.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        '[data-action="edit"]'
+      );
+
+    if (!button) return;
+
+    openWalletModal(button.dataset.id);
+  }
+);
+
+
+searchInput.addEventListener(
+  "input",
+  renderWallets
+);
+
+
+closeModal.addEventListener(
+  "click",
+  closeWalletModal
+);
+
+
+cancelModal.addEventListener(
+  "click",
+  closeWalletModal
+);
+
+
+walletModal.addEventListener(
+  "click",
+  event => {
+
+    if (event.target === walletModal) {
+      closeWalletModal();
+    }
+  }
+);
+
+
+saveWallet.addEventListener(
+  "click",
+  saveWalletOperation
+);
+
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await signOut(auth);
+
+      location.href = "index.html";
+
+    } catch (error) {
+
+      console.error(
+        "LOGOUT ERROR:",
+        error
+      );
+
+      showMessage(
+        "تعذر تسجيل الخروج",
+        "error"
+      );
+    }
+  }
+);
+
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user) {
+
+      location.href = "index.html";
+      return;
+    }
+
+    if (!user.emailVerified) {
+
+      await signOut(auth);
+
+      location.href = "../index.html";
+      return;
+    }
+
+    if (
+      String(user.email || "").toLowerCase() !==
+      ADMIN_EMAIL.toLowerCase()
+    ) {
+
+      await signOut(auth);
+
+      location.href = "index.html";
+      return;
+    }
+
+    adminEmailBox.textContent =
+      user.email;
+
+    await loadStudents();
+
+    listenWallets();
+
+    listenTransactions();
+  }
+);
+
+</script>
+
+</body>
+</html>
