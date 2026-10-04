@@ -369,15 +369,23 @@ async function isAdmin(user){
    return false;
  }
 }
+onAuthStateChanged(auth, async user => {
 
-onAuthStateChanged(auth,async user=>{
- if(!user){
-   $("loginScreen").classList.add("open");
-   $("app").style.display="none";
-   stopListeners();
-   return;
- }
- const allowed=await isAdmin(user);
+  if (!user) {
+
+    $("loginScreen").classList.add("open");
+
+    $("app").style.display = "none";
+
+    stopListeners();
+
+    return;
+  }
+
+  console.log("CURRENT LOGIN UID:", user.uid);
+  console.log("CURRENT LOGIN EMAIL:", user.email);
+
+  // باقي كود التحقق من صلاحية الـAdmin هنا...const allowed=await isAdmin(user);
  if(!allowed){
    await signOut(auth);
    $("loginError").textContent="هذا الحساب ليس لديه صلاحية Admin.";
