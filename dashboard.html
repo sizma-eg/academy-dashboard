@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 
 <head>
@@ -542,6 +543,7 @@ button{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -552,128 +554,393 @@ button{
 
   <aside class="sidebar" id="sidebar">
 
-    <div class="brand">
+```
+<div class="brand">
 
-      <img src="logo.png" alt="Mathix">
+  <img src="logo.png" alt="Mathix">
 
-      <div class="brand-text">
-        <span>Math</span>ix
-      </div>
+  <div class="brand-text">
+    <span>Math</span>ix
+  </div>
 
-      <div class="admin-badge">
-        ADMIN
-      </div>
+  <div class="admin-badge">
+    ADMIN
+  </div>
 
-    </div>
+</div>
 
-    <div class="nav-title">
-      الإدارة
-    </div>
+<div class="nav-title">
+  الإدارة
+</div>
 
-    <nav class="nav">
+<nav class="nav">
 
-      <a href="dashboard.html" class="active">
-        <span class="nav-icon">⌂</span>
-        الرئيسية
-      </a>
+  <a href="dashboard.html" class="active">
+    <span class="nav-icon">⌂</span>
+    الرئيسية
+  </a>
 
-      <a href="students.html">
-        <span class="nav-icon">♙</span>
-        الطلاب
-      </a>
+  <a href="students.html">
+    <span class="nav-icon">♙</span>
+    الطلاب
+  </a>
 
-      <a href="subjects.html">
-        <span class="nav-icon">▦</span>
-        المواد
-      </a>
+  <a href="subjects.html">
+    <span class="nav-icon">▦</span>
+    المواد
+  </a>
 
-      <a href="curriculum.html">
-        <span class="nav-icon">☷</span>
-        المنهج والدروس
-      </a>
+  <a href="curriculum.html">
+    <span class="nav-icon">☷</span>
+    المنهج والدروس
+  </a>
 
-      <a href="classes.html">
-        <span class="nav-icon">▣</span>
-        الحصص
-      </a>
+  <a href="classes.html">
+    <span class="nav-icon">▣</span>
+    الحصص
+  </a>
 
-      <a href="exams.html">
-        <span class="nav-icon">✎</span>
-        الامتحانات
-      </a>
+  <a href="exams.html">
+    <span class="nav-icon">✎</span>
+    الامتحانات
+  </a>
 
-      <a href="wallet.html">
-        <span class="nav-icon">◈</span>
-        المحفظة
-      </a>
+  <a href="wallet.html">
+    <span class="nav-icon">◈</span>
+    المحفظة
+  </a>
 
-      <a href="requests.html">
-        <span class="nav-icon">◉</span>
-        الطلبات
-      </a>
+  <a href="requests.html">
+    <span class="nav-icon">◉</span>
+    الطلبات
+  </a>
 
-    </nav>
+</nav>
 
-    <div class="nav-title">
-      الحساب
-    </div>
+<div class="nav-title">
+  الحساب
+</div>
 
-    <nav class="nav">
+<nav class="nav">
 
-      <button class="logout-btn" id="logoutBtn">
-        <span class="nav-icon">↪</span>
-        تسجيل الخروج
-      </button>
+  <button class="logout-btn" id="logoutBtn">
+    <span class="nav-icon">↪</span>
+    تسجيل الخروج
+  </button>
 
-    </nav>
+</nav>
+```
 
   </aside>
 
   <main class="main">
 
-    <div class="topbar">
+```
+<div class="topbar">
 
-      <div style="display:flex;align-items:center;gap:12px;">
+  <div style="display:flex;align-items:center;gap:12px;">
 
-        <button
-          class="mobile-menu"
-          id="mobileMenu"
-          type="button"
-        >
-          ☰
-        </button>
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      type="button"
+    >
+      ☰
+    </button>
 
-        <div class="page-title">
+    <div class="page-title">
 
-          <h1>
-            لوحة التحكم
-          </h1>
+      <h1>
+        لوحة التحكم
+      </h1>
 
-          <p>
-            نظرة عامة على منصة Mathix
-          </p>
+      <p>
+        نظرة عامة على منصة Mathix
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="account">
+
+    <div class="account-avatar">
+      M
+    </div>
+
+    <div>
+
+      <div style="font-size:11px;font-weight:700;">
+        مدير المنصة
+      </div>
+
+      <div
+        class="account-email"
+        id="accountEmail"
+      >
+        جاري التحميل...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div
+  class="error-box"
+  id="errorBox"
+></div>
+
+<section class="grid">
+
+  <div class="stat">
+
+    <div class="stat-top">
+
+      <span class="stat-label">
+        إجمالي الطلاب
+      </span>
+
+      <span class="stat-icon">
+        ♙
+      </span>
+
+    </div>
+
+    <div
+      class="stat-value"
+      id="studentsCount"
+    >
+      —
+    </div>
+
+  </div>
+
+  <div class="stat">
+
+    <div class="stat-top">
+
+      <span class="stat-label">
+        المواد
+      </span>
+
+      <span class="stat-icon">
+        ▦
+      </span>
+
+    </div>
+
+    <div
+      class="stat-value"
+      id="subjectsCount"
+    >
+      —
+    </div>
+
+  </div>
+
+  <div class="stat">
+
+    <div class="stat-top">
+
+      <span class="stat-label">
+        الدروس
+      </span>
+
+      <span class="stat-icon">
+        ☷
+      </span>
+
+    </div>
+
+    <div
+      class="stat-value"
+      id="lessonsCount"
+    >
+      —
+    </div>
+
+  </div>
+
+  <div class="stat">
+
+    <div class="stat-top">
+
+      <span class="stat-label">
+        طلبات الشحن
+      </span>
+
+      <span class="stat-icon">
+        ◈
+      </span>
+
+    </div>
+
+    <div
+      class="stat-value"
+      id="walletRequestsCount"
+    >
+      —
+    </div>
+
+  </div>
+
+</section>
+
+<section class="content-grid">
+
+  <div class="card">
+
+    <div class="card-header">
+
+      <h2>
+        الوصول السريع
+      </h2>
+
+      <span>
+        إدارة المنصة
+      </span>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="quick-grid">
+
+        <a class="quick" href="students.html">
+          <strong>إدارة الطلاب</strong>
+          <small>إضافة وتعديل وإدارة حسابات الطلاب</small>
+        </a>
+
+        <a class="quick" href="subjects.html">
+          <strong>إدارة المواد</strong>
+          <small>إضافة المواد وترتيبها وتعديلها</small>
+        </a>
+
+        <a class="quick" href="curriculum.html">
+          <strong>المنهج والدروس</strong>
+          <small>الفصول والوحدات والدروس والمحتوى</small>
+        </a>
+
+        <a class="quick" href="classes.html">
+          <strong>الحصص</strong>
+          <small>إدارة الحصص وروابط ملفات PDF</small>
+        </a>
+
+        <a class="quick" href="exams.html">
+          <strong>الامتحانات</strong>
+          <small>إنشاء وإدارة الامتحانات والأسئلة</small>
+        </a>
+
+        <a class="quick" href="wallet.html">
+          <strong>المحفظة</strong>
+          <small>الأرصدة وطلبات الشحن والمعاملات</small>
+        </a>
+
+        <a class="quick" href="requests.html">
+          <strong>الطلبات</strong>
+          <small>الاشتراكات والطلبات المعلقة</small>
+        </a>
+
+        <a class="quick" href="../index.html">
+          <strong>منصة الطالب</strong>
+          <small>الانتقال إلى صفحة دخول الطلاب</small>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="card-header">
+
+      <h2>
+        آخر الطلاب
+      </h2>
+
+      <span>
+        أحدث الحسابات
+      </span>
+
+    </div>
+
+    <div
+      class="card-body"
+      id="recentStudents"
+    >
+
+      <div class="loading">
+        جاري تحميل الطلاب...
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section
+  class="card"
+  style="margin-top:16px;"
+>
+
+  <div class="card-header">
+
+    <h2>
+      حالة النظام
+    </h2>
+
+    <span>
+      Firebase
+    </span>
+
+  </div>
+
+  <div class="card-body">
+
+    <div class="activity">
+
+      <div class="activity-item">
+
+        <div class="activity-icon">
+          ✓
+        </div>
+
+        <div class="activity-info">
+
+          <div class="activity-title">
+            Firebase Authentication
+          </div>
+
+          <div class="activity-sub">
+            متصل
+          </div>
 
         </div>
 
       </div>
 
-      <div class="account">
+      <div class="activity-item">
 
-        <div class="account-avatar">
-          M
+        <div class="activity-icon">
+          ✓
         </div>
 
-        <div>
+        <div class="activity-info">
 
-          <div style="font-size:11px;font-weight:700;">
-            مدير المنصة
+          <div class="activity-title">
+            Firestore Database
           </div>
 
           <div
-            class="account-email"
-            id="accountEmail"
+            class="activity-sub"
+            id="firestoreStatus"
           >
-            جاري التحميل...
+            جاري التحقق...
           </div>
 
         </div>
@@ -682,271 +949,10 @@ button{
 
     </div>
 
-    <div
-      class="error-box"
-      id="errorBox"
-    ></div>
+  </div>
 
-    <section class="grid">
-
-      <div class="stat">
-
-        <div class="stat-top">
-
-          <span class="stat-label">
-            إجمالي الطلاب
-          </span>
-
-          <span class="stat-icon">
-            ♙
-          </span>
-
-        </div>
-
-        <div
-          class="stat-value"
-          id="studentsCount"
-        >
-          —
-        </div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-top">
-
-          <span class="stat-label">
-            المواد
-          </span>
-
-          <span class="stat-icon">
-            ▦
-          </span>
-
-        </div>
-
-        <div
-          class="stat-value"
-          id="subjectsCount"
-        >
-          —
-        </div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-top">
-
-          <span class="stat-label">
-            الدروس
-          </span>
-
-          <span class="stat-icon">
-            ☷
-          </span>
-
-        </div>
-
-        <div
-          class="stat-value"
-          id="lessonsCount"
-        >
-          —
-        </div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-top">
-
-          <span class="stat-label">
-            طلبات الشحن
-          </span>
-
-          <span class="stat-icon">
-            ◈
-          </span>
-
-        </div>
-
-        <div
-          class="stat-value"
-          id="walletRequestsCount"
-        >
-          —
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="content-grid">
-
-      <div class="card">
-
-        <div class="card-header">
-
-          <h2>
-            الوصول السريع
-          </h2>
-
-          <span>
-            إدارة المنصة
-          </span>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="quick-grid">
-
-            <a class="quick" href="students.html">
-              <strong>إدارة الطلاب</strong>
-              <small>إضافة وتعديل وإدارة حسابات الطلاب</small>
-            </a>
-
-            <a class="quick" href="subjects.html">
-              <strong>إدارة المواد</strong>
-              <small>إضافة المواد وترتيبها وتعديلها</small>
-            </a>
-
-            <a class="quick" href="curriculum.html">
-              <strong>المنهج والدروس</strong>
-              <small>الفصول والوحدات والدروس والمحتوى</small>
-            </a>
-
-            <a class="quick" href="classes.html">
-              <strong>الحصص</strong>
-              <small>إدارة الحصص وروابط ملفات PDF</small>
-            </a>
-
-            <a class="quick" href="exams.html">
-              <strong>الامتحانات</strong>
-              <small>إنشاء وإدارة الامتحانات والأسئلة</small>
-            </a>
-
-            <a class="quick" href="wallet.html">
-              <strong>المحفظة</strong>
-              <small>الأرصدة وطلبات الشحن والمعاملات</small>
-            </a>
-
-            <a class="quick" href="requests.html">
-              <strong>الطلبات</strong>
-              <small>الاشتراكات والطلبات المعلقة</small>
-            </a>
-
-            <a class="quick" href="../index.html">
-              <strong>منصة الطالب</strong>
-              <small>الانتقال إلى صفحة دخول الطلاب</small>
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <div class="card-header">
-
-          <h2>
-            آخر الطلاب
-          </h2>
-
-          <span>
-            أحدث الحسابات
-          </span>
-
-        </div>
-
-        <div
-          class="card-body"
-          id="recentStudents"
-        >
-
-          <div class="loading">
-            جاري تحميل الطلاب...
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <section
-      class="card"
-      style="margin-top:16px;"
-    >
-
-      <div class="card-header">
-
-        <h2>
-          حالة النظام
-        </h2>
-
-        <span>
-          Firebase
-        </span>
-
-      </div>
-
-      <div class="card-body">
-
-        <div class="activity">
-
-          <div class="activity-item">
-
-            <div class="activity-icon">
-              ✓
-            </div>
-
-            <div class="activity-info">
-
-              <div class="activity-title">
-                Firebase Authentication
-              </div>
-
-              <div class="activity-sub">
-                متصل
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="activity-item">
-
-            <div class="activity-icon">
-              ✓
-            </div>
-
-            <div class="activity-info">
-
-              <div class="activity-title">
-                Firestore Database
-              </div>
-
-              <div
-                class="activity-sub"
-                id="firestoreStatus"
-              >
-                جاري التحقق...
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+</section>
+```
 
   </main>
 
