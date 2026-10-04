@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07070b">
+  <title>الطلبات</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07070b;
+      --panel: #101016;
+      --panel2: #15151d;
+      --border: rgba(255,255,255,.08);
+      --text: #fff;
+      --muted: #9999a8;
+      --purple: #8b5cf6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    body {
+      font-family: "Cairo", sans-serif;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(139,92,246,.13), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(10,10,15,.96);
+      border-left: 1px solid var(--border);
+      padding: 22px 15px;
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px 25px;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .brand span {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #a8a8b5;
+      padding: 12px 14px;
+      border-radius: 12px;
+      transition: .2s;
+      font-size: 14px;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: rgba(139,92,246,.13);
+      color: #fff;
+    }
+
+    .nav a.active {
+      border: 1px solid rgba(139,92,246,.25);
+    }
+
+    .logout {
+      width: 100%;
+      border: 1px solid rgba(239,68,68,.2);
+      background: rgba(239,68,68,.06);
+      color: #fca5a5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 20px;
+    }
+
+    .main {
+      flex: 1;
+      margin-right: 250px;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .title p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .admin-email {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 12px;
+      color: #bbb;
+      font-size: 13px;
+      direction: ltr;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: linear-gradient(145deg, rgba(139,92,246,.10), rgba(16,16,22,.95));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-family: "Chakra Petch", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .panel {
+      background: rgba(16,16,22,.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h2 {
+      font-size: 18px;
+    }
+
+    .tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input,
+    select {
+      background: #0b0b10;
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 11px;
+      padding: 11px 13px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(139,92,246,.7);
+    }
+
+    .search {
+      width: 300px;
+      max-width: 100%;
+    }
+
+    .filter {
+      min-width: 150px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th,
+    td {
+      padding: 13px 10px;
+      text-align: right;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #888895;
+      font-weight: 600;
+    }
+
+    td {
+      color: #ddd;
+    }
+
+    .student-name {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .student-code {
+      color: #888;
+      font-size: 11px;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    .amount {
+      font-family: "Chakra Petch", sans-serif;
+      font-weight: 700;
+      color: #86efac;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    .request-type {
+      color: #c4b5fd;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .status-pending {
+      background: rgba(245,158,11,.12);
+      color: #fcd34d;
+      border: 1px solid rgba(245,158,11,.2);
+    }
+
+    .status-approved {
+      background: rgba(34,197,94,.12);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,.2);
+    }
+
+    .status-rejected {
+      background: rgba(239,68,68,.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,.2);
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 12px;
+      color: #fff;
+      border: 1px solid transparent;
+    }
+
+    .btn-green {
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.2);
+      color: #86efac;
+    }
+
+    .btn-red {
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.2);
+      color: #fca5a5;
+    }
+
+    .btn-view {
+      background: rgba(139,92,246,.12);
+      border-color: rgba(139,92,246,.22);
+      color: #c4b5fd;
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .empty,
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: var(--muted);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 300;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111118;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-head h3 {
+      font-size: 19px;
+    }
+
+    .close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: #0b0b10;
+      color: #aaa;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .details {
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail {
+      background: #0b0b10;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .detail-label {
+      color: #777;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      color: #eee;
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 11px;
+    }
+
+    .message {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 500;
+      max-width: 380px;
+      padding: 13px 17px;
+      border-radius: 12px;
+      display: none;
+      font-size: 13px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(34,197,94,.15);
+      border: 1px solid rgba(34,197,94,.25);
+      color: #86efac;
+    }
+
+    .message.error {
+      background: rgba(239,68,68,.15);
+      border: 1px solid rgba(239,68,68,.25);
+      color: #fca5a5;
+    }
+
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 220px;
+      }
+
+      .main {
+        margin-right: 220px;
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        border-left: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .main {
+        margin-right: 0;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .tools {
+        width: 100%;
+      }
+
+      .search,
+      .filter {
+        width: 100%;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+```
+<div class="brand">
+  <img src="logo.png" alt="Mathix">
+  <span>Mathix</span>
+</div>
+
+<nav class="nav">
+  <a href="dashboard.html">لوحة التحكم</a>
+  <a href="students.html">الطلاب</a>
+  <a href="subjects.html">المواد</a>
+  <a href="curriculum.html">المنهج</a>
+  <a href="classes.html">الحصص</a>
+  <a href="exams.html">الامتحانات</a>
+  <a href="wallet.html">المحفظة</a>
+  <a href="requests.html" class="active">الطلبات</a>
+</nav>
+
+<button class="logout" id="logoutBtn">
+  تسجيل الخروج
+</button>
+```
+
+  </aside>
+
+  <main class="main">
+
+```
+<div class="topbar">
+
+  <div class="title">
+    <h1>الطلبات</h1>
+    <p>إدارة طلبات شحن المحفظة والاشتراكات</p>
+  </div>
+
+  <div class="admin-email" id="adminEmail">
+    ...
+  </div>
+
+</div>
+
+
+<section class="stats">
+
+  <div class="stat">
+    <div class="stat-label">كل الطلبات</div>
+    <div class="stat-value" id="allCount">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">طلبات معلقة</div>
+    <div class="stat-value" id="pendingCount">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">طلبات مقبولة</div>
+    <div class="stat-value" id="approvedCount">0</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">طلبات مرفوضة</div>
+    <div class="stat-value" id="rejectedCount">0</div>
+  </div>
+
+</section>
+
+
+<section class="panel">
+
+  <div class="panel-head">
+
+    <h2>الطلبات</h2>
+
+    <div class="tools">
+
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="ابحث بالاسم أو الكود..."
+      >
+
+      <select id="statusFilter" class="filter">
+        <option value="all">كل الحالات</option>
+        <option value="pending">معلقة</option>
+        <option value="approved">مقبولة</option>
+        <option value="rejected">مرفوضة</option>
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>الطالب</th>
+          <th>الكود</th>
+          <th>النوع</th>
+          <th>المبلغ</th>
+          <th>الحالة</th>
+          <th>التاريخ</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+
+      <tbody id="requestsTable">
+
+        <tr>
+          <td colspan="7" class="loading">
+            جاري تحميل الطلبات...
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+```
+
+  </main>
+
+</div>
+
+<div class="modal" id="detailsModal">
+
+  <div class="modal-box">
+
+```
+<div class="modal-head">
+
+  <h3>تفاصيل الطلب</h3>
+
+  <button class="close" id="closeModal">
+    ×
+  </button>
+
+</div>
+
+<div class="details" id="detailsContent"></div>
+
+<div class="modal-actions">
+
+  <button
+    class="btn btn-green"
+    id="modalApprove"
+  >
+    قبول الطلب
+  </button>
+
+  <button
+    class="btn btn-red"
+    id="modalReject"
+  >
+    رفض الطلب
+  </button>
+
+</div>
+```
+
+  </div>
+
+</div>
+
+<div class="message" id="message"></div>
+
+<script type="module">
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+  runTransaction,
+  query,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+  authDomain: "mathix-88811.firebaseapp.com",
+  projectId: "mathix-88811",
+  storageBucket: "mathix-88811.firebasestorage.app",
+  messagingSenderId: "1043867239139",
+  appId: "1:1043867239139:web:da19abef81f052682bbbd6",
+  measurementId: "G-T17ZDVBLM2"
+};
+
+const ADMIN_EMAIL = "z1wae12008@gmail.com";
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+const requestsTable =
+  document.getElementById("requestsTable");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const statusFilter =
+  document.getElementById("statusFilter");
+
+const allCount =
+  document.getElementById("allCount");
+
+const pendingCount =
+  document.getElementById("pendingCount");
+
+const approvedCount =
+  document.getElementById("approvedCount");
+
+const rejectedCount =
+  document.getElementById("rejectedCount");
+
+const detailsModal =
+  document.getElementById("detailsModal");
+
+const detailsContent =
+  document.getElementById("detailsContent");
+
+const closeModal =
+  document.getElementById("closeModal");
+
+const modalApprove =
+  document.getElementById("modalApprove");
+
+const modalReject =
+  document.getElementById("modalReject");
+
+const messageBox =
+  document.getElementById("message");
+
+const adminEmailBox =
+  document.getElementById("adminEmail");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+
+let requests = [];
+let selectedRequest = null;
+let unsubscribeRequests = null;
+
+
+function showMessage(text, type = "success") {
+
+  messageBox.textContent = text;
+
+  messageBox.className =
+    `message show ${type}`;
+
+  setTimeout(() => {
+    messageBox.className = "message";
+  }, 3500);
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function formatMoney(value) {
+
+  return `${Number(value || 0).toLocaleString("ar-EG")} ج.م`;
+}
+
+
+function formatDate(timestamp) {
+
+  if (!timestamp) return "—";
+
+  try {
+
+    const date = timestamp.toDate
+      ? timestamp.toDate()
+      : new Date(timestamp);
+
+    return date.toLocaleString("ar-EG", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  } catch {
+
+    return "—";
+  }
+}
+
+
+function getStatus(request) {
+
+  return String(
+    request.status ||
+    request.state ||
+    "pending"
+  ).toLowerCase();
+}
+
+
+function getType(request) {
+
+  const type =
+    String(
+      request.type ||
+      request.requestType ||
+      request.kind ||
+      ""
+    ).toLowerCase();
+
+  if (
+    type === "subscription" ||
+    type === "subscribe"
+  ) {
+    return "اشتراك";
+  }
+
+  if (
+    type === "topup" ||
+    type === "wallet" ||
+    type === "wallet_topup"
+  ) {
+    return "شحن محفظة";
+  }
+
+  return request.type ||
+    request.requestType ||
+    "طلب";
+}
+
+
+function getStudentName(request) {
+
+  return (
+    request.studentName ||
+    request.name ||
+    request.fullName ||
+    "طالب"
+  );
+}
+
+
+function getStudentCode(request) {
+
+  return (
+    request.studentCode ||
+    request.code ||
+    "—"
+  );
+}
+
+
+function renderStatus(status) {
+
+  if (status === "approved") {
+
+    return `
+      <span class="status status-approved">
+        مقبول
+      </span>
+    `;
+  }
+
+  if (status === "rejected") {
+
+    return `
+      <span class="status status-rejected">
+        مرفوض
+      </span>
+    `;
+  }
+
+  return `
+    <span class="status status-pending">
+      معلق
+    </span>
+  `;
+}
+
+
+function renderRequests() {
+
+  const search =
+    searchInput.value.trim().toLowerCase();
+
+  const filter =
+    statusFilter.value;
+
+
+  const filtered =
+    requests.filter(request => {
+
+      const status =
+        getStatus(request);
+
+      const name =
+        String(getStudentName(request))
+          .toLowerCase();
+
+      const code =
+        String(getStudentCode(request))
+          .toLowerCase();
+
+      const studentId =
+        String(request.studentId || "")
+          .toLowerCase();
+
+      const matchesSearch =
+        !search ||
+        name.includes(search) ||
+        code.includes(search) ||
+        studentId.includes(search);
+
+      const matchesStatus =
+        filter === "all" ||
+        status === filter;
+
+      return (
+        matchesSearch &&
+        matchesStatus
+      );
+    });
+
+
+  if (!filtered.length) {
+
+    requestsTable.innerHTML = `
+      <tr>
+        <td colspan="7" class="empty">
+          لا توجد طلبات
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  requestsTable.innerHTML =
+    filtered.map(request => {
+
+      const status =
+        getStatus(request);
+
+      const amount =
+        Number(
+          request.amount ||
+          request.price ||
+          request.value ||
+          0
+        );
+
+      return `
+        <tr>
+
+          <td>
+            <div class="student-name">
+              ${escapeHTML(
+                getStudentName(request)
+              )}
+            </div>
+          </td>
+
+          <td>
+            <span class="student-code">
+              ${escapeHTML(
+                getStudentCode(request)
+              )}
+            </span>
+          </td>
+
+          <td>
+            <span class="request-type">
+              ${escapeHTML(
+                getType(request)
+              )}
+            </span>
+          </td>
+
+          <td>
+            <span class="amount">
+              ${escapeHTML(
+                formatMoney(amount)
+              )}
+            </span>
+          </td>
+
+          <td>
+            ${renderStatus(status)}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              formatDate(
+                request.createdAt
+              )
+            )}
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="btn btn-view"
+                data-action="view"
+                data-id="${escapeHTML(
+                  request.id
+                )}"
+              >
+                التفاصيل
+              </button>
+
+              ${
+                status === "pending"
+                  ? `
+                    <button
+                      class="btn btn-green"
+                      data-action="approve"
+                      data-id="${escapeHTML(
+                        request.id
+                      )}"
+                    >
+                      قبول
+                    </button>
+
+                    <button
+                      class="btn btn-red"
+                      data-action="reject"
+                      data-id="${escapeHTML(
+                        request.id
+                      )}"
+                    >
+                      رفض
+                    </button>
+                  `
+                  : ""
+              }
+
+            </div>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+}
+
+
+function updateStats() {
+
+  let pending = 0;
+  let approved = 0;
+  let rejected = 0;
+
+  requests.forEach(request => {
+
+    const status =
+      getStatus(request);
+
+    if (status === "pending") {
+      pending++;
+    }
+
+    if (status === "approved") {
+      approved++;
+    }
+
+    if (status === "rejected") {
+      rejected++;
+    }
+
+  });
+
+  allCount.textContent =
+    requests.length.toLocaleString("ar-EG");
+
+  pendingCount.textContent =
+    pending.toLocaleString("ar-EG");
+
+  approvedCount.textContent =
+    approved.toLocaleString("ar-EG");
+
+  rejectedCount.textContent =
+    rejected.toLocaleString("ar-EG");
+}
+
+
+function openDetails(requestId) {
+
+  const request =
+    requests.find(
+      item => item.id === requestId
+    );
+
+  if (!request) {
+    showMessage(
+      "الطلب غير موجود",
+      "error"
+    );
+    return;
+  }
+
+  selectedRequest = request;
+
+  const status =
+    getStatus(request);
+
+  const amount =
+    Number(
+      request.amount ||
+      request.price ||
+      request.value ||
+      0
+    );
+
+  const proof =
+    request.proofUrl ||
+    request.receiptUrl ||
+    request.imageUrl ||
+    request.screenshot ||
+    "";
+
+
+  detailsContent.innerHTML = `
+
+    <div class="detail">
+      <div class="detail-label">
+        الطالب
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          getStudentName(request)
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        كود الطالب
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          getStudentCode(request)
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        رقم الطالب
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          request.studentId || "—"
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        نوع الطلب
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          getType(request)
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        المبلغ
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          formatMoney(amount)
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        الحالة
+      </div>
+
+      <div class="detail-value">
+        ${renderStatus(status)}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        الوصف
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          request.description ||
+          request.note ||
+          "—"
+        )}
+      </div>
+    </div>
+
+
+    <div class="detail">
+      <div class="detail-label">
+        تاريخ الطلب
+      </div>
+
+      <div class="detail-value">
+        ${escapeHTML(
+          formatDate(
+            request.createdAt
+          )
+        )}
+      </div>
+    </div>
+
+
+    ${
+      proof
+        ? `
+          <div class="detail">
+            <div class="detail-label">
+              إثبات الدفع
+            </div>
+
+            <div class="detail-value">
+              <a
+                href="${escapeHTML(proof)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="color:#a78bfa;"
+              >
+                فتح الإثبات
+              </a>
+            </div>
+          </div>
+        `
+        : ""
+    }
+
+  `;
+
+
+  const isPending =
+    status === "pending";
+
+  modalApprove.style.display =
+    isPending
+      ? "block"
+      : "none";
+
+  modalReject.style.display =
+    isPending
+      ? "block"
+      : "none";
+
+  detailsModal.classList.add("show");
+}
+
+
+function closeDetails() {
+
+  detailsModal.classList.remove("show");
+
+  selectedRequest = null;
+}
+
+
+async function approveRequest(request) {
+
+  if (!request) return;
+
+  if (getStatus(request) !== "pending") {
+
+    showMessage(
+      "هذا الطلب تم التعامل معه بالفعل",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const type =
+    String(
+      request.type ||
+      request.requestType ||
+      request.kind ||
+      ""
+    ).toLowerCase();
+
+
+  const isTopup =
+    type === "topup" ||
+    type === "wallet" ||
+    type === "wallet_topup";
+
+
+  const studentId =
+    request.studentId;
+
+
+  if (!studentId) {
+
+    showMessage(
+      "الطلب لا يحتوي على studentId",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const amount =
+    Number(
+      request.amount ||
+      request.price ||
+      request.value ||
+      0
+    );
+
+
+  if (
+    isTopup &&
+    (!Number.isFinite(amount) || amount <= 0)
+  ) {
+
+    showMessage(
+      "مبلغ الطلب غير صحيح",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    !confirm(
+      isTopup
+        ? `هل تريد قبول شحن ${formatMoney(amount)} للطالب؟`
+        : "هل تريد قبول هذا الطلب؟"
+    )
+  ) {
+    return;
+  }
+
+
+  const requestRef =
+    doc(
+      db,
+      "walletRequests",
+      request.id
+    );
+
+
+  const walletRef =
+    doc(
+      db,
+      "wallets",
+      studentId
+    );
+
+
+  const transactionRef =
+    doc(
+      collection(
+        db,
+        "walletTransactions"
+      )
+    );
+
+
+  const subscriptionRef =
+    doc(
+      db,
+      "subscriptionRequests",
+      request.id
+    );
+
+
+  try {
+
+    if (isTopup) {
+
+      await runTransaction(
+        db,
+        async transaction => {
+
+          const requestSnap =
+            await transaction.get(
+              requestRef
+            );
+
+          if (!requestSnap.exists()) {
+            throw new Error(
+              "REQUEST_NOT_FOUND"
+            );
+          }
+
+
+          const requestData =
+            requestSnap.data();
+
+
+          if (
+            String(
+              requestData.status ||
+              "pending"
+            ).toLowerCase() !== "pending"
+          ) {
+            throw new Error(
+              "REQUEST_ALREADY_PROCESSED"
+            );
+          }
+
+
+          const walletSnap =
+            await transaction.get(
+              walletRef
+            );
+
+
+          const currentBalance =
+            Number(
+              walletSnap.data()?.balance || 0
+            );
+
+
+          const newBalance =
+            currentBalance + amount;
+
+
+          transaction.set(
+            walletRef,
+            {
+              studentId,
+              balance: newBalance,
+              updatedAt: serverTimestamp()
+            },
+            {
+              merge: true
+            }
+          );
+
+
+          transaction.set(
+            transactionRef,
+            {
+              studentId,
+              type: "topup",
+              amount,
+              balanceBefore: currentBalance,
+              balanceAfter: newBalance,
+              description:
+                requestData.description ||
+                "قبول طلب شحن المحفظة",
+              requestId: request.id,
+              createdAt: serverTimestamp(),
+              createdBy:
+                auth.currentUser.email
+            }
+          );
+
+
+          transaction.update(
+            requestRef,
+            {
+              status: "approved",
+              reviewedAt: serverTimestamp(),
+              reviewedBy:
+                auth.currentUser.email
+            }
+          );
+
+        }
+      );
+
+    } else {
+
+      await runTransaction(
+        db,
+        async transaction => {
+
+          const sourceCollection =
+            type === "subscription" ||
+            type === "subscribe"
+              ? "subscriptionRequests"
+              : "walletRequests";
+
+
+          const sourceRef =
+            doc(
+              db,
+              sourceCollection,
+              request.id
+            );
+
+
+          const requestSnap =
+            await transaction.get(
+              sourceRef
+            );
+
+
+          if (!requestSnap.exists()) {
+            throw new Error(
+              "REQUEST_NOT_FOUND"
+            );
+          }
+
+
+          const requestData =
+            requestSnap.data();
+
+
+          if (
+            String(
+              requestData.status ||
+              "pending"
+            ).toLowerCase() !== "pending"
+          ) {
+            throw new Error(
+              "REQUEST_ALREADY_PROCESSED"
+            );
+          }
+
+
+          transaction.update(
+            sourceRef,
+            {
+              status: "approved",
+              reviewedAt: serverTimestamp(),
+              reviewedBy:
+                auth.currentUser.email
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+    showMessage(
+      "تم قبول الطلب بنجاح"
+    );
+
+    closeDetails();
+
+  } catch (error) {
+
+    console.error(
+      "APPROVE REQUEST ERROR:",
+      error
+    );
+
+
+    if (
+      error.message ===
+      "REQUEST_ALREADY_PROCESSED"
+    ) {
+
+      showMessage(
+        "تم التعامل مع الطلب من قبل",
+        "error"
+      );
+
+    } else {
+
+      showMessage(
+        "تعذر قبول الطلب",
+        "error"
+      );
+    }
+
+  }
+
+}
+
+
+async function rejectRequest(request) {
+
+  if (!request) return;
+
+
+  if (getStatus(request) !== "pending") {
+
+    showMessage(
+      "هذا الطلب تم التعامل معه بالفعل",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    !confirm(
+      "هل تريد رفض هذا الطلب؟"
+    )
+  ) {
+    return;
+  }
+
+
+  const type =
+    String(
+      request.type ||
+      request.requestType ||
+      request.kind ||
+      ""
+    ).toLowerCase();
+
+
+  const collectionName =
+    type === "subscription" ||
+    type === "subscribe"
+      ? "subscriptionRequests"
+      : "walletRequests";
+
+
+  try {
+
+    await runTransaction(
+      db,
+      async transaction => {
+
+        const requestRef =
+          doc(
+            db,
+            collectionName,
+            request.id
+          );
+
+
+        const requestSnap =
+          await transaction.get(
+            requestRef
+          );
+
+
+        if (!requestSnap.exists()) {
+          throw new Error(
+            "REQUEST_NOT_FOUND"
+          );
+        }
+
+
+        const data =
+          requestSnap.data();
+
+
+        if (
+          String(
+            data.status ||
+            "pending"
+          ).toLowerCase() !== "pending"
+        ) {
+          throw new Error(
+            "REQUEST_ALREADY_PROCESSED"
+          );
+        }
+
+
+        transaction.update(
+          requestRef,
+          {
+            status: "rejected",
+            reviewedAt: serverTimestamp(),
+            reviewedBy:
+              auth.currentUser.email
+          }
+        );
+
+      }
+    );
+
+
+    showMessage(
+      "تم رفض الطلب"
+    );
+
+    closeDetails();
+
+  } catch (error) {
+
+    console.error(
+      "REJECT REQUEST ERROR:",
+      error
+    );
+
+
+    if (
+      error.message ===
+      "REQUEST_ALREADY_PROCESSED"
+    ) {
+
+      showMessage(
+        "تم التعامل مع الطلب من قبل",
+        "error"
+      );
+
+    } else {
+
+      showMessage(
+        "تعذر رفض الطلب",
+        "error"
+      );
+    }
+
+  }
+
+}
+
+
+requestsTable.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "[data-action]"
+      );
+
+    if (!button) return;
+
+
+    const id =
+      button.dataset.id;
+
+    const request =
+      requests.find(
+        item => item.id === id
+      );
+
+    if (!request) return;
+
+
+    const action =
+      button.dataset.action;
+
+
+    if (action === "view") {
+
+      openDetails(id);
+      return;
+    }
+
+
+    if (action === "approve") {
+
+      approveRequest(request);
+      return;
+    }
+
+
+    if (action === "reject") {
+
+      rejectRequest(request);
+      return;
+    }
+
+  }
+);
+
+
+searchInput.addEventListener(
+  "input",
+  renderRequests
+);
+
+
+statusFilter.addEventListener(
+  "change",
+  renderRequests
+);
+
+
+closeModal.addEventListener(
+  "click",
+  closeDetails
+);
+
+
+detailsModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target === detailsModal
+    ) {
+      closeDetails();
+    }
+
+  }
+);
+
+
+modalApprove.addEventListener(
+  "click",
+  async () => {
+
+    if (!selectedRequest) return;
+
+    await approveRequest(
+      selectedRequest
+    );
+
+  }
+);
+
+
+modalReject.addEventListener(
+  "click",
+  async () => {
+
+    if (!selectedRequest) return;
+
+    await rejectRequest(
+      selectedRequest
+    );
+
+  }
+);
+
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await signOut(auth);
+
+      location.href =
+        "index.html";
+
+    } catch (error) {
+
+      console.error(
+        "LOGOUT ERROR:",
+        error
+      );
+
+      showMessage(
+        "تعذر تسجيل الخروج",
+        "error"
+      );
+
+    }
+
+  }
+);
+
+
+function listenRequests() {
+
+  if (unsubscribeRequests) {
+    unsubscribeRequests();
+  }
+
+
+  const walletQuery =
+    query(
+      collection(
+        db,
+        "walletRequests"
+      ),
+      orderBy(
+        "createdAt",
+        "desc"
+      )
+    );
+
+
+  unsubscribeRequests =
+    onSnapshot(
+      walletQuery,
+      walletSnapshot => {
+
+        const walletRequests =
+          walletSnapshot.docs.map(
+            item => ({
+              id: item.id,
+              source: "walletRequests",
+              type: "topup",
+              ...item.data()
+            })
+          );
+
+
+        const subscriptionQuery =
+          query(
+            collection(
+              db,
+              "subscriptionRequests"
+            ),
+            orderBy(
+              "createdAt",
+              "desc"
+            )
+          );
+
+
+        onSnapshot(
+          subscriptionQuery,
+          subscriptionSnapshot => {
+
+            const subscriptionRequests =
+              subscriptionSnapshot.docs.map(
+                item => ({
+                  id: item.id,
+                  source:
+                    "subscriptionRequests",
+                  type:
+                    "subscription",
+                  ...item.data()
+                })
+              );
+
+
+            requests = [
+              ...walletRequests,
+              ...subscriptionRequests
+            ];
+
+
+            requests.sort(
+              (a, b) => {
+
+                const aTime =
+                  a.createdAt?.toMillis
+                    ? a.createdAt.toMillis()
+                    : 0;
+
+                const bTime =
+                  b.createdAt?.toMillis
+                    ? b.createdAt.toMillis()
+                    : 0;
+
+                return bTime - aTime;
+
+              }
+            );
+
+
+            updateStats();
+            renderRequests();
+
+          },
+          error => {
+
+            console.error(
+              "SUBSCRIPTION REQUESTS ERROR:",
+              error
+            );
+
+            showMessage(
+              "تعذر تحميل طلبات الاشتراك",
+              "error"
+            );
+
+          }
+        );
+
+      },
+      error => {
+
+        console.error(
+          "WALLET REQUESTS ERROR:",
+          error
+        );
+
+        requestsTable.innerHTML = `
+          <tr>
+            <td
+              colspan="7"
+              class="empty"
+            >
+              تعذر تحميل طلبات المحفظة
+            </td>
+          </tr>
+        `;
+
+        showMessage(
+          "تعذر تحميل الطلبات",
+          "error"
+        );
+
+      }
+    );
+
+}
+
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user) {
+
+      location.href =
+        "index.html";
+
+      return;
+    }
+
+
+    if (!user.emailVerified) {
+
+      await signOut(auth);
+
+      location.href =
+        "index.html";
+
+      return;
+    }
+
+
+    if (
+      String(user.email || "")
+        .toLowerCase() !==
+      ADMIN_EMAIL.toLowerCase()
+    ) {
+
+      await signOut(auth);
+
+      location.href =
+        "index.html";
+
+      return;
+    }
+
+
+    adminEmailBox.textContent =
+      user.email;
+
+
+    listenRequests();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
