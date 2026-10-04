@@ -639,42 +639,42 @@
   <nav class="nav">
 
 ```
-<a href="admin-dashboard.html">
+<a href="dashboard.html">
   <span class="nav-icon">⌂</span>
   <span>الرئيسية</span>
 </a>
 
-<a href="admin-students.html">
+<a href="students.html">
   <span class="nav-icon">♙</span>
   <span>الطلاب</span>
 </a>
 
-<a href="admin-subjects.html">
+<a href="subjects.html">
   <span class="nav-icon">▣</span>
   <span>المواد</span>
 </a>
 
-<a href="admin-curriculum.html">
+<a href="curriculum.html">
   <span class="nav-icon">☷</span>
   <span>المنهج والدروس</span>
 </a>
 
-<a href="admin-classes.html" class="active">
+<a href="classes.html" class="active">
   <span class="nav-icon">▤</span>
   <span>الحصص</span>
 </a>
 
-<a href="admin-exams.html">
+<a href="exams.html">
   <span class="nav-icon">✓</span>
   <span>الامتحانات</span>
 </a>
 
-<a href="admin-wallet.html">
+<a href="wallet.html">
   <span class="nav-icon">◇</span>
   <span>المحفظة</span>
 </a>
 
-<a href="admin-requests.html">
+<a href="requests.html">
   <span class="nav-icon">◌</span>
   <span>الطلبات</span>
 </a>
@@ -769,7 +769,6 @@
 
 </div>
 
-
 <form id="classForm">
 
   <div class="form-grid">
@@ -789,7 +788,6 @@
 
     </div>
 
-
     <div class="field">
 
       <label for="classSubject">
@@ -807,7 +805,6 @@
 
     </div>
 
-
     <div class="field">
 
       <label for="classTeacher">
@@ -822,7 +819,6 @@
 
     </div>
 
-
     <div class="field">
 
       <label for="classDate">
@@ -836,7 +832,6 @@
 
     </div>
 
-
     <div class="field">
 
       <label for="classTime">
@@ -849,7 +844,6 @@
       >
 
     </div>
-
 
     <div class="field">
 
@@ -868,7 +862,6 @@
 
     </div>
 
-
     <div class="field">
 
       <label for="classOrder">
@@ -883,7 +876,6 @@
       >
 
     </div>
-
 
     <div class="field full">
 
@@ -904,7 +896,6 @@
 
     </div>
 
-
     <div class="field full">
 
       <label for="classDescription">
@@ -917,7 +908,6 @@
       ></textarea>
 
     </div>
-
 
     <div class="field full">
 
@@ -938,7 +928,6 @@
     </div>
 
   </div>
-
 
   <div class="modal-actions">
 
@@ -994,7 +983,6 @@
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
   const firebaseConfig = {
     apiKey: "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
     authDomain: "mathix-88811.firebaseapp.com",
@@ -1005,10 +993,8 @@
     measurementId: "G-T17ZDVBLM2"
   };
 
-
   const ADMIN_EMAIL =
     "z1wae12008@gmail.com";
-
 
   const app =
     initializeApp(firebaseConfig);
@@ -1019,7 +1005,6 @@
   const db =
     getFirestore(app);
 
-
   const classesGrid =
     document.getElementById("classesGrid");
 
@@ -1028,7 +1013,6 @@
 
   const subjectFilter =
     document.getElementById("subjectFilter");
-
 
   const classModal =
     document.getElementById("classModal");
@@ -1050,7 +1034,6 @@
 
   const saveBtn =
     document.getElementById("saveBtn");
-
 
   const classTitle =
     document.getElementById("classTitle");
@@ -1082,7 +1065,6 @@
   const classPublished =
     document.getElementById("classPublished");
 
-
   const toast =
     document.getElementById("toast");
 
@@ -1098,11 +1080,9 @@
   const logoutBtn =
     document.getElementById("logoutBtn");
 
-
   let classes = [];
   let subjects = [];
   let editingId = null;
-
 
   function showToast(message, type = "") {
 
@@ -1124,7 +1104,6 @@
       }, 3200);
   }
 
-
   function escapeHTML(value) {
 
     return String(value ?? "")
@@ -1134,7 +1113,6 @@
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
   }
-
 
   function formatDate(value) {
 
@@ -1165,7 +1143,6 @@
     ).format(date);
   }
 
-
   function fillSubjects() {
 
     const currentClassSubject =
@@ -1173,7 +1150,6 @@
 
     const currentFilter =
       subjectFilter.value;
-
 
     const options =
       subjects
@@ -1197,13 +1173,11 @@
         })
         .join("");
 
-
     classSubject.innerHTML =
       `<option value="">اختر المادة</option>${options}`;
 
     subjectFilter.innerHTML =
       `<option value="">كل المواد</option>${options}`;
-
 
     if (
       subjects.some(
@@ -1215,7 +1189,6 @@
       classSubject.value =
         currentClassSubject;
     }
-
 
     if (
       subjects.some(
@@ -1230,18 +1203,15 @@
 
   }
 
-
   function openModal(item = null) {
 
     editingId =
       item?.id || null;
 
-
     modalTitle.textContent =
       editingId
         ? "تعديل الحصة"
         : "إضافة حصة";
-
 
     classTitle.value =
       item?.title ||
@@ -1289,11 +1259,9 @@
     classPublished.checked =
       item?.isPublished !== false;
 
-
     classModal.classList.add(
       "show"
     );
-
 
     setTimeout(
       () =>
@@ -1301,7 +1269,6 @@
       100
     );
   }
-
 
   function closeClassModal() {
 
@@ -1318,7 +1285,6 @@
     classPublished.checked = true;
   }
 
-
   function renderClasses() {
 
     const search =
@@ -1328,7 +1294,6 @@
 
     const filter =
       subjectFilter.value;
-
 
     const filtered =
       classes
@@ -1350,7 +1315,6 @@
             )
             .join(" ");
 
-
           return (
             (!search ||
               text.includes(search)) &&
@@ -1364,7 +1328,6 @@
             Number(a.order ?? 0) -
             Number(b.order ?? 0)
         );
-
 
     if (!filtered.length) {
 
@@ -1390,7 +1353,6 @@
       return;
     }
 
-
     classesGrid.innerHTML =
       filtered
         .map(item => {
@@ -1400,40 +1362,33 @@
             item.name ||
             "بدون عنوان";
 
-
           const description =
             item.description ||
             "لا يوجد وصف.";
-
 
           const subject =
             item.subjectName ||
             item.subject ||
             "غير محدد";
 
-
           const teacher =
             item.teacherName ||
             item.teacher ||
             "غير محدد";
-
 
           const date =
             item.date ||
             item.classDate ||
             "";
 
-
           const time =
             item.time ||
             "غير محدد";
-
 
           const price =
             Number(
               item.price ?? 0
             );
-
 
           const pdf =
             item.pdfUrl ||
@@ -1441,10 +1396,8 @@
             item.url ||
             "";
 
-
           const published =
             item.isPublished !== false;
-
 
           return `
             <article class="class-card">
@@ -1471,18 +1424,15 @@
 
               </div>
 
-
               <h3>
                 ${escapeHTML(title)}
               </h3>
-
 
               <div class="description">
                 ${escapeHTML(
                   description
                 )}
               </div>
-
 
               <div class="meta">
 
@@ -1518,7 +1468,6 @@
 
               </div>
 
-
               <div class="price">
                 ${
                   price > 0
@@ -1526,7 +1475,6 @@
                     : "مجانية"
                 }
               </div>
-
 
               <div class="actions">
 
@@ -1552,7 +1500,6 @@
                     `
                 }
 
-
                 <button
                   class="edit"
                   type="button"
@@ -1561,7 +1508,6 @@
                 >
                   تعديل
                 </button>
-
 
                 <button
                   class="delete"
@@ -1581,11 +1527,9 @@
         .join("");
   }
 
-
   async function saveClass(event) {
 
     event.preventDefault();
-
 
     const title =
       classTitle.value.trim();
@@ -1599,10 +1543,8 @@
           item.id === subjectId
       );
 
-
     const pdf =
       classPdf.value.trim();
-
 
     if (!title) {
 
@@ -1614,7 +1556,6 @@
       return;
     }
 
-
     if (!subjectId) {
 
       showToast(
@@ -1625,7 +1566,6 @@
       return;
     }
 
-
     if (!pdf) {
 
       showToast(
@@ -1635,7 +1575,6 @@
 
       return;
     }
-
 
     try {
 
@@ -1651,7 +1590,6 @@
       return;
     }
 
-
     const price =
       Math.max(
         0,
@@ -1660,7 +1598,6 @@
         )
       );
 
-
     const order =
       Math.max(
         0,
@@ -1668,7 +1605,6 @@
           classOrder.value || 0
         )
       );
-
 
     const data = {
 
@@ -1715,12 +1651,10 @@
 
     };
 
-
     saveBtn.disabled = true;
 
     saveBtn.textContent =
       "جاري الحفظ...";
-
 
     try {
 
@@ -1766,7 +1700,6 @@
         );
       }
 
-
       closeClassModal();
 
     } catch(error) {
@@ -1790,7 +1723,6 @@
     }
   }
 
-
   async function deleteClass(id) {
 
     const item =
@@ -1799,15 +1731,12 @@
           classItem.id === id
       );
 
-
     if (!item) return;
-
 
     const title =
       item.title ||
       item.name ||
       "هذه الحصة";
-
 
     if (
       !confirm(
@@ -1816,7 +1745,6 @@
     ) {
       return;
     }
-
 
     try {
 
@@ -1827,7 +1755,6 @@
           id
         )
       );
-
 
       showToast(
         "تم حذف الحصة.",
@@ -1848,7 +1775,6 @@
     }
   }
 
-
   function startListeners() {
 
     const subjectsRef =
@@ -1857,13 +1783,11 @@
         "subjects"
       );
 
-
     const classesRef =
       collection(
         db,
         "classes"
       );
-
 
     onSnapshot(
       subjectsRef,
@@ -1876,7 +1800,6 @@
               ...item.data()
             })
           );
-
 
         fillSubjects();
 
@@ -1893,7 +1816,6 @@
       }
     );
 
-
     const orderedQuery =
       query(
         classesRef,
@@ -1902,7 +1824,6 @@
           "asc"
         )
       );
-
 
     onSnapshot(
       orderedQuery,
@@ -1916,7 +1837,6 @@
             })
           );
 
-
         renderClasses();
 
       },
@@ -1926,7 +1846,6 @@
           "ORDERED CLASSES ERROR:",
           error
         );
-
 
         onSnapshot(
           classesRef,
@@ -1946,7 +1865,6 @@
                     Number(b.order ?? 0)
                 );
 
-
             renderClasses();
 
           },
@@ -1956,7 +1874,6 @@
               "CLASSES ERROR:",
               fallbackError
             );
-
 
             classesGrid.innerHTML = `
               <div class="empty">
@@ -1977,7 +1894,6 @@
     );
   }
 
-
   onAuthStateChanged(
     auth,
     user => {
@@ -1990,18 +1906,6 @@
         return;
       }
 
-
-      if (!user.emailVerified) {
-
-        signOut(auth);
-
-        window.location.href =
-          "index.html";
-
-        return;
-      }
-
-
       if (
         String(
           user.email || ""
@@ -2009,38 +1913,35 @@
         ADMIN_EMAIL.toLowerCase()
       ) {
 
-        signOut(auth);
+        signOut(auth).finally(() => {
 
-        window.location.href =
-          "index.html";
+          window.location.href =
+            "index.html";
+
+        });
 
         return;
       }
-
 
       startListeners();
 
     }
   );
 
-
   addClassBtn.addEventListener(
     "click",
     () => openModal()
   );
-
 
   closeModal.addEventListener(
     "click",
     closeClassModal
   );
 
-
   cancelBtn.addEventListener(
     "click",
     closeClassModal
   );
-
 
   classModal.addEventListener(
     "click",
@@ -2056,24 +1957,20 @@
     }
   );
 
-
   classForm.addEventListener(
     "submit",
     saveClass
   );
-
 
   searchInput.addEventListener(
     "input",
     renderClasses
   );
 
-
   subjectFilter.addEventListener(
     "change",
     renderClasses
   );
-
 
   classesGrid.addEventListener(
     "click",
@@ -2084,16 +1981,13 @@
           "button[data-action]"
         );
 
-
       if (!button) return;
-
 
       const action =
         button.dataset.action;
 
       const id =
         button.dataset.id;
-
 
       if (
         action === "edit"
@@ -2105,13 +1999,11 @@
               classItem.id === id
           );
 
-
         if (item) {
           openModal(item);
         }
 
       }
-
 
       if (
         action === "delete"
@@ -2123,7 +2015,6 @@
 
     }
   );
-
 
   logoutBtn.addEventListener(
     "click",
@@ -2152,7 +2043,6 @@
     }
   );
 
-
   mobileMenu.addEventListener(
     "click",
     () => {
@@ -2168,7 +2058,6 @@
     }
   );
 
-
   overlay.addEventListener(
     "click",
     () => {
@@ -2183,7 +2072,6 @@
 
     }
   );
-
 
   document
     .querySelectorAll(".nav a")
