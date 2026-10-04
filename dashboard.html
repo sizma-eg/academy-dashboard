@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07070b">
+
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<title>Mathix | لوحة التحكم</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#07070b;
+  --sidebar:#0b0b10;
+  --card:#111118;
+  --card2:#16161f;
+  --border:rgba(255,255,255,.08);
+  --text:#fff;
+  --muted:#9999a8;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --green:#22c55e;
+  --red:#ef4444;
+  --yellow:#f59e0b;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at 70% -10%,
+      rgba(139,92,246,.13),
+      transparent 30%
+    ),
+    var(--bg);
+  color:var(--text);
+  font-family:"Cairo",sans-serif;
+}
+
+button,
+input,
+select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  min-height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:260px;
+  min-height:100vh;
+  position:fixed;
+  right:0;
+  top:0;
+  bottom:0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.025),
+      transparent
+    ),
+    var(--sidebar);
+  border-left:1px solid var(--border);
+  padding:22px 15px;
+  z-index:100;
+  overflow-y:auto;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 8px 25px;
+}
+
+.brand img{
+  width:43px;
+  height:43px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 14px rgba(139,92,246,.35));
+}
+
+.brand-text{
+  font-family:"Chakra Petch",sans-serif;
+  font-size:24px;
+  font-weight:700;
+}
+
+.brand-text span{
+  color:var(--purple2);
+}
+
+.admin-badge{
+  margin-right:auto;
+  font-size:9px;
+  color:var(--purple2);
+  border:1px solid rgba(139,92,246,.22);
+  background:rgba(139,92,246,.08);
+  border-radius:999px;
+  padding:3px 7px;
+}
+
+.nav-title{
+  color:#666674;
+  font-size:10px;
+  font-weight:700;
+  padding:10px 12px 7px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.nav a,
+.logout-btn{
+  width:100%;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:9px 12px;
+  border-radius:12px;
+  color:#aaaab7;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:600;
+  border:1px solid transparent;
+  background:transparent;
+  transition:.2s ease;
+  text-align:right;
+}
+
+.nav a:hover,
+.nav a.active,
+.logout-btn:hover{
+  color:white;
+  background:rgba(139,92,246,.09);
+  border-color:rgba(139,92,246,.12);
+}
+
+.nav-icon{
+  width:27px;
+  height:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:rgba(255,255,255,.035);
+  font-size:13px;
+  flex:none;
+}
+
+.logout-wrap{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+
+.logout-btn{
+  color:#d4a0a0;
+}
+
+.main{
+  width:calc(100% - 260px);
+  margin-right:260px;
+  padding:27px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:27px;
+}
+
+.page-title h1{
+  font-size:25px;
+  font-weight:800;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.account{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:8px 12px;
+}
+
+.account-avatar{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(139,92,246,.13);
+  color:var(--purple2);
+  font-weight:800;
+}
+
+.account-email{
+  direction:ltr;
+  color:#bbb;
+  font-size:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.012)
+    ),
+    var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:19px;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat::after{
+  content:"";
+  position:absolute;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:rgba(139,92,246,.08);
+  filter:blur(35px);
+  left:-35px;
+  bottom:-40px;
+}
+
+.stat-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.stat-icon{
+  width:35px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(139,92,246,.10);
+  color:var(--purple2);
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.stat-value{
+  font-family:"Chakra Petch",sans-serif;
+  font-size:27px;
+  font-weight:700;
+}
+
+.content-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:16px;
+}
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.01)
+    ),
+    var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.card-header{
+  padding:18px 19px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.card-header h2{
+  font-size:14px;
+  font-weight:800;
+}
+
+.card-header span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.card-body{
+  padding:17px;
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.quick{
+  min-height:82px;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.018);
+  color:white;
+  text-decoration:none;
+  transition:.2s ease;
+}
+
+.quick:hover{
+  border-color:rgba(139,92,246,.35);
+  background:rgba(139,92,246,.06);
+  transform:translateY(-1px);
+}
+
+.quick strong{
+  display:block;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.quick small{
+  color:var(--muted);
+  font-size:9px;
+}
+
+.activity{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.activity-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(255,255,255,.015);
+}
+
+.activity-icon{
+  width:32px;
+  height:32px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:9px;
+  background:rgba(139,92,246,.09);
+  color:var(--purple2);
+}
+
+.activity-info{
+  min-width:0;
+  flex:1;
+}
+
+.activity-title{
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.activity-sub{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:2px;
+}
+
+.empty{
+  padding:28px 10px;
+  text-align:center;
+  color:#666674;
+  font-size:11px;
+}
+
+.loading{
+  color:var(--muted);
+  font-size:11px;
+  padding:25px;
+  text-align:center;
+}
+
+.mobile-menu{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+  color:white;
+  font-size:18px;
+}
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:90;
+}
+
+.error-box{
+  display:none;
+  margin-bottom:18px;
+  padding:13px 15px;
+  border-radius:12px;
+  color:#fecaca;
+  background:rgba(239,68,68,.08);
+  border:1px solid rgba(239,68,68,.18);
+  font-size:11px;
+}
+
+@media(max-width:1100px){
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    transform:translateX(100%);
+    transition:.25s ease;
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .overlay.show{
+    display:block;
+  }
+
+  .main{
+    width:100%;
+    margin-right:0;
+    padding:18px;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+
+  .account{
+    display:none;
+  }
+
+}
+
+@media(max-width:520px){
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .stat{
+    padding:14px;
+  }
+
+  .stat-value{
+    font-size:23px;
+  }
+
+  .page-title h1{
+    font-size:21px;
+  }
+
+  .quick-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+
+      <img src="logo.png" alt="Mathix">
+
+      <div class="brand-text">
+        <span>Math</span>ix
+      </div>
+
+      <div class="admin-badge">
+        ADMIN
+      </div>
+
+    </div>
+
+    <div class="nav-title">
+      الإدارة
+    </div>
+
+    <nav class="nav">
+
+      <a href="admin-dashboard.html" class="active">
+        <span class="nav-icon">⌂</span>
+        الرئيسية
+      </a>
+
+      <a href="admin-students.html">
+        <span class="nav-icon">♙</span>
+        الطلاب
+      </a>
+
+      <a href="admin-subjects.html">
+        <span class="nav-icon">▦</span>
+        المواد
+      </a>
+
+      <a href="admin-curriculum.html">
+        <span class="nav-icon">☷</span>
+        المنهج والدروس
+      </a>
+
+      <a href="admin-classes.html">
+        <span class="nav-icon">▣</span>
+        الحصص
+      </a>
+
+      <a href="admin-exams.html">
+        <span class="nav-icon">✎</span>
+        الامتحانات
+      </a>
+
+      <a href="admin-wallet.html">
+        <span class="nav-icon">◈</span>
+        المحفظة
+      </a>
+
+      <a href="admin-requests.html">
+        <span class="nav-icon">◉</span>
+        الطلبات
+      </a>
+
+    </nav>
+
+    <div class="nav-title">
+      الحساب
+    </div>
+
+    <nav class="nav">
+
+      <button class="logout-btn" id="logoutBtn">
+        <span class="nav-icon">↪</span>
+        تسجيل الخروج
+      </button>
+
+    </nav>
+
+  </aside>
+
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+
+        <button
+          class="mobile-menu"
+          id="mobileMenu"
+          type="button"
+        >
+          ☰
+        </button>
+
+        <div class="page-title">
+
+          <h1>
+            لوحة التحكم
+          </h1>
+
+          <p>
+            نظرة عامة على منصة Mathix
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="account">
+
+        <div class="account-avatar">
+          M
+        </div>
+
+        <div>
+
+          <div style="font-size:11px;font-weight:700;">
+            مدير المنصة
+          </div>
+
+          <div
+            class="account-email"
+            id="accountEmail"
+          >
+            جاري التحميل...
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="error-box"
+      id="errorBox"
+    ></div>
+
+
+    <section class="grid">
+
+      <div class="stat">
+
+        <div class="stat-top">
+
+          <span class="stat-label">
+            إجمالي الطلاب
+          </span>
+
+          <span class="stat-icon">
+            ♙
+          </span>
+
+        </div>
+
+        <div
+          class="stat-value"
+          id="studentsCount"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-top">
+
+          <span class="stat-label">
+            المواد
+          </span>
+
+          <span class="stat-icon">
+            ▦
+          </span>
+
+        </div>
+
+        <div
+          class="stat-value"
+          id="subjectsCount"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-top">
+
+          <span class="stat-label">
+            الدروس
+          </span>
+
+          <span class="stat-icon">
+            ☷
+          </span>
+
+        </div>
+
+        <div
+          class="stat-value"
+          id="lessonsCount"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-top">
+
+          <span class="stat-label">
+            طلبات الشحن
+          </span>
+
+          <span class="stat-icon">
+            ◈
+          </span>
+
+        </div>
+
+        <div
+          class="stat-value"
+          id="walletRequestsCount"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="content-grid">
+
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <h2>
+            الوصول السريع
+          </h2>
+
+          <span>
+            إدارة المنصة
+          </span>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="quick-grid">
+
+            <a
+              class="quick"
+              href="admin-students.html"
+            >
+              <strong>
+                إدارة الطلاب
+              </strong>
+
+              <small>
+                إضافة وتعديل وإدارة حسابات الطلاب
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-subjects.html"
+            >
+              <strong>
+                إدارة المواد
+              </strong>
+
+              <small>
+                إضافة المواد وترتيبها وتعديلها
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-curriculum.html"
+            >
+              <strong>
+                المنهج والدروس
+              </strong>
+
+              <small>
+                الفصول والوحدات والدروس والمحتوى
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-classes.html"
+            >
+              <strong>
+                الحصص
+              </strong>
+
+              <small>
+                إدارة الحصص وروابط ملفات PDF
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-exams.html"
+            >
+              <strong>
+                الامتحانات
+              </strong>
+
+              <small>
+                إنشاء وإدارة الامتحانات والأسئلة
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-wallet.html"
+            >
+              <strong>
+                المحفظة
+              </strong>
+
+              <small>
+                الأرصدة وطلبات الشحن والمعاملات
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="admin-requests.html"
+            >
+              <strong>
+                الطلبات
+              </strong>
+
+              <small>
+                الاشتراكات والطلبات المعلقة
+              </small>
+            </a>
+
+
+            <a
+              class="quick"
+              href="../index.html"
+            >
+              <strong>
+                منصة الطالب
+              </strong>
+
+              <small>
+                الانتقال إلى صفحة دخول الطلاب
+              </small>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <h2>
+            آخر الطلاب
+          </h2>
+
+          <span>
+            أحدث الحسابات
+          </span>
+
+        </div>
+
+
+        <div
+          class="card-body"
+          id="recentStudents"
+        >
+
+          <div class="loading">
+            جاري تحميل الطلاب...
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <section
+      class="card"
+      style="margin-top:16px;"
+    >
+
+      <div class="card-header">
+
+        <h2>
+          حالة النظام
+        </h2>
+
+        <span>
+          Firebase
+        </span>
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div
+          class="activity"
+          id="systemStatus"
+        >
+
+          <div class="activity-item">
+
+            <div class="activity-icon">
+              ✓
+            </div>
+
+            <div class="activity-info">
+
+              <div class="activity-title">
+                Firebase Authentication
+              </div>
+
+              <div class="activity-sub">
+                متصل
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="activity-item">
+
+            <div class="activity-icon">
+              ✓
+            </div>
+
+            <div class="activity-info">
+
+              <div class="activity-title">
+                Firestore Database
+              </div>
+
+              <div
+                class="activity-sub"
+                id="firestoreStatus"
+              >
+                جاري التحقق...
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script type="module">
+
+import {
+  initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  onSnapshot
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+
+  authDomain:
+    "mathix-88811.firebaseapp.com",
+
+  projectId:
+    "mathix-88811",
+
+  storageBucket:
+    "mathix-88811.firebasestorage.app",
+
+  messagingSenderId:
+    "1043867239139",
+
+  appId:
+    "1:1043867239139:web:da19abef81f052682bbbd6",
+
+  measurementId:
+    "G-T17ZDVBLM2"
+
+};
+
+
+const ADMIN_EMAIL =
+  "z1wae12008@gmail.com";
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
+
+
+const sidebar =
+  document.getElementById(
+    "sidebar"
+  );
+
+
+const overlay =
+  document.getElementById(
+    "overlay"
+  );
+
+
+const mobileMenu =
+  document.getElementById(
+    "mobileMenu"
+  );
+
+
+const logoutBtn =
+  document.getElementById(
+    "logoutBtn"
+  );
+
+
+const accountEmail =
+  document.getElementById(
+    "accountEmail"
+  );
+
+
+const errorBox =
+  document.getElementById(
+    "errorBox"
+  );
+
+
+function showError(error){
+
+  console.error(
+    "ADMIN DASHBOARD ERROR:",
+    error
+  );
+
+  errorBox.style.display =
+    "block";
+
+  errorBox.textContent =
+    `حدث خطأ أثناء تحميل البيانات: ${
+      error?.code || error?.message || "unknown"
+    }`;
+
+}
+
+
+function isAdmin(user){
+
+  return !!(
+    user &&
+    user.email &&
+    user.email.toLowerCase() ===
+    ADMIN_EMAIL.toLowerCase()
+  );
+
+}
+
+
+function closeMobileMenu(){
+
+  sidebar.classList.remove(
+    "open"
+  );
+
+  overlay.classList.remove(
+    "show"
+  );
+
+}
+
+
+mobileMenu.addEventListener(
+  "click",
+  () => {
+
+    sidebar.classList.add(
+      "open"
+    );
+
+    overlay.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+overlay.addEventListener(
+  "click",
+  closeMobileMenu
+);
+
+
+document.querySelectorAll(
+  ".nav a"
+).forEach(link => {
+
+  link.addEventListener(
+    "click",
+    closeMobileMenu
+  );
+
+});
+
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+    } catch(error){
+
+      showError(error);
+
+    }
+
+  }
+);
+
+
+async function countCollection(
+  collectionName
+){
+
+  const snapshot =
+    await getDocs(
+      collection(
+        db,
+        collectionName
+      )
+    );
+
+  return snapshot.size;
+
+}
+
+
+async function loadStats(){
+
+  try {
+
+    const [
+      students,
+      subjects,
+      lessons,
+      walletRequests
+    ] = await Promise.all([
+
+      countCollection(
+        "students"
+      ),
+
+      countCollection(
+        "subjects"
+      ),
+
+      countCollection(
+        "lessons"
+      ),
+
+      countCollection(
+        "walletRequests"
+      )
+
+    ]);
+
+
+    document.getElementById(
+      "studentsCount"
+    ).textContent =
+      students;
+
+
+    document.getElementById(
+      "subjectsCount"
+    ).textContent =
+      subjects;
+
+
+    document.getElementById(
+      "lessonsCount"
+    ).textContent =
+      lessons;
+
+
+    document.getElementById(
+      "walletRequestsCount"
+    ).textContent =
+      walletRequests;
+
+
+    document.getElementById(
+      "firestoreStatus"
+    ).textContent =
+      "متصل ويعمل بشكل طبيعي";
+
+
+  } catch(error){
+
+    document.getElementById(
+      "firestoreStatus"
+    ).textContent =
+      "تعذر قراءة البيانات";
+
+    showError(error);
+
+  }
+
+}
+
+
+function studentName(data){
+
+  return (
+    data.name ||
+    data.fullName ||
+    [
+      data.firstName,
+      data.lastName
+    ]
+      .filter(Boolean)
+      .join(" ") ||
+    data.email ||
+    "طالب"
+  );
+
+}
+
+
+function studentCode(data){
+
+  return (
+    data.studentCode ||
+    data.code ||
+    "Mathix"
+  );
+
+}
+
+
+function renderRecentStudents(
+  docs
+){
+
+  const container =
+    document.getElementById(
+      "recentStudents"
+    );
+
+
+  if (!docs.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        لا يوجد طلاب حتى الآن.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    docs.map(item => {
+
+      const data =
+        item.data();
+
+
+      const name =
+        studentName(data);
+
+
+      const code =
+        studentCode(data);
+
+
+      const firstLetter =
+        name.trim().charAt(0)
+        .toUpperCase();
+
+
+      return `
+
+        <div class="activity-item">
+
+          <div class="activity-icon">
+            ${escapeHTML(firstLetter)}
+          </div>
+
+          <div class="activity-info">
+
+            <div class="activity-title">
+              ${escapeHTML(name)}
+            </div>
+
+            <div class="activity-sub">
+              ${escapeHTML(code)}
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+async function loadRecentStudents(){
+
+  const container =
+    document.getElementById(
+      "recentStudents"
+    );
+
+
+  try {
+
+    let snapshot;
+
+
+    try {
+
+      const q =
+        query(
+          collection(
+            db,
+            "students"
+          ),
+          orderBy(
+            "createdAt",
+            "desc"
+          ),
+          limit(5)
+        );
+
+      snapshot =
+        await getDocs(q);
+
+    } catch(orderError){
+
+      console.warn(
+        "createdAt ordering failed:",
+        orderError
+      );
+
+      snapshot =
+        await getDocs(
+          collection(
+            db,
+            "students"
+          )
+        );
+
+    }
+
+
+    let docs =
+      snapshot.docs;
+
+
+    if (docs.length > 5){
+
+      docs =
+        docs.slice(0,5);
+
+    }
+
+
+    renderRecentStudents(
+      docs
+    );
+
+
+  } catch(error){
+
+    container.innerHTML = `
+      <div class="empty">
+        تعذر تحميل الطلاب.
+      </div>
+    `;
+
+    showError(error);
+
+  }
+
+}
+
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user){
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    try {
+
+      await user.reload();
+
+    } catch(error){
+
+      console.error(
+        "AUTH RELOAD ERROR:",
+        error
+      );
+
+    }
+
+
+    if (!user.emailVerified){
+
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    if (!isAdmin(user)){
+
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    accountEmail.textContent =
+      user.email;
+
+
+    await Promise.all([
+
+      loadStats(),
+
+      loadRecentStudents()
+
+    ]);
+
+  }
+);
+
+</script>
+
+</body>
+</html>
