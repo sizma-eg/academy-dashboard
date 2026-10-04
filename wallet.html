@@ -536,24 +536,52 @@
 <div class="layout">
 
   <aside class="sidebar">
-    <div class="brand">
-      <img src="logo.png" alt="Mathix">
-      <span>Mathix</span>
-    </div>
 
 ```
+<div class="brand">
+  <img src="logo.png" alt="Mathix">
+  <span>Mathix</span>
+</div>
+
 <nav class="nav">
-  <a href="dashboard.html">لوحة التحكم</a>
-  <a href="students.html">الطلاب</a>
-  <a href="subjects.html">المواد</a>
-  <a href="curriculum.html">المنهج</a>
-  <a href="classes.html">الحصص</a>
-  <a href="exams.html">الامتحانات</a>
-  <a href="wallet.html" class="active">المحفظة</a>
-  <a href="requests.html">الطلبات</a>
+
+  <a href="dashboard.html">
+    لوحة التحكم
+  </a>
+
+  <a href="students.html">
+    الطلاب
+  </a>
+
+  <a href="subjects.html">
+    المواد
+  </a>
+
+  <a href="curriculum.html">
+    المنهج
+  </a>
+
+  <a href="classes.html">
+    الحصص
+  </a>
+
+  <a href="exams.html">
+    الامتحانات
+  </a>
+
+  <a href="wallet.html" class="active">
+    المحفظة
+  </a>
+
+  <a href="requests.html">
+    الطلبات
+  </a>
+
 </nav>
 
-<button class="logout" id="logoutBtn">تسجيل الخروج</button>
+<button class="logout" id="logoutBtn">
+  تسجيل الخروج
+</button>
 ```
 
   </aside>
@@ -562,49 +590,92 @@
 
 ```
 <div class="topbar">
+
   <div class="title">
     <h1>المحفظة</h1>
     <p>إدارة أرصدة الطلاب وحركات المحفظة</p>
   </div>
 
-  <div class="admin-email" id="adminEmail">...</div>
+  <div class="admin-email" id="adminEmail">
+    ...
+  </div>
+
 </div>
 
 <section class="stats">
+
   <div class="stat">
-    <div class="stat-label">عدد الطلاب</div>
-    <div class="stat-value" id="studentsCount">0</div>
+    <div class="stat-label">
+      عدد الطلاب
+    </div>
+
+    <div
+      class="stat-value"
+      id="studentsCount"
+    >
+      0
+    </div>
   </div>
 
   <div class="stat">
-    <div class="stat-label">إجمالي الأرصدة</div>
-    <div class="stat-value" id="totalBalance">0 ج.م</div>
+
+    <div class="stat-label">
+      إجمالي الأرصدة
+    </div>
+
+    <div
+      class="stat-value"
+      id="totalBalance"
+    >
+      0 ج.م
+    </div>
+
   </div>
 
   <div class="stat">
-    <div class="stat-label">عدد الحركات</div>
-    <div class="stat-value" id="transactionsCount">0</div>
+
+    <div class="stat-label">
+      عدد الحركات
+    </div>
+
+    <div
+      class="stat-value"
+      id="transactionsCount"
+    >
+      0
+    </div>
+
   </div>
+
 </section>
 
 <section class="panel">
 
   <div class="panel-head">
-    <h2>أرصدة الطلاب</h2>
+
+    <h2>
+      أرصدة الطلاب
+    </h2>
 
     <div class="tools">
+
       <input
         id="searchInput"
         class="search"
         type="search"
         placeholder="ابحث بالاسم أو الكود أو الإيميل..."
       >
+
     </div>
+
   </div>
 
   <div class="table-wrap">
+
     <table>
+
       <thead>
+
         <tr>
           <th>الطالب</th>
           <th>الكود</th>
@@ -613,52 +684,108 @@
           <th>آخر تحديث</th>
           <th>إجراء</th>
         </tr>
+
       </thead>
 
       <tbody id="walletTable">
+
         <tr>
-          <td colspan="6" class="loading">جاري التحميل...</td>
+          <td
+            colspan="6"
+            class="loading"
+          >
+            جاري التحميل...
+          </td>
         </tr>
+
       </tbody>
+
     </table>
+
   </div>
 
 </section>
 ```
 
   </main>
+
 </div>
 
 <div class="modal" id="walletModal">
+
   <div class="modal-box">
 
 ```
 <div class="modal-head">
-  <h3>تعديل رصيد الطالب</h3>
-  <button class="close" id="closeModal">×</button>
+
+  <h3>
+    تعديل رصيد الطالب
+  </h3>
+
+  <button
+    class="close"
+    id="closeModal"
+    type="button"
+  >
+    ×
+  </button>
+
 </div>
 
 <div class="selected-student">
-  <strong id="modalStudentName">—</strong>
-  <span id="modalStudentCode">—</span>
+
+  <strong id="modalStudentName">
+    —
+  </strong>
+
+  <span id="modalStudentCode">
+    —
+  </span>
+
 </div>
 
 <div class="current-balance">
-  <small>الرصيد الحالي</small>
-  <strong id="modalCurrentBalance">0 ج.م</strong>
+
+  <small>
+    الرصيد الحالي
+  </small>
+
+  <strong id="modalCurrentBalance">
+    0 ج.م
+  </strong>
+
 </div>
 
 <div class="form-group">
-  <label for="operationType">نوع العملية</label>
+
+  <label for="operationType">
+    نوع العملية
+  </label>
+
   <select id="operationType">
-    <option value="add">إضافة رصيد</option>
-    <option value="deduct">خصم رصيد</option>
-    <option value="set">تحديد الرصيد</option>
+
+    <option value="add">
+      إضافة رصيد
+    </option>
+
+    <option value="deduct">
+      خصم رصيد
+    </option>
+
+    <option value="set">
+      تحديد الرصيد
+    </option>
+
   </select>
+
 </div>
 
 <div class="form-group">
-  <label for="amount">المبلغ</label>
+
+  <label for="amount">
+    المبلغ
+  </label>
+
   <input
     id="amount"
     type="number"
@@ -666,24 +793,46 @@
     step="0.01"
     placeholder="مثال: 100"
   >
+
 </div>
 
 <div class="form-group">
-  <label for="description">وصف العملية</label>
+
+  <label for="description">
+    وصف العملية
+  </label>
+
   <textarea
     id="description"
     rows="3"
     placeholder="مثال: شحن محفظة الطالب"
   ></textarea>
+
 </div>
 
 <div class="modal-actions">
-  <button class="save" id="saveWallet">حفظ العملية</button>
-  <button class="cancel" id="cancelModal">إلغاء</button>
+
+  <button
+    class="save"
+    id="saveWallet"
+    type="button"
+  >
+    حفظ العملية
+  </button>
+
+  <button
+    class="cancel"
+    id="cancelModal"
+    type="button"
+  >
+    إلغاء
+  </button>
+
 </div>
 ```
 
   </div>
+
 </div>
 
 <div class="message" id="message"></div>
@@ -730,47 +879,85 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-const walletTable = document.getElementById("walletTable");
-const searchInput = document.getElementById("searchInput");
+const walletTable =
+  document.getElementById("walletTable");
 
-const studentsCount = document.getElementById("studentsCount");
-const totalBalance = document.getElementById("totalBalance");
-const transactionsCount = document.getElementById("transactionsCount");
+const searchInput =
+  document.getElementById("searchInput");
 
-const walletModal = document.getElementById("walletModal");
-const closeModal = document.getElementById("closeModal");
-const cancelModal = document.getElementById("cancelModal");
+const studentsCount =
+  document.getElementById("studentsCount");
 
-const modalStudentName = document.getElementById("modalStudentName");
-const modalStudentCode = document.getElementById("modalStudentCode");
-const modalCurrentBalance = document.getElementById("modalCurrentBalance");
+const totalBalance =
+  document.getElementById("totalBalance");
 
-const operationType = document.getElementById("operationType");
-const amountInput = document.getElementById("amount");
-const descriptionInput = document.getElementById("description");
-const saveWallet = document.getElementById("saveWallet");
+const transactionsCount =
+  document.getElementById("transactionsCount");
 
-const messageBox = document.getElementById("message");
+const walletModal =
+  document.getElementById("walletModal");
 
-const adminEmailBox = document.getElementById("adminEmail");
-const logoutBtn = document.getElementById("logoutBtn");
+const closeModal =
+  document.getElementById("closeModal");
+
+const cancelModal =
+  document.getElementById("cancelModal");
+
+const modalStudentName =
+  document.getElementById("modalStudentName");
+
+const modalStudentCode =
+  document.getElementById("modalStudentCode");
+
+const modalCurrentBalance =
+  document.getElementById("modalCurrentBalance");
+
+const operationType =
+  document.getElementById("operationType");
+
+const amountInput =
+  document.getElementById("amount");
+
+const descriptionInput =
+  document.getElementById("description");
+
+const saveWallet =
+  document.getElementById("saveWallet");
+
+const messageBox =
+  document.getElementById("message");
+
+const adminEmailBox =
+  document.getElementById("adminEmail");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
 
 
 let students = [];
 let wallets = [];
 let selectedStudent = null;
+
 let unsubscribeStudents = null;
 let unsubscribeWallets = null;
 let unsubscribeTransactions = null;
 
 
-function showMessage(text, type = "success") {
+function showMessage(
+  text,
+  type = "success"
+) {
 
   messageBox.textContent = text;
-  messageBox.className = `message show ${type}`;
+
+  messageBox.className =
+    `message show ${type}`;
 
   setTimeout(() => {
-    messageBox.className = "message";
+
+    messageBox.className =
+      "message";
+
   }, 3500);
 }
 
@@ -788,7 +975,8 @@ function escapeHTML(value) {
 
 function formatMoney(value) {
 
-  const number = Number(value || 0);
+  const number =
+    Number(value || 0);
 
   return `${number.toLocaleString("ar-EG")} ج.م`;
 }
@@ -799,7 +987,12 @@ function getStudentName(student) {
   return (
     student.fullName ||
     student.name ||
-    [student.firstName, student.lastName].filter(Boolean).join(" ") ||
+    [
+      student.firstName,
+      student.lastName
+    ]
+      .filter(Boolean)
+      .join(" ") ||
     "بدون اسم"
   );
 }
@@ -807,37 +1000,53 @@ function getStudentName(student) {
 
 function getStudentCode(student) {
 
-  return student.studentCode || student.code || "—";
+  return (
+    student.studentCode ||
+    student.code ||
+    "—"
+  );
 }
 
 
 function getWalletBalance(studentId) {
 
-  const wallet = wallets.find(item => item.id === studentId);
+  const wallet =
+    wallets.find(
+      item => item.id === studentId
+    );
 
-  return Number(wallet?.balance || 0);
+  return Number(
+    wallet?.balance || 0
+  );
 }
 
 
 function formatDate(timestamp) {
 
-  if (!timestamp) return "—";
+  if (!timestamp) {
+    return "—";
+  }
 
   try {
 
-    const date = timestamp.toDate
-      ? timestamp.toDate()
-      : new Date(timestamp);
+    const date =
+      timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
 
-    return date.toLocaleString("ar-EG", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+    return date.toLocaleString(
+      "ar-EG",
+      {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
 
   } catch {
+
     return "—";
   }
 }
@@ -845,21 +1054,35 @@ function formatDate(timestamp) {
 
 function renderWallets() {
 
-  const search = searchInput.value.trim().toLowerCase();
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
 
-  const filtered = students.filter(student => {
+  const filtered =
+    students.filter(student => {
 
-    const name = getStudentName(student).toLowerCase();
-    const code = getStudentCode(student).toLowerCase();
-    const email = String(student.email || "").toLowerCase();
+      const name =
+        getStudentName(student)
+          .toLowerCase();
 
-    return (
-      !search ||
-      name.includes(search) ||
-      code.includes(search) ||
-      email.includes(search)
-    );
-  });
+      const code =
+        getStudentCode(student)
+          .toLowerCase();
+
+      const email =
+        String(
+          student.email || ""
+        ).toLowerCase();
+
+      return (
+        !search ||
+        name.includes(search) ||
+        code.includes(search) ||
+        email.includes(search)
+      );
+    });
+
 
   if (!filtered.length) {
 
@@ -875,70 +1098,105 @@ function renderWallets() {
   }
 
 
-  walletTable.innerHTML = filtered.map(student => {
+  walletTable.innerHTML =
+    filtered
+      .map(student => {
 
-    const balance = getWalletBalance(student.id);
+        const balance =
+          getWalletBalance(student.id);
 
-    const wallet = wallets.find(item => item.id === student.id);
+        const wallet =
+          wallets.find(
+            item => item.id === student.id
+          );
 
-    return `
-      <tr>
+        return `
+          <tr>
 
-        <td>
-          <div class="student-name">
-            ${escapeHTML(getStudentName(student))}
-          </div>
-        </td>
+            <td>
+              <div class="student-name">
+                ${escapeHTML(
+                  getStudentName(student)
+                )}
+              </div>
+            </td>
 
-        <td>
-          <span class="student-code">
-            ${escapeHTML(getStudentCode(student))}
-          </span>
-        </td>
+            <td>
+              <span class="student-code">
+                ${escapeHTML(
+                  getStudentCode(student)
+                )}
+              </span>
+            </td>
 
-        <td>
-          ${escapeHTML(student.email || "—")}
-        </td>
+            <td>
+              ${escapeHTML(
+                student.email || "—"
+              )}
+            </td>
 
-        <td>
-          <span class="balance">
-            ${escapeHTML(formatMoney(balance))}
-          </span>
-        </td>
+            <td>
+              <span class="balance">
+                ${escapeHTML(
+                  formatMoney(balance)
+                )}
+              </span>
+            </td>
 
-        <td>
-          ${escapeHTML(formatDate(wallet?.updatedAt))}
-        </td>
+            <td>
+              ${escapeHTML(
+                formatDate(
+                  wallet?.updatedAt
+                )
+              )}
+            </td>
 
-        <td>
-          <div class="actions">
-            <button
-              class="btn btn-purple"
-              data-action="edit"
-              data-id="${escapeHTML(student.id)}"
-            >
-              تعديل
-            </button>
-          </div>
-        </td>
+            <td>
 
-      </tr>
-    `;
+              <div class="actions">
 
-  }).join("");
+                <button
+                  class="btn btn-purple"
+                  data-action="edit"
+                  data-id="${escapeHTML(
+                    student.id
+                  )}"
+                  type="button"
+                >
+                  تعديل
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
 }
 
 
 function updateStats() {
 
-  studentsCount.textContent = students.length.toLocaleString("ar-EG");
+  studentsCount.textContent =
+    students.length.toLocaleString(
+      "ar-EG"
+    );
 
-  const total = students.reduce(
-    (sum, student) => sum + getWalletBalance(student.id),
-    0
-  );
+  const total =
+    students.reduce(
+      (sum, student) =>
+        sum +
+        getWalletBalance(
+          student.id
+        ),
+      0
+    );
 
-  totalBalance.textContent = formatMoney(total);
+  totalBalance.textContent =
+    formatMoney(total);
 }
 
 
@@ -946,18 +1204,28 @@ async function loadStudents() {
 
   try {
 
-    const snapshot = await getDocs(collection(db, "students"));
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "students"
+        )
+      );
 
-    students = snapshot.docs.map(item => ({
-      id: item.id,
-      ...item.data()
-    }));
+    students =
+      snapshot.docs.map(
+        item => ({
+          id: item.id,
+          ...item.data()
+        })
+      );
 
-    students.sort((a, b) =>
-      getStudentName(a).localeCompare(
-        getStudentName(b),
-        "ar"
-      )
+    students.sort(
+      (a, b) =>
+        getStudentName(a).localeCompare(
+          getStudentName(b),
+          "ar"
+        )
     );
 
     renderWallets();
@@ -965,17 +1233,26 @@ async function loadStudents() {
 
   } catch (error) {
 
-    console.error("LOAD STUDENTS ERROR:", error);
+    console.error(
+      "LOAD STUDENTS ERROR:",
+      error
+    );
 
     walletTable.innerHTML = `
       <tr>
-        <td colspan="6" class="empty">
+        <td
+          colspan="6"
+          class="empty"
+        >
           حدث خطأ أثناء تحميل الطلاب
         </td>
       </tr>
     `;
 
-    showMessage("تعذر تحميل بيانات الطلاب", "error");
+    showMessage(
+      "تعذر تحميل بيانات الطلاب",
+      "error"
+    );
   }
 }
 
@@ -986,26 +1263,41 @@ function listenWallets() {
     unsubscribeWallets();
   }
 
-  unsubscribeWallets = onSnapshot(
-    collection(db, "wallets"),
-    snapshot => {
+  unsubscribeWallets =
+    onSnapshot(
+      collection(
+        db,
+        "wallets"
+      ),
 
-      wallets = snapshot.docs.map(item => ({
-        id: item.id,
-        ...item.data()
-      }));
+      snapshot => {
 
-      renderWallets();
-      updateStats();
+        wallets =
+          snapshot.docs.map(
+            item => ({
+              id: item.id,
+              ...item.data()
+            })
+          );
 
-    },
-    error => {
+        renderWallets();
+        updateStats();
 
-      console.error("WALLETS LISTENER ERROR:", error);
+      },
 
-      showMessage("تعذر قراءة المحافظ", "error");
-    }
-  );
+      error => {
+
+        console.error(
+          "WALLETS LISTENER ERROR:",
+          error
+        );
+
+        showMessage(
+          "تعذر قراءة المحافظ",
+          "error"
+        );
+      }
+    );
 }
 
 
@@ -1015,89 +1307,139 @@ function listenTransactions() {
     unsubscribeTransactions();
   }
 
-  const transactionsQuery = query(
-    collection(db, "walletTransactions"),
-    orderBy("createdAt", "desc")
-  );
+  const transactionsQuery =
+    query(
+      collection(
+        db,
+        "walletTransactions"
+      ),
+      orderBy(
+        "createdAt",
+        "desc"
+      )
+    );
 
-  unsubscribeTransactions = onSnapshot(
-    transactionsQuery,
-    snapshot => {
+  unsubscribeTransactions =
+    onSnapshot(
+      transactionsQuery,
 
-      transactionsCount.textContent =
-        snapshot.size.toLocaleString("ar-EG");
+      snapshot => {
 
-    },
-    error => {
+        transactionsCount.textContent =
+          snapshot.size.toLocaleString(
+            "ar-EG"
+          );
 
-      console.error(
-        "TRANSACTIONS LISTENER ERROR:",
-        error
-      );
+      },
 
-      transactionsCount.textContent = "—";
-    }
-  );
+      error => {
+
+        console.error(
+          "TRANSACTIONS LISTENER ERROR:",
+          error
+        );
+
+        transactionsCount.textContent =
+          "—";
+      }
+    );
 }
 
 
 function openWalletModal(studentId) {
 
-  const student = students.find(
-    item => item.id === studentId
-  );
+  const student =
+    students.find(
+      item => item.id === studentId
+    );
 
   if (!student) {
-    showMessage("الطالب غير موجود", "error");
+
+    showMessage(
+      "الطالب غير موجود",
+      "error"
+    );
+
     return;
   }
 
   selectedStudent = student;
 
-  const balance = getWalletBalance(studentId);
+  const balance =
+    getWalletBalance(studentId);
 
-  modalStudentName.textContent = getStudentName(student);
+  modalStudentName.textContent =
+    getStudentName(student);
 
   modalStudentCode.textContent =
-    `${getStudentCode(student)} • ${student.email || "بدون إيميل"}`;
+    `${getStudentCode(student)} • ${
+      student.email || "بدون إيميل"
+    }`;
 
   modalCurrentBalance.textContent =
     formatMoney(balance);
 
-  operationType.value = "add";
-  amountInput.value = "";
-  descriptionInput.value = "";
+  operationType.value =
+    "add";
 
-  walletModal.classList.add("show");
+  amountInput.value =
+    "";
+
+  descriptionInput.value =
+    "";
+
+  walletModal.classList.add(
+    "show"
+  );
 }
 
 
 function closeWalletModal() {
 
-  walletModal.classList.remove("show");
+  walletModal.classList.remove(
+    "show"
+  );
 
   selectedStudent = null;
 
-  amountInput.value = "";
-  descriptionInput.value = "";
+  amountInput.value =
+    "";
+
+  descriptionInput.value =
+    "";
 }
 
 
 async function saveWalletOperation() {
 
   if (!selectedStudent) {
-    showMessage("اختر طالبًا أولًا", "error");
+
+    showMessage(
+      "اختر طالبًا أولًا",
+      "error"
+    );
+
     return;
   }
 
-  const amount = Number(amountInput.value);
+  const amount =
+    Number(amountInput.value);
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    showMessage("أدخل مبلغًا صحيحًا أكبر من صفر", "error");
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    showMessage(
+      "أدخل مبلغًا صحيحًا أكبر من صفر",
+      "error"
+    );
+
     return;
   }
 
-  const type = operationType.value;
+  const type =
+    operationType.value;
 
   const description =
     descriptionInput.value.trim() ||
@@ -1109,86 +1451,145 @@ async function saveWalletOperation() {
           : "تعديل الرصيد"
     );
 
-  const studentId = selectedStudent.id;
+  const studentId =
+    selectedStudent.id;
 
-  saveWallet.disabled = true;
-  saveWallet.textContent = "جاري الحفظ...";
+  saveWallet.disabled =
+    true;
+
+  saveWallet.textContent =
+    "جاري الحفظ...";
+
 
   try {
 
-    const walletRef = doc(
+    const walletRef =
+      doc(
+        db,
+        "wallets",
+        studentId
+      );
+
+    const transactionRef =
+      doc(
+        collection(
+          db,
+          "walletTransactions"
+        )
+      );
+
+
+    await runTransaction(
       db,
-      "wallets",
-      studentId
-    );
+      async transaction => {
 
-    const transactionRef = doc(
-      collection(db, "walletTransactions")
-    );
+        const walletSnap =
+          await transaction.get(
+            walletRef
+          );
 
-    await runTransaction(db, async transaction => {
+        const currentBalance =
+          Number(
+            walletSnap.data()?.balance ||
+            0
+          );
 
-      const walletSnap =
-        await transaction.get(walletRef);
+        let newBalance =
+          currentBalance;
 
-      const currentBalance =
-        Number(walletSnap.data()?.balance || 0);
+        let transactionType =
+          "adjustment";
 
-      let newBalance = currentBalance;
-      let transactionType = "adjustment";
-      let transactionAmount = amount;
+        let transactionAmount =
+          amount;
 
-      if (type === "add") {
 
-        newBalance = currentBalance + amount;
-        transactionType = "topup";
+        if (type === "add") {
 
-      } else if (type === "deduct") {
+          newBalance =
+            currentBalance + amount;
 
-        if (amount > currentBalance) {
-          throw new Error("INSUFFICIENT_BALANCE");
+          transactionType =
+            "topup";
+
+        } else if (
+          type === "deduct"
+        ) {
+
+          if (
+            amount >
+            currentBalance
+          ) {
+
+            throw new Error(
+              "INSUFFICIENT_BALANCE"
+            );
+          }
+
+          newBalance =
+            currentBalance - amount;
+
+          transactionType =
+            "deduct";
+
+        } else if (
+          type === "set"
+        ) {
+
+          newBalance =
+            amount;
+
+          transactionType =
+            "adjustment";
+
+          transactionAmount =
+            Math.abs(
+              newBalance -
+              currentBalance
+            );
         }
 
-        newBalance = currentBalance - amount;
-        transactionType = "deduct";
 
-      } else if (type === "set") {
+        transaction.set(
+          walletRef,
+          {
+            studentId,
+            balance: newBalance,
+            updatedAt:
+              serverTimestamp()
+          },
+          {
+            merge: true
+          }
+        );
 
-        newBalance = amount;
-        transactionType = "adjustment";
-        transactionAmount =
-          Math.abs(newBalance - currentBalance);
+
+        transaction.set(
+          transactionRef,
+          {
+            studentId,
+            type: transactionType,
+            amount: transactionAmount,
+            balanceBefore:
+              currentBalance,
+            balanceAfter:
+              newBalance,
+            description,
+            createdAt:
+              serverTimestamp(),
+            createdBy:
+              auth.currentUser?.email ||
+              ADMIN_EMAIL
+          }
+        );
+
       }
+    );
 
-      transaction.set(
-        walletRef,
-        {
-          studentId,
-          balance: newBalance,
-          updatedAt: serverTimestamp()
-        },
-        {
-          merge: true
-        }
-      );
 
-      transaction.set(
-        transactionRef,
-        {
-          studentId,
-          type: transactionType,
-          amount: transactionAmount,
-          balanceBefore: currentBalance,
-          balanceAfter: newBalance,
-          description,
-          createdAt: serverTimestamp(),
-          createdBy: auth.currentUser.email
-        }
-      );
-
-    });
-
-    showMessage("تم تحديث رصيد الطالب بنجاح");
+    showMessage(
+      "تم تحديث رصيد الطالب بنجاح"
+    );
 
     closeWalletModal();
 
@@ -1199,7 +1600,10 @@ async function saveWalletOperation() {
       error
     );
 
-    if (error.message === "INSUFFICIENT_BALANCE") {
+    if (
+      error.message ===
+      "INSUFFICIENT_BALANCE"
+    ) {
 
       showMessage(
         "لا يمكن خصم مبلغ أكبر من الرصيد الحالي",
@@ -1216,8 +1620,11 @@ async function saveWalletOperation() {
 
   } finally {
 
-    saveWallet.disabled = false;
-    saveWallet.textContent = "حفظ العملية";
+    saveWallet.disabled =
+      false;
+
+    saveWallet.textContent =
+      "حفظ العملية";
   }
 }
 
@@ -1233,7 +1640,9 @@ walletTable.addEventListener(
 
     if (!button) return;
 
-    openWalletModal(button.dataset.id);
+    openWalletModal(
+      button.dataset.id
+    );
   }
 );
 
@@ -1260,7 +1669,10 @@ walletModal.addEventListener(
   "click",
   event => {
 
-    if (event.target === walletModal) {
+    if (
+      event.target === walletModal
+    ) {
+
       closeWalletModal();
     }
   }
@@ -1281,7 +1693,8 @@ logoutBtn.addEventListener(
 
       await signOut(auth);
 
-      location.href = "index.html";
+      location.href =
+        "index.html";
 
     } catch (error) {
 
@@ -1305,28 +1718,32 @@ onAuthStateChanged(
 
     if (!user) {
 
-      location.href = "index.html";
+      location.href =
+        "index.html";
+
       return;
     }
 
-    if (!user.emailVerified) {
 
-      await signOut(auth);
-
-      location.href = "../index.html";
-      return;
-    }
+    /*
+      لا يوجد شرط emailVerified.
+      دخول لوحة الإدارة يعتمد على بريد المدير فقط.
+    */
 
     if (
-      String(user.email || "").toLowerCase() !==
+      String(user.email || "")
+        .toLowerCase() !==
       ADMIN_EMAIL.toLowerCase()
     ) {
 
       await signOut(auth);
 
-      location.href = "index.html";
+      location.href =
+        "index.html";
+
       return;
     }
+
 
     adminEmailBox.textContent =
       user.email;
