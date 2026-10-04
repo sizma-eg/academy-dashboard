@@ -3,1078 +3,761 @@
 
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="theme-color" content="#07070b">
-
-  <meta name="description" content="Mathix - تسجيل دخول الإدارة">
-
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
-
-  <title>Mathix | تسجيل الدخول</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #07070b;
-      --card: #101016;
-      --card-2: #15151d;
-      --border: rgba(255,255,255,.08);
-      --text: #ffffff;
-      --muted: #9999a8;
-      --purple: #8b5cf6;
-      --purple-light: #a78bfa;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: "Cairo", sans-serif;
-
-      background:
-        radial-gradient(
-          circle at 50% -15%,
-          rgba(139,92,246,.20),
-          transparent 38%
-        ),
-        var(--bg);
-
-      color: var(--text);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-
-      position: fixed;
-
-      width: 500px;
-      height: 500px;
-
-      border-radius: 50%;
-
-      background: rgba(139,92,246,.07);
-
-      filter: blur(110px);
-
-      top: -260px;
-      left: -180px;
-
-      pointer-events: none;
-    }
-
-    body::after {
-      content: "";
-
-      position: fixed;
-
-      width: 420px;
-      height: 420px;
-
-      border-radius: 50%;
-
-      background: rgba(124,58,237,.06);
-
-      filter: blur(110px);
-
-      right: -180px;
-      bottom: -220px;
-
-      pointer-events: none;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 450px;
-
-      position: relative;
-      z-index: 2;
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .logo {
-      width: 86px;
-      height: 86px;
-
-      object-fit: contain;
-
-      display: block;
-
-      margin: 0 auto 12px;
-
-      filter:
-        drop-shadow(
-          0 0 22px rgba(139,92,246,.38)
-        );
-    }
-
-    .brand-name {
-      font-family: "Chakra Petch", sans-serif;
-
-      font-size: 31px;
-      font-weight: 700;
-
-      letter-spacing: 1px;
-    }
-
-    .brand-name span {
-      color: var(--purple-light);
-    }
-
-    .admin-label {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 7px;
-
-      margin-top: 7px;
-
-      padding: 5px 11px;
-
-      border-radius: 999px;
-
-      background: rgba(139,92,246,.09);
-
-      border:
-        1px solid
-        rgba(139,92,246,.18);
-
-      color: var(--purple-light);
-
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .admin-dot {
-      width: 6px;
-      height: 6px;
-
-      border-radius: 50%;
-
-      background: var(--purple-light);
-
-      box-shadow:
-        0 0 10px var(--purple);
-    }
-
-    .card {
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.045),
-          rgba(255,255,255,.012)
-        ),
-        var(--card);
-
-      border:
-        1px solid var(--border);
-
-      border-radius: 24px;
-
-      padding: 30px;
-
-      box-shadow:
-        0 28px 90px rgba(0,0,0,.48),
-        inset 0 1px 0 rgba(255,255,255,.03);
-
-      backdrop-filter: blur(20px);
-    }
-
-    .title {
-      margin-bottom: 23px;
-    }
-
-    .title h1 {
-      font-size: 24px;
-      font-weight: 800;
-
-      margin-bottom: 5px;
-    }
-
-    .title p {
-      color: var(--muted);
-
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .field {
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: block;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      margin-bottom: 8px;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input {
-      width: 100%;
-      height: 53px;
-
-      border:
-        1px solid var(--border);
-
-      border-radius: 14px;
-
-      outline: none;
-
-      background: var(--card-2);
-
-      color: white;
-
-      padding: 0 15px;
-
-      font-family: "Cairo", sans-serif;
-
-      font-size: 14px;
-
-      transition: .2s ease;
-    }
-
-    .input::placeholder {
-      color: #666674;
-    }
-
-    .input:focus {
-      border-color:
-        rgba(139,92,246,.75);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(139,92,246,.10);
-    }
-
-    .password-toggle {
-      position: absolute;
-
-      left: 13px;
-      top: 50%;
-
-      transform: translateY(-50%);
-
-      border: 0;
-
-      background: transparent;
-
-      color: #8d8d9b;
-
-      cursor: pointer;
-
-      font-family: "Cairo", sans-serif;
-
-      font-size: 12px;
-    }
-
-    .password-toggle:hover {
-      color: white;
-    }
-
-    .forgot {
-      text-align: left;
-
-      margin-top: -3px;
-      margin-bottom: 18px;
-    }
-
-    .forgot button {
-      border: 0;
-
-      background: transparent;
-
-      color: var(--purple-light);
-
-      cursor: pointer;
-
-      font-family: "Cairo", sans-serif;
-
-      font-size: 12px;
-    }
-
-    .forgot button:hover {
-      text-decoration: underline;
-    }
-
-    .login-btn {
-      width: 100%;
-      height: 54px;
-
-      border: 0;
-
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #7c3aed,
-          #8b5cf6
-        );
-
-      color: white;
-
-      font-family: "Cairo", sans-serif;
-
-      font-size: 15px;
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition: .2s ease;
-
-      box-shadow:
-        0 12px 30px
-        rgba(124,58,237,.22);
-    }
-
-    .login-btn:hover {
-      transform: translateY(-1px);
-
-      box-shadow:
-        0 16px 38px
-        rgba(124,58,237,.30);
-    }
-
-    .login-btn:disabled {
-      opacity: .55;
-
-      cursor: not-allowed;
-
-      transform: none;
-    }
-
-    .message {
-      display: none;
-
-      margin-bottom: 16px;
-
-      padding: 12px 14px;
-
-      border-radius: 12px;
-
-      font-size: 12px;
-
-      line-height: 1.8;
-    }
-
-    .message.error {
-      display: block;
-
-      color: #fecaca;
-
-      background: rgba(239,68,68,.10);
-
-      border:
-        1px solid
-        rgba(239,68,68,.20);
-    }
-
-    .message.success {
-      display: block;
-
-      color: #bbf7d0;
-
-      background: rgba(34,197,94,.10);
-
-      border:
-        1px solid
-        rgba(34,197,94,.20);
-    }
-
-    .security-note {
-      margin-top: 18px;
-
-      padding-top: 17px;
-
-      border-top:
-        1px solid
-        rgba(255,255,255,.06);
-
-      text-align: center;
-
-      color: #707080;
-
-      font-size: 11px;
-
-      line-height: 1.8;
-    }
-
-    .loading {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 9px;
-    }
-
-    .spinner {
-      width: 17px;
-      height: 17px;
-
-      border-radius: 50%;
-
-      border:
-        2px solid
-        rgba(255,255,255,.30);
-
-      border-top-color: white;
-
-      animation:
-        spin .7s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 520px) {
-
-      body {
-        padding: 16px;
-      }
-
-      .card {
-        padding: 23px 18px;
-        border-radius: 20px;
-      }
-
-      .brand-name {
-        font-size: 28px;
-      }
-
-      .logo {
-        width: 72px;
-        height: 72px;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#07070b">
+
+<meta name="description" content="Mathix - تسجيل دخول الإدارة">
+
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<title>Mathix | تسجيل الدخول</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--bg:#07070b;
+--card:#101016;
+--card2:#15151d;
+--border:rgba(255,255,255,.08);
+--text:#fff;
+--muted:#9999a8;
+--purple:#8b5cf6;
+--purple-light:#a78bfa;
+}
+
+body{
+min-height:100vh;
+font-family:"Cairo",sans-serif;
+background:
+radial-gradient(
+circle at 50% -15%,
+rgba(139,92,246,.20),
+transparent 38%
+),
+var(--bg);
+color:var(--text);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:450px;
+}
+
+.brand{
+text-align:center;
+margin-bottom:24px;
+}
+
+.logo{
+width:86px;
+height:86px;
+object-fit:contain;
+display:block;
+margin:0 auto 12px;
+filter:drop-shadow(0 0 22px rgba(139,92,246,.38));
+}
+
+.brand-name{
+font-family:"Chakra Petch",sans-serif;
+font-size:31px;
+font-weight:700;
+letter-spacing:1px;
+}
+
+.brand-name span{
+color:var(--purple-light);
+}
+
+.admin-label{
+display:inline-flex;
+align-items:center;
+gap:7px;
+margin-top:7px;
+padding:5px 11px;
+border-radius:999px;
+background:rgba(139,92,246,.09);
+border:1px solid rgba(139,92,246,.18);
+color:var(--purple-light);
+font-size:11px;
+font-weight:700;
+}
+
+.admin-dot{
+width:6px;
+height:6px;
+border-radius:50%;
+background:var(--purple-light);
+box-shadow:0 0 10px var(--purple);
+}
+
+.card{
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.045),
+rgba(255,255,255,.012)
+),
+var(--card);
+border:1px solid var(--border);
+border-radius:24px;
+padding:30px;
+box-shadow:
+0 28px 90px rgba(0,0,0,.48),
+inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.title{
+margin-bottom:23px;
+}
+
+.title h1{
+font-size:24px;
+font-weight:800;
+margin-bottom:5px;
+}
+
+.title p{
+color:var(--muted);
+font-size:13px;
+line-height:1.8;
+}
+
+.field{
+margin-bottom:16px;
+}
+
+.field label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.input-wrap{
+position:relative;
+}
+
+.input{
+width:100%;
+height:53px;
+border:1px solid var(--border);
+border-radius:14px;
+outline:none;
+background:var(--card2);
+color:white;
+padding:0 15px;
+font-family:"Cairo",sans-serif;
+font-size:14px;
+transition:.2s ease;
+}
+
+.input::placeholder{
+color:#666674;
+}
+
+.input:focus{
+border-color:rgba(139,92,246,.75);
+box-shadow:0 0 0 3px rgba(139,92,246,.10);
+}
+
+.password-toggle{
+position:absolute;
+left:13px;
+top:50%;
+transform:translateY(-50%);
+border:0;
+background:transparent;
+color:#8d8d9b;
+cursor:pointer;
+font-family:"Cairo",sans-serif;
+font-size:12px;
+}
+
+.forgot{
+text-align:left;
+margin-top:-3px;
+margin-bottom:18px;
+}
+
+.forgot button{
+border:0;
+background:transparent;
+color:var(--purple-light);
+cursor:pointer;
+font-family:"Cairo",sans-serif;
+font-size:12px;
+}
+
+.login-btn{
+width:100%;
+height:54px;
+border:0;
+border-radius:15px;
+background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+color:white;
+font-family:"Cairo",sans-serif;
+font-size:15px;
+font-weight:800;
+cursor:pointer;
+transition:.2s ease;
+box-shadow:0 12px 30px rgba(124,58,237,.22);
+}
+
+.login-btn:hover{
+transform:translateY(-1px);
+}
+
+.login-btn:disabled{
+opacity:.55;
+cursor:not-allowed;
+transform:none;
+}
+
+.message{
+display:none;
+margin-bottom:16px;
+padding:12px 14px;
+border-radius:12px;
+font-size:12px;
+line-height:1.8;
+}
+
+.message.error{
+display:block;
+color:#fecaca;
+background:rgba(239,68,68,.10);
+border:1px solid rgba(239,68,68,.20);
+}
+
+.message.success{
+display:block;
+color:#bbf7d0;
+background:rgba(34,197,94,.10);
+border:1px solid rgba(34,197,94,.20);
+}
+
+.security-note{
+margin-top:18px;
+padding-top:17px;
+border-top:1px solid rgba(255,255,255,.06);
+text-align:center;
+color:#707080;
+font-size:11px;
+line-height:1.8;
+}
+
+@media(max-width:520px){
+
+.card{
+padding:23px 18px;
+border-radius:20px;
+}
+
+.brand-name{
+font-size:28px;
+}
+
+.logo{
+width:72px;
+height:72px;
+}
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <main class="container">
+<main class="container">
 
-    <div class="brand">
+<div class="brand">
 
-      <img
-        class="logo"
-        src="logo.png"
-        alt="Mathix"
-      >
+<img
+class="logo"
+src="logo.png"
+alt="Mathix"
+>
 
-      <div class="brand-name">
-        <span>Math</span>ix
-      </div>
+<div class="brand-name">
+<span>Math</span>ix
+</div>
 
-      <div class="admin-label">
+<div class="admin-label">
 
-        <span class="admin-dot"></span>
+<span class="admin-dot"></span>
 
-        لوحة تحكم الإدارة
+لوحة تحكم الإدارة
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-    <section class="card">
+<section class="card">
 
-      <div class="title">
+<div class="title">
 
-        <h1>
-          تسجيل الدخول
-        </h1>
+<h1>
+تسجيل الدخول
+</h1>
 
-        <p>
-          أدخل بيانات الحساب الإداري للمتابعة.
-        </p>
+<p>
+أدخل بيانات الحساب الإداري للمتابعة.
+</p>
 
-      </div>
+</div>
 
-      <div
-        id="message"
-        class="message"
-      ></div>
+<div
+id="message"
+class="message"
+></div>
 
-      <form id="loginForm">
+<form id="loginForm">
 
-        <div class="field">
+<div class="field">
 
-          <label for="email">
-            البريد الإلكتروني
-          </label>
+<label for="email">
+البريد الإلكتروني
+</label>
 
-          <input
-            class="input"
-            id="email"
-            type="email"
-            autocomplete="username"
-            placeholder="z1wae12008@gmail.com"
-            required
-          >
+<input
+class="input"
+id="email"
+type="email"
+autocomplete="username"
+placeholder="z1wae12008@gmail.com"
+required
+>
 
-        </div>
+</div>
 
-        <div class="field">
+<div class="field">
 
-          <label for="password">
-            كلمة المرور
-          </label>
+<label for="password">
+كلمة المرور
+</label>
 
-          <div class="input-wrap">
+<div class="input-wrap">
 
-            <input
-              class="input"
-              id="password"
-              type="password"
-              autocomplete="current-password"
-              placeholder="أدخل كلمة المرور"
-              required
-            >
+<input
+class="input"
+id="password"
+type="password"
+autocomplete="current-password"
+placeholder="أدخل كلمة المرور"
+required
+>
 
-            <button
-              class="password-toggle"
-              id="togglePassword"
-              type="button"
-            >
-              إظهار
-            </button>
+<button
+class="password-toggle"
+id="togglePassword"
+type="button"
+>
+إظهار
+</button>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
-        <div class="forgot">
+<div class="forgot">
 
-          <button
-            type="button"
-            id="forgotPassword"
-          >
-            نسيت كلمة المرور؟
-          </button>
+<button
+type="button"
+id="forgotPassword"
+>
+نسيت كلمة المرور؟
+</button>
 
-        </div>
+</div>
 
-        <button
-          class="login-btn"
-          id="loginButton"
-          type="submit"
-        >
-          تسجيل الدخول
-        </button>
+<button
+class="login-btn"
+id="loginButton"
+type="submit"
+>
+تسجيل الدخول
+</button>
 
-      </form>
+</form>
 
-      <div class="security-note">
+<div class="security-note">
 
-        الدخول مسموح للحساب الإداري المصرح به فقط.
+الدخول مسموح للحساب الإداري المصرح به فقط.
 
-        <br>
+<br>
 
-        جميع صلاحيات الإدارة محمية عبر Firebase Authentication وFirestore Rules.
+صلاحيات الإدارة محمية عبر Firebase Authentication وFirestore Rules.
 
-      </div>
+</div>
 
-    </section>
+</section>
 
-  </main>
+</main>
 
-  <script type="module">
+<script type="module">
 
-    import {
-      initializeApp
-    } from
-      "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      sendPasswordResetEmail,
-      signOut,
-      onAuthStateChanged
-    } from
-      "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+getAuth,
+signInWithEmailAndPassword,
+sendPasswordResetEmail
+}
+from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 
-    const firebaseConfig = {
+const firebaseConfig = {
 
-      apiKey:
-        "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+apiKey:
+"AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
 
-      authDomain:
-        "mathix-88811.firebaseapp.com",
+authDomain:
+"mathix-88811.firebaseapp.com",
 
-      projectId:
-        "mathix-88811",
+projectId:
+"mathix-88811",
 
-      storageBucket:
-        "mathix-88811.firebasestorage.app",
+storageBucket:
+"mathix-88811.firebasestorage.app",
 
-      messagingSenderId:
-        "1043867239139",
+messagingSenderId:
+"1043867239139",
 
-      appId:
-        "1:1043867239139:web:da19abef81f052682bbbd6",
+appId:
+"1:1043867239139:web:da19abef81f052682bbbd6",
 
-      measurementId:
-        "G-T17ZDVBLM2"
+measurementId:
+"G-T17ZDVBLM2"
 
-    };
+};
 
 
-    const ADMIN_EMAIL =
-      "z1wae12008@gmail.com";
+const ADMIN_EMAIL =
+"z1wae12008@gmail.com";
 
 
-    const app =
-      initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
 
-    const auth =
-      getAuth(app);
+const auth =
+getAuth(app);
 
 
-    const loginForm =
-      document.getElementById("loginForm");
+const loginForm =
+document.getElementById("loginForm");
 
 
-    const emailInput =
-      document.getElementById("email");
+const emailInput =
+document.getElementById("email");
 
 
-    const passwordInput =
-      document.getElementById("password");
+const passwordInput =
+document.getElementById("password");
 
 
-    const togglePassword =
-      document.getElementById("togglePassword");
+const togglePassword =
+document.getElementById("togglePassword");
 
 
-    const forgotPassword =
-      document.getElementById("forgotPassword");
+const forgotPassword =
+document.getElementById("forgotPassword");
 
 
-    const loginButton =
-      document.getElementById("loginButton");
+const loginButton =
+document.getElementById("loginButton");
 
 
-    const message =
-      document.getElementById("message");
+const message =
+document.getElementById("message");
 
 
-    function showMessage(
-      text,
-      type = "error"
-    ) {
+function showMessage(
+text,
+type="error"
+){
 
-      message.textContent = text;
+message.textContent=text;
 
-      message.className =
-        `message ${type}`;
+message.className=
+`message ${type}`;
 
-    }
+}
 
 
-    function clearMessage() {
+function clearMessage(){
 
-      message.textContent = "";
+message.textContent="";
 
-      message.className = "message";
+message.className="message";
 
-    }
+}
 
 
-    function translateError(error) {
+function isAdmin(user){
 
-      const code =
-        error?.code || "";
-
-
-      const errors = {
-
-        "auth/invalid-email":
-          "البريد الإلكتروني غير صحيح.",
-
-        "auth/user-not-found":
-          "لا يوجد حساب بهذا البريد الإلكتروني.",
-
-        "auth/wrong-password":
-          "كلمة المرور غير صحيحة.",
-
-        "auth/invalid-credential":
-          "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
-
-        "auth/user-disabled":
-          "هذا الحساب تم تعطيله.",
-
-        "auth/too-many-requests":
-          "تمت محاولات كثيرة. حاول مرة أخرى بعد قليل.",
-
-        "auth/network-request-failed":
-          "حدثت مشكلة في الاتصال بالإنترنت.",
-
-        "auth/operation-not-allowed":
-          "تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase.",
-
-        "auth/missing-email":
-          "اكتب البريد الإلكتروني أولاً.",
-
-        "auth/quota-exceeded":
-          "تم تجاوز الحد المسموح. حاول لاحقًا.",
-
-        "auth/unauthorized-continue-uri":
-          "رابط إعادة التعيين غير مسموح به في إعدادات Firebase.",
-
-        "auth/invalid-continue-uri":
-          "رابط إعادة التعيين غير صحيح."
-
-      };
-
-
-      return errors[code] ||
-        `حدث خطأ في Firebase: ${code || "unknown"}`;
-
-    }
-
-
-    function isAdmin(user) {
-
-      if (!user || !user.email) {
-        return false;
-      }
-
-      return (
-        user.email.toLowerCase() ===
-        ADMIN_EMAIL.toLowerCase()
-      );
-
-    }
-
-
-    togglePassword.addEventListener(
-      "click",
-      () => {
-
-        const hidden =
-          passwordInput.type === "password";
-
-
-        passwordInput.type =
-          hidden
-            ? "text"
-            : "password";
-
-
-        togglePassword.textContent =
-          hidden
-            ? "إخفاء"
-            : "إظهار";
-
-      }
-    );
-
-
-    loginForm.addEventListener(
-      "submit",
-      async event => {
-
-        event.preventDefault();
-
-        clearMessage();
-
-
-        const email =
-          emailInput.value.trim();
-
-
-        const password =
-          passwordInput.value;
-
-
-        if (!email || !password) {
-
-          showMessage(
-            "اكتب البريد الإلكتروني وكلمة المرور."
-          );
-
-          return;
-
-        }
-
-
-        if (
-          email.toLowerCase() !==
-          ADMIN_EMAIL.toLowerCase()
-        ) {
-
-          showMessage(
-            "هذا البريد الإلكتروني غير مصرح له بالدخول إلى لوحة الإدارة."
-          );
-
-          return;
-
-        }
-
-
-        loginButton.disabled = true;
-
-
-        loginButton.innerHTML = `
-          <span class="loading">
-            <span class="spinner"></span>
-            جاري التحقق...
-          </span>
-        `;
-
-
-        try {
-const credential = await signInWithEmailAndPassword(
-  auth,
-  email,
-  password
+return !!(
+user &&
+user.email &&
+user.email.toLowerCase() ===
+ADMIN_EMAIL.toLowerCase()
 );
 
-const user = credential.user;
+}
 
-await user.reload();
 
-console.log("LOGIN SUCCESS");
-console.log("UID:", user.uid);
-console.log("EMAIL:", user.email);
-console.log("VERIFIED:", user.emailVerified);
+function translateError(error){
 
-alert("LOGIN SUCCESS");
+const code=error?.code||"";
 
-          /*
-           * مهم:
-           * الأدمن المصرح به لا يحتاج Email Verification
-           * للدخول إلى لوحة الإدارة.
-           *
-           * صلاحية الأدمن تعتمد على مطابقة البريد الإلكتروني
-           * + Firebase Authentication + Firestore Rules.
-           */
+const errors={
 
-          if (!isAdmin(user)) {
+"auth/invalid-email":
+"البريد الإلكتروني غير صحيح.",
 
-            await signOut(auth);
+"auth/user-not-found":
+"لا يوجد حساب بهذا البريد الإلكتروني.",
 
-            showMessage(
-              "هذا الحساب ليس لديه صلاحية دخول إلى لوحة الإدارة."
-            );
+"auth/wrong-password":
+"كلمة المرور غير صحيحة.",
 
-            return;
+"auth/invalid-credential":
+"البريد الإلكتروني أو كلمة المرور غير صحيحة.",
 
-          }
+"auth/user-disabled":
+"هذا الحساب تم تعطيله.",
 
+"auth/too-many-requests":
+"تمت محاولات كثيرة. حاول مرة أخرى بعد قليل.",
 
-          showMessage(
-            "تم تسجيل الدخول بنجاح. جاري فتح لوحة التحكم...",
-            "success"
-          );
+"auth/network-request-failed":
+"حدثت مشكلة في الاتصال بالإنترنت.",
 
+"auth/operation-not-allowed":
+"تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase."
 
-          setTimeout(
-            () => {
+};
 
-              window.location.href =
-                "dashboard.html";
+return errors[code] ||
+`حدث خطأ في Firebase: ${code||"unknown"}`;
 
-            },
-            500
-          );
+}
 
 
-        } catch (error) {
+togglePassword.addEventListener(
+"click",
+()=>{
 
-          console.error(
-            "ADMIN LOGIN ERROR:",
-            error
-          );
+const hidden =
+passwordInput.type === "password";
 
+passwordInput.type =
+hidden ? "text" : "password";
 
-          showMessage(
-            translateError(error)
-          );
+togglePassword.textContent =
+hidden ? "إخفاء" : "إظهار";
 
-        } finally {
+}
+);
 
-          loginButton.disabled = false;
 
-          loginButton.textContent =
-            "تسجيل الدخول";
+loginForm.addEventListener(
+"submit",
+async event=>{
 
-        }
+event.preventDefault();
 
-      }
-    );
+clearMessage();
 
 
-    forgotPassword.addEventListener(
-      "click",
-      async () => {
+const email =
+emailInput.value.trim();
 
-        clearMessage();
+const password =
+passwordInput.value;
 
 
-        const email =
-          emailInput.value.trim();
+if(
+email.toLowerCase() !==
+ADMIN_EMAIL.toLowerCase()
+){
 
+showMessage(
+"هذا البريد الإلكتروني غير مصرح له بالدخول إلى لوحة الإدارة."
+);
 
-        if (!email) {
+return;
 
-          showMessage(
-            "اكتب البريد الإلكتروني أولاً ثم اضغط نسيت كلمة المرور."
-          );
+}
 
-          emailInput.focus();
 
-          return;
+loginButton.disabled=true;
 
-        }
+loginButton.textContent=
+"جاري تسجيل الدخول...";
 
 
-        if (
-          email.toLowerCase() !==
-          ADMIN_EMAIL.toLowerCase()
-        ) {
+try{
 
-          showMessage(
-            "استخدم البريد الإلكتروني الخاص بحساب الأدمن."
-          );
+const credential =
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
 
-          return;
+const user =
+credential.user;
 
-        }
 
+console.log(
+"ADMIN LOGIN SUCCESS",
+user.email
+);
 
-        forgotPassword.disabled = true;
 
-        forgotPassword.textContent =
-          "جاري الإرسال...";
+if(!isAdmin(user)){
 
+showMessage(
+"هذا الحساب غير مصرح له بالدخول."
+);
 
-        try {
+return;
 
-          await sendPasswordResetEmail(
-            auth,
-            email
-          );
+}
 
 
-          showMessage(
-            "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريد الأدمن. افحص البريد الوارد والرسائل غير المرغوب فيها.",
-            "success"
-          );
+showMessage(
+"تم تسجيل الدخول بنجاح...",
+"success"
+);
 
 
-        } catch (error) {
+window.location.replace(
+"dashboard.html"
+);
 
-          console.error(
-            "ADMIN PASSWORD RESET ERROR:",
-            error
-          );
 
+}catch(error){
 
-          showMessage(
-            `كود الخطأ: ${error?.code || "unknown"}`
-          );
+console.error(
+"ADMIN LOGIN ERROR:",
+error
+);
 
-        } finally {
+showMessage(
+translateError(error)
+);
 
-          forgotPassword.disabled = false;
+}finally{
 
-          forgotPassword.textContent =
-            "نسيت كلمة المرور؟";
+loginButton.disabled=false;
 
-        }
+loginButton.textContent=
+"تسجيل الدخول";
 
-      }
-    );
+}
 
+}
+);
 
-    onAuthStateChanged(
-      auth,
-      async user => {
 
-        if (!user) {
-          return;
-        }
+forgotPassword.addEventListener(
+"click",
+async()=>{
 
+clearMessage();
 
-        try {
 
-          await user.reload();
+const email =
+emailInput.value.trim();
 
 
-          /*
-           * لا يوجد شرط emailVerified هنا.
-           * الأدمن المحدد يستطيع الدخول مباشرة.
-           */
+if(
+email.toLowerCase() !==
+ADMIN_EMAIL.toLowerCase()
+){
 
-          if (isAdmin(user)) {
+showMessage(
+"اكتب البريد الإلكتروني الخاص بالأدمن."
+);
 
-            window.location.href =
-              "dashboard.html";
+return;
 
-            return;
+}
 
-          }
 
+forgotPassword.disabled=true;
 
-          await signOut(auth);
+forgotPassword.textContent=
+"جاري الإرسال...";
 
-        } catch (error) {
 
-          console.error(
-            "ADMIN AUTH CHECK ERROR:",
-            error
-          );
+try{
 
-        }
+await sendPasswordResetEmail(
+auth,
+email
+);
 
-      }
-    );
+showMessage(
+"تم إرسال رابط إعادة تعيين كلمة المرور.",
+"success"
+);
 
-  </script>
+}catch(error){
+
+console.error(
+"PASSWORD RESET ERROR:",
+error
+);
+
+showMessage(
+`كود الخطأ: ${error?.code||"unknown"}`
+);
+
+}finally{
+
+forgotPassword.disabled=false;
+
+forgotPassword.textContent=
+"نسيت كلمة المرور؟";
+
+}
+
+}
+);
+
+</script>
 
 </body>
 
