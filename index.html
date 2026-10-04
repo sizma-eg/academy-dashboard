@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -17,7 +18,7 @@
 
   <meta
     name="description"
-    content="Mathix Admin - لوحة تحكم المنصة"
+    content="Mathix Admin - لوحة تحكم الإدارة"
   >
 
   <link rel="icon" type="image/png" href="logo.png">
@@ -142,8 +143,7 @@
 
       display: block;
 
-      margin:
-        0 auto 12px;
+      margin: 0 auto 12px;
 
       filter:
         drop-shadow(
@@ -186,7 +186,8 @@
         rgba(139,92,246,.09);
 
       border:
-        1px solid rgba(139,92,246,.18);
+        1px solid
+        rgba(139,92,246,.18);
 
       color:
         var(--purple-light);
@@ -620,7 +621,7 @@
             id="email"
             type="email"
             autocomplete="username"
-            placeholder="admin@example.com"
+            placeholder="z1wae12008@gmail.com"
             required
           >
 
@@ -713,11 +714,6 @@
       "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 
-    /*
-      Firebase
-      Project: mathix-88811
-    */
-
     const firebaseConfig = {
 
       apiKey:
@@ -744,17 +740,14 @@
     };
 
 
-    /*
-      مهم:
-      غيّر هذا الإيميل إلى إيميل الأدمن الحقيقي.
-    */
-
     const ADMIN_EMAIL =
-      "YOUR_ADMIN_EMAIL";
+      "z1wae12008@gmail.com";
 
 
     const app =
-      initializeApp(firebaseConfig);
+      initializeApp(
+        firebaseConfig
+      );
 
 
     const auth =
@@ -953,16 +946,12 @@
 
 
         if (
-          ADMIN_EMAIL ===
-          "YOUR_ADMIN_EMAIL"
+          email.toLowerCase() !==
+          ADMIN_EMAIL.toLowerCase()
         ) {
 
           showMessage(
-            "لم يتم تحديد إيميل الأدمن داخل الملف بعد."
-          );
-
-          console.error(
-            "ADMIN_EMAIL is not configured."
+            "هذا البريد الإلكتروني غير مصرح له بالدخول إلى لوحة الإدارة."
           );
 
           return;
@@ -1094,9 +1083,6 @@
 
 
         if (
-          ADMIN_EMAIL !==
-          "YOUR_ADMIN_EMAIL"
-          &&
           email.toLowerCase() !==
           ADMIN_EMAIL.toLowerCase()
         ) {
@@ -1205,3 +1191,4 @@
 </body>
 
 </html>
+```
