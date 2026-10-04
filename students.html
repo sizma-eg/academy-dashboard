@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07070b">
+
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<title>Mathix | الطلاب</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#07070b;
+  --sidebar:#0b0b10;
+  --card:#111118;
+  --card2:#16161f;
+  --border:rgba(255,255,255,.08);
+  --text:#fff;
+  --muted:#9999a8;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --green:#22c55e;
+  --red:#ef4444;
+  --yellow:#f59e0b;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at 70% -10%,
+      rgba(139,92,246,.13),
+      transparent 30%
+    ),
+    var(--bg);
+  color:var(--text);
+  font-family:"Cairo",sans-serif;
+}
+
+button,
+input,
+select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  min-height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:260px;
+  min-height:100vh;
+  position:fixed;
+  right:0;
+  top:0;
+  bottom:0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.025),
+      transparent
+    ),
+    var(--sidebar);
+  border-left:1px solid var(--border);
+  padding:22px 15px;
+  z-index:100;
+  overflow-y:auto;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 8px 25px;
+}
+
+.brand img{
+  width:43px;
+  height:43px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 14px rgba(139,92,246,.35));
+}
+
+.brand-text{
+  font-family:"Chakra Petch",sans-serif;
+  font-size:24px;
+  font-weight:700;
+}
+
+.brand-text span{
+  color:var(--purple2);
+}
+
+.admin-badge{
+  margin-right:auto;
+  font-size:9px;
+  color:var(--purple2);
+  border:1px solid rgba(139,92,246,.22);
+  background:rgba(139,92,246,.08);
+  border-radius:999px;
+  padding:3px 7px;
+}
+
+.nav-title{
+  color:#666674;
+  font-size:10px;
+  font-weight:700;
+  padding:10px 12px 7px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.nav a,
+.logout-btn{
+  width:100%;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:9px 12px;
+  border-radius:12px;
+  color:#aaaab7;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:600;
+  border:1px solid transparent;
+  background:transparent;
+  transition:.2s ease;
+  text-align:right;
+}
+
+.nav a:hover,
+.nav a.active,
+.logout-btn:hover{
+  color:white;
+  background:rgba(139,92,246,.09);
+  border-color:rgba(139,92,246,.12);
+}
+
+.nav-icon{
+  width:27px;
+  height:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:rgba(255,255,255,.035);
+  font-size:13px;
+  flex:none;
+}
+
+.logout-wrap{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+
+.logout-btn{
+  color:#d4a0a0;
+}
+
+.main{
+  width:calc(100% - 260px);
+  margin-right:260px;
+  padding:27px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.page-title h1{
+  font-size:25px;
+  font-weight:800;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.account{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:8px 12px;
+}
+
+.account-avatar{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(139,92,246,.13);
+  color:var(--purple2);
+  font-weight:800;
+}
+
+.account-email{
+  direction:ltr;
+  color:#bbb;
+  font-size:10px;
+}
+
+.mobile-menu{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+  color:white;
+  font-size:18px;
+}
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:90;
+}
+
+.toolbar{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.search{
+  flex:1;
+  height:45px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card2);
+  color:white;
+  outline:none;
+  padding:0 14px;
+  font-size:12px;
+}
+
+.search:focus{
+  border-color:rgba(139,92,246,.55);
+}
+
+.primary-btn{
+  height:45px;
+  padding:0 18px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+  color:white;
+  font-weight:800;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.primary-btn:hover{
+  box-shadow:0 8px 25px rgba(124,58,237,.22);
+}
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.01)
+    ),
+    var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+
+th{
+  text-align:right;
+  color:#777786;
+  font-size:10px;
+  font-weight:700;
+  padding:15px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.012);
+}
+
+td{
+  padding:13px 15px;
+  border-bottom:1px solid rgba(255,255,255,.045);
+  font-size:11px;
+  color:#d8d8df;
+  vertical-align:middle;
+}
+
+tr:last-child td{
+  border-bottom:0;
+}
+
+tr:hover td{
+  background:rgba(255,255,255,.012);
+}
+
+.student{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:36px;
+  height:36px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(139,92,246,.10);
+  color:var(--purple2);
+  font-weight:800;
+}
+
+.student-name{
+  font-weight:700;
+  color:white;
+}
+
+.student-email{
+  direction:ltr;
+  text-align:right;
+  color:#737380;
+  font-size:9px;
+  margin-top:2px;
+}
+
+.code{
+  font-family:"Chakra Petch",sans-serif;
+  color:var(--purple2);
+  direction:ltr;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:9px;
+  font-weight:700;
+}
+
+.status.active{
+  color:#86efac;
+  background:rgba(34,197,94,.08);
+}
+
+.status.inactive{
+  color:#fca5a5;
+  background:rgba(239,68,68,.08);
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+}
+
+.action-btn{
+  height:32px;
+  padding:0 9px;
+  border-radius:9px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  color:#ccc;
+  font-size:9px;
+}
+
+.action-btn:hover{
+  background:rgba(255,255,255,.06);
+  color:white;
+}
+
+.action-btn.danger{
+  color:#fca5a5;
+}
+
+.empty{
+  padding:45px 20px;
+  text-align:center;
+  color:#666674;
+  font-size:12px;
+}
+
+.loading{
+  padding:45px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.message{
+  display:none;
+  margin-bottom:15px;
+  padding:12px 14px;
+  border-radius:12px;
+  font-size:11px;
+  line-height:1.7;
+}
+
+.message.error{
+  display:block;
+  color:#fecaca;
+  background:rgba(239,68,68,.08);
+  border:1px solid rgba(239,68,68,.18);
+}
+
+.message.success{
+  display:block;
+  color:#bbf7d0;
+  background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.18);
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:100%;
+  max-width:550px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:#101016;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.modal-header{
+  padding:18px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.modal-header h2{
+  font-size:16px;
+}
+
+.close{
+  width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  color:#aaa;
+  border-radius:9px;
+}
+
+.modal-body{
+  padding:20px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  color:#aaaab7;
+  font-size:10px;
+  font-weight:700;
+}
+
+.field input,
+.field select{
+  width:100%;
+  height:44px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--card2);
+  color:white;
+  outline:none;
+  padding:0 12px;
+  font-size:11px;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:rgba(139,92,246,.55);
+}
+
+.modal-footer{
+  display:flex;
+  gap:9px;
+  justify-content:flex-start;
+  margin-top:18px;
+}
+
+.secondary-btn{
+  height:43px;
+  padding:0 17px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+  color:#ccc;
+  font-size:11px;
+  font-weight:700;
+}
+
+.secondary-btn:hover{
+  background:rgba(255,255,255,.06);
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    transform:translateX(100%);
+    transition:.25s ease;
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .overlay.show{
+    display:block;
+  }
+
+  .main{
+    width:100%;
+    margin-right:0;
+    padding:18px;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .account{
+    display:none;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <img src="logo.png" alt="Mathix">
+
+    <div class="brand-text">
+      <span>Math</span>ix
+    </div>
+
+    <div class="admin-badge">
+      ADMIN
+    </div>
+
+  </div>
+
+  <div class="nav-title">
+    الإدارة
+  </div>
+
+  <nav class="nav">
+
+    <a href="admin-dashboard.html">
+      <span class="nav-icon">⌂</span>
+      الرئيسية
+    </a>
+
+    <a href="admin-students.html" class="active">
+      <span class="nav-icon">♙</span>
+      الطلاب
+    </a>
+
+    <a href="admin-subjects.html">
+      <span class="nav-icon">▦</span>
+      المواد
+    </a>
+
+    <a href="admin-curriculum.html">
+      <span class="nav-icon">☷</span>
+      المنهج والدروس
+    </a>
+
+    <a href="admin-classes.html">
+      <span class="nav-icon">▣</span>
+      الحصص
+    </a>
+
+    <a href="admin-exams.html">
+      <span class="nav-icon">✎</span>
+      الامتحانات
+    </a>
+
+    <a href="admin-wallet.html">
+      <span class="nav-icon">◈</span>
+      المحفظة
+    </a>
+
+    <a href="admin-requests.html">
+      <span class="nav-icon">◉</span>
+      الطلبات
+    </a>
+
+  </nav>
+
+  <div class="nav-title">
+    الحساب
+  </div>
+
+  <nav class="nav">
+
+    <button class="logout-btn" id="logoutBtn">
+      <span class="nav-icon">↪</span>
+      تسجيل الخروج
+    </button>
+
+  </nav>
+
+</aside>
+
+
+<main class="main">
+
+  <div class="topbar">
+
+    <div style="display:flex;align-items:center;gap:12px;">
+
+      <button
+        class="mobile-menu"
+        id="mobileMenu"
+        type="button"
+      >
+        ☰
+      </button>
+
+      <div class="page-title">
+
+        <h1>
+          الطلاب
+        </h1>
+
+        <p>
+          إدارة حسابات وبيانات طلاب Mathix
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="account">
+
+      <div class="account-avatar">
+        M
+      </div>
+
+      <div>
+
+        <div style="font-size:11px;font-weight:700;">
+          مدير المنصة
+        </div>
+
+        <div
+          class="account-email"
+          id="accountEmail"
+        >
+          —
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="message"
+    id="message"
+  ></div>
+
+
+  <div class="toolbar">
+
+    <input
+      class="search"
+      id="searchInput"
+      type="search"
+      placeholder="ابحث بالاسم أو الإيميل أو كود الطالب..."
+    >
+
+    <button
+      class="primary-btn"
+      id="addStudentBtn"
+      type="button"
+    >
+      + إضافة طالب
+    </button>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              الطالب
+            </th>
+
+            <th>
+              الكود
+            </th>
+
+            <th>
+              الهاتف
+            </th>
+
+            <th>
+              المستوى
+            </th>
+
+            <th>
+              الحالة
+            </th>
+
+            <th>
+              الإجراءات
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="studentsTable">
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="loading"
+            >
+              جاري تحميل الطلاب...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</main>
+
+</div>
+
+
+<div
+  class="modal"
+  id="studentModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2 id="modalTitle">
+        إضافة طالب
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div
+        class="message"
+        id="modalMessage"
+      ></div>
+
+
+      <form id="studentForm">
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label>
+              الاسم الأول
+            </label>
+
+            <input
+              id="firstName"
+              type="text"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              الاسم الأخير
+            </label>
+
+            <input
+              id="lastName"
+              type="text"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              البريد الإلكتروني
+            </label>
+
+            <input
+              id="studentEmail"
+              type="email"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              رقم الهاتف
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              placeholder="01xxxxxxxxx"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              كود الطالب
+            </label>
+
+            <input
+              id="studentCode"
+              type="text"
+              placeholder="Mathix-XXXX"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              المستوى
+            </label>
+
+            <select id="level">
+
+              <option value="Beginner">
+                Beginner
+              </option>
+
+              <option value="Intermediate" selected>
+                Intermediate
+              </option>
+
+              <option value="Advanced">
+                Advanced
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              الحالة
+            </label>
+
+            <select id="status">
+
+              <option value="active">
+                نشط
+              </option>
+
+              <option value="inactive">
+                غير نشط
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            class="primary-btn"
+            type="submit"
+            id="saveStudentBtn"
+          >
+            حفظ الطالب
+          </button>
+
+          <button
+            class="secondary-btn"
+            type="button"
+            id="cancelModal"
+          >
+            إلغاء
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+  initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyCvMG9-rIdjnzQR_plZyizpQAhxQ_ASIn0",
+
+  authDomain:
+    "mathix-88811.firebaseapp.com",
+
+  projectId:
+    "mathix-88811",
+
+  storageBucket:
+    "mathix-88811.firebasestorage.app",
+
+  messagingSenderId:
+    "1043867239139",
+
+  appId:
+    "1:1043867239139:web:da19abef81f052682bbbd6",
+
+  measurementId:
+    "G-T17ZDVBLM2"
+
+};
+
+
+const ADMIN_EMAIL =
+  "z1wae12008@gmail.com";
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
+
+
+const sidebar =
+  document.getElementById(
+    "sidebar"
+  );
+
+
+const overlay =
+  document.getElementById(
+    "overlay"
+  );
+
+
+const mobileMenu =
+  document.getElementById(
+    "mobileMenu"
+  );
+
+
+const logoutBtn =
+  document.getElementById(
+    "logoutBtn"
+  );
+
+
+const accountEmail =
+  document.getElementById(
+    "accountEmail"
+  );
+
+
+const table =
+  document.getElementById(
+    "studentsTable"
+  );
+
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+
+const modal =
+  document.getElementById(
+    "studentModal"
+  );
+
+
+const addStudentBtn =
+  document.getElementById(
+    "addStudentBtn"
+  );
+
+
+const closeModal =
+  document.getElementById(
+    "closeModal"
+  );
+
+
+const cancelModal =
+  document.getElementById(
+    "cancelModal"
+  );
+
+
+const studentForm =
+  document.getElementById(
+    "studentForm"
+  );
+
+
+const modalTitle =
+  document.getElementById(
+    "modalTitle"
+  );
+
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+const modalMessage =
+  document.getElementById(
+    "modalMessage"
+  );
+
+
+const saveStudentBtn =
+  document.getElementById(
+    "saveStudentBtn"
+  );
+
+
+let students = [];
+
+let editingId = null;
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function showMessage(
+  text,
+  type="error"
+){
+
+  message.textContent =
+    text;
+
+  message.className =
+    `message ${type}`;
+
+}
+
+
+function clearMessage(){
+
+  message.textContent =
+    "";
+
+  message.className =
+    "message";
+
+}
+
+
+function showModalMessage(
+  text,
+  type="error"
+){
+
+  modalMessage.textContent =
+    text;
+
+  modalMessage.className =
+    `message ${type}`;
+
+}
+
+
+function clearModalMessage(){
+
+  modalMessage.textContent =
+    "";
+
+  modalMessage.className =
+    "message";
+
+}
+
+
+function isAdmin(user){
+
+  return !!(
+    user &&
+    user.email &&
+    user.email.toLowerCase() ===
+    ADMIN_EMAIL.toLowerCase()
+  );
+
+}
+
+
+function getName(data){
+
+  return (
+    data.name ||
+    data.fullName ||
+    [
+      data.firstName,
+      data.lastName
+    ]
+      .filter(Boolean)
+      .join(" ") ||
+    "بدون اسم"
+  );
+
+}
+
+
+function getCode(data){
+
+  return (
+    data.studentCode ||
+    data.code ||
+    "—"
+  );
+
+}
+
+
+function getPhone(data){
+
+  return (
+    data.phone ||
+    data.phoneNumber ||
+    "—"
+  );
+
+}
+
+
+function getLevel(data){
+
+  return (
+    data.level ||
+    "Intermediate"
+  );
+
+}
+
+
+function getStatus(data){
+
+  return (
+    data.status ||
+    "active"
+  );
+
+}
+
+
+function renderStudents(){
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  const filtered =
+    students.filter(item => {
+
+      const data =
+        item.data;
+
+
+      const name =
+        getName(data)
+          .toLowerCase();
+
+
+      const email =
+        String(data.email || "")
+          .toLowerCase();
+
+
+      const code =
+        String(getCode(data))
+          .toLowerCase();
+
+
+      const phone =
+        String(getPhone(data))
+          .toLowerCase();
+
+
+      return (
+        !search ||
+        name.includes(search) ||
+        email.includes(search) ||
+        code.includes(search) ||
+        phone.includes(search)
+      );
+
+    });
+
+
+  if (!filtered.length){
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          ${
+            search
+              ? "لا توجد نتائج مطابقة للبحث."
+              : "لا يوجد طلاب حتى الآن."
+          }
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  table.innerHTML =
+    filtered.map(item => {
+
+      const data =
+        item.data;
+
+
+      const name =
+        getName(data);
+
+
+      const email =
+        data.email ||
+        "—";
+
+
+      const code =
+        getCode(data);
+
+
+      const phone =
+        getPhone(data);
+
+
+      const level =
+        getLevel(data);
+
+
+      const status =
+        getStatus(data);
+
+
+      const initial =
+        name.trim()
+          .charAt(0)
+          .toUpperCase();
+
+
+      const active =
+        status !== "inactive";
+
+
+      return `
+
+        <tr>
+
+          <td>
+
+            <div class="student">
+
+              <div class="avatar">
+                ${escapeHTML(initial)}
+              </div>
+
+              <div>
+
+                <div class="student-name">
+                  ${escapeHTML(name)}
+                </div>
+
+                <div class="student-email">
+                  ${escapeHTML(email)}
+                </div>
+
+              </div>
+
+            </div>
+
+          </td>
+
+
+          <td>
+
+            <span class="code">
+              ${escapeHTML(code)}
+            </span>
+
+          </td>
+
+
+          <td>
+            ${escapeHTML(phone)}
+          </td>
+
+
+          <td>
+            ${escapeHTML(level)}
+          </td>
+
+
+          <td>
+
+            <span class="status ${
+              active
+                ? "active"
+                : "inactive"
+            }">
+
+              ${active
+                ? "● نشط"
+                : "● غير نشط"
+              }
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="action-btn"
+                data-action="edit"
+                data-id="${escapeHTML(item.id)}"
+                type="button"
+              >
+                تعديل
+              </button>
+
+              <button
+                class="action-btn danger"
+                data-action="delete"
+                data-id="${escapeHTML(item.id)}"
+                type="button"
+              >
+                حذف
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+}
+
+
+async function loadStudents(){
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="6" class="loading">
+        جاري تحميل الطلاب...
+      </td>
+    </tr>
+  `;
+
+
+  try {
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "students"
+        )
+      );
+
+
+    students =
+      snapshot.docs.map(
+        item => ({
+          id:item.id,
+          data:item.data()
+        })
+      );
+
+
+    renderStudents();
+
+
+  } catch(error){
+
+    console.error(
+      "LOAD STUDENTS ERROR:",
+      error
+    );
+
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          تعذر تحميل الطلاب.
+          <br>
+          ${escapeHTML(error?.code || "")}
+        </td>
+      </tr>
+    `;
+
+  }
+
+}
+
+
+function resetForm(){
+
+  studentForm.reset();
+
+  document.getElementById(
+    "level"
+  ).value =
+    "Intermediate";
+
+  document.getElementById(
+    "status"
+  ).value =
+    "active";
+
+  editingId =
+    null;
+
+  modalTitle.textContent =
+    "إضافة طالب";
+
+  clearModalMessage();
+
+}
+
+
+function openAddModal(){
+
+  resetForm();
+
+  modal.classList.add(
+    "show"
+  );
+
+}
+
+
+function openEditModal(id){
+
+  const student =
+    students.find(
+      item => item.id === id
+    );
+
+
+  if (!student){
+    return;
+  }
+
+
+  const data =
+    student.data;
+
+
+  editingId =
+    id;
+
+
+  document.getElementById(
+    "firstName"
+  ).value =
+    data.firstName || "";
+
+
+  document.getElementById(
+    "lastName"
+  ).value =
+    data.lastName || "";
+
+
+  document.getElementById(
+    "studentEmail"
+  ).value =
+    data.email || "";
+
+
+  document.getElementById(
+    "phone"
+  ).value =
+    data.phone ||
+    data.phoneNumber ||
+    "";
+
+
+  document.getElementById(
+    "studentCode"
+  ).value =
+    data.studentCode ||
+    data.code ||
+    "";
+
+
+  document.getElementById(
+    "level"
+  ).value =
+    data.level ||
+    "Intermediate";
+
+
+  document.getElementById(
+    "status"
+  ).value =
+    data.status ||
+    "active";
+
+
+  modalTitle.textContent =
+    "تعديل الطالب";
+
+
+  clearModalMessage();
+
+
+  modal.classList.add(
+    "show"
+  );
+
+}
+
+
+function closeStudentModal(){
+
+  modal.classList.remove(
+    "show"
+  );
+
+  resetForm();
+
+}
+
+
+async function saveStudent(event){
+
+  event.preventDefault();
+
+
+  clearModalMessage();
+
+
+  const firstName =
+    document.getElementById(
+      "firstName"
+    ).value.trim();
+
+
+  const lastName =
+    document.getElementById(
+      "lastName"
+    ).value.trim();
+
+
+  const email =
+    document.getElementById(
+      "studentEmail"
+    ).value.trim();
+
+
+  const phone =
+    document.getElementById(
+      "phone"
+    ).value.trim();
+
+
+  let studentCode =
+    document.getElementById(
+      "studentCode"
+    ).value.trim();
+
+
+  const level =
+    document.getElementById(
+      "level"
+    ).value;
+
+
+  const status =
+    document.getElementById(
+      "status"
+    ).value;
+
+
+  if (!firstName || !email){
+
+    showModalMessage(
+      "الاسم الأول والبريد الإلكتروني مطلوبان."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    phone &&
+    !/^01\d{9}$/.test(phone)
+  ){
+
+    showModalMessage(
+      "رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 01."
+    );
+
+    return;
+
+  }
+
+
+  if (!editingId && !studentCode){
+
+    studentCode =
+      generateStudentCode();
+
+  }
+
+
+  saveStudentBtn.disabled =
+    true;
+
+
+  saveStudentBtn.textContent =
+    "جاري الحفظ...";
+
+
+  try {
+
+    const fullName =
+      `${firstName} ${lastName}`
+        .trim();
+
+
+    const data = {
+
+      firstName,
+
+      lastName,
+
+      name:
+        fullName,
+
+      fullName,
+
+      email,
+
+      phone,
+
+      studentCode,
+
+      code:
+        studentCode,
+
+      level,
+
+      status,
+
+      updatedAt:
+        serverTimestamp()
+
+    };
+
+
+    if (editingId){
+
+      await updateDoc(
+        doc(
+          db,
+          "students",
+          editingId
+        ),
+        data
+      );
+
+
+      showMessage(
+        "تم تحديث بيانات الطالب بنجاح.",
+        "success"
+      );
+
+    } else {
+
+      showModalMessage(
+        "لا يمكن إنشاء حساب Firebase Authentication من لوحة الإدارة باستخدام Firestore فقط. أنشئ حساب الطالب من Firebase Authentication أولًا، ثم أضف بياناته هنا باستخدام UID الخاص به.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    closeStudentModal();
+
+    await loadStudents();
+
+
+  } catch(error){
+
+    console.error(
+      "SAVE STUDENT ERROR:",
+      error
+    );
+
+
+    showModalMessage(
+      `حدث خطأ: ${
+        error?.code ||
+        error?.message ||
+        "unknown"
+      }`
+    );
+
+  } finally {
+
+    saveStudentBtn.disabled =
+      false;
+
+    saveStudentBtn.textContent =
+      "حفظ الطالب";
+
+  }
+
+}
+
+
+function generateStudentCode(){
+
+  const random =
+    Math.random()
+      .toString(36)
+      .substring(2,8)
+      .toUpperCase();
+
+
+  return `Mathix-${random}`;
+
+}
+
+
+async function deleteStudent(id){
+
+  const student =
+    students.find(
+      item => item.id === id
+    );
+
+
+  if (!student){
+    return;
+  }
+
+
+  const name =
+    getName(
+      student.data
+    );
+
+
+  const confirmed =
+    confirm(
+      `هل أنت متأكد من حذف بيانات الطالب "${name}"؟\n\nهذا سيحذف مستند الطالب من Firestore فقط، ولن يحذف حساب Firebase Authentication.`
+    );
+
+
+  if (!confirmed){
+    return;
+  }
+
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "students",
+        id
+      )
+    );
+
+
+    showMessage(
+      "تم حذف بيانات الطالب من Firestore.",
+      "success"
+    );
+
+
+    await loadStudents();
+
+
+  } catch(error){
+
+    console.error(
+      "DELETE STUDENT ERROR:",
+      error
+    );
+
+
+    showMessage(
+      `تعذر الحذف: ${
+        error?.code ||
+        error?.message ||
+        "unknown"
+      }`
+    );
+
+  }
+
+}
+
+
+table.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "[data-action]"
+      );
+
+
+    if (!button){
+      return;
+    }
+
+
+    const action =
+      button.dataset.action;
+
+
+    const id =
+      button.dataset.id;
+
+
+    if (action === "edit"){
+
+      openEditModal(id);
+
+    }
+
+
+    if (action === "delete"){
+
+      deleteStudent(id);
+
+    }
+
+  }
+);
+
+
+searchInput.addEventListener(
+  "input",
+  renderStudents
+);
+
+
+addStudentBtn.addEventListener(
+  "click",
+  openAddModal
+);
+
+
+closeModal.addEventListener(
+  "click",
+  closeStudentModal
+);
+
+
+cancelModal.addEventListener(
+  "click",
+  closeStudentModal
+);
+
+
+modal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target === modal
+    ){
+
+      closeStudentModal();
+
+    }
+
+  }
+);
+
+
+studentForm.addEventListener(
+  "submit",
+  saveStudent
+);
+
+
+mobileMenu.addEventListener(
+  "click",
+  () => {
+
+    sidebar.classList.add(
+      "open"
+    );
+
+    overlay.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+overlay.addEventListener(
+  "click",
+  () => {
+
+    sidebar.classList.remove(
+      "open"
+    );
+
+    overlay.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+document.querySelectorAll(
+  ".nav a"
+).forEach(link => {
+
+  link.addEventListener(
+    "click",
+    () => {
+
+      sidebar.classList.remove(
+        "open"
+      );
+
+      overlay.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+});
+
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    await signOut(auth);
+
+    window.location.href =
+      "index.html";
+
+  }
+);
+
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (!user){
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    try {
+
+      await user.reload();
+
+    } catch(error){
+
+      console.error(
+        error
+      );
+
+    }
+
+
+    if (!user.emailVerified){
+
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    if (!isAdmin(user)){
+
+      await signOut(auth);
+
+      window.location.href =
+        "index.html";
+
+      return;
+
+    }
+
+
+    accountEmail.textContent =
+      user.email;
+
+
+    await loadStudents();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
