@@ -535,131 +535,124 @@
 
   <aside class="sidebar">
 
-```
-<div class="brand">
-  <img src="logo.png" alt="Mathix">
-  <span>Mathix</span>
-</div>
+    <div class="brand">
+      <img src="logo.png" alt="Mathix">
+      <span>Mathix</span>
+    </div>
 
-<nav class="nav">
-  <a href="dashboard.html">لوحة التحكم</a>
-  <a href="students.html">الطلاب</a>
-  <a href="subjects.html">المواد</a>
-  <a href="curriculum.html">المنهج</a>
-  <a href="classes.html">الحصص</a>
-  <a href="exams.html">الامتحانات</a>
-  <a href="wallet.html">المحفظة</a>
-  <a href="requests.html" class="active">الطلبات</a>
-</nav>
+    <nav class="nav">
+      <a href="dashboard.html">لوحة التحكم</a>
+      <a href="students.html">الطلاب</a>
+      <a href="subjects.html">المواد</a>
+      <a href="curriculum.html">المنهج</a>
+      <a href="classes.html">الحصص</a>
+      <a href="exams.html">الامتحانات</a>
+      <a href="wallet.html">المحفظة</a>
+      <a href="requests.html" class="active">الطلبات</a>
+    </nav>
 
-<button class="logout" id="logoutBtn">
-  تسجيل الخروج
-</button>
-```
+    <button class="logout" id="logoutBtn">
+      تسجيل الخروج
+    </button>
 
   </aside>
 
   <main class="main">
 
-```
-<div class="topbar">
+    <div class="topbar">
 
-  <div class="title">
-    <h1>الطلبات</h1>
-    <p>إدارة طلبات شحن المحفظة والاشتراكات</p>
-  </div>
+      <div class="title">
+        <h1>الطلبات</h1>
+        <p>إدارة طلبات شحن المحفظة والاشتراكات</p>
+      </div>
 
-  <div class="admin-email" id="adminEmail">
-    ...
-  </div>
-
-</div>
-
-
-<section class="stats">
-
-  <div class="stat">
-    <div class="stat-label">كل الطلبات</div>
-    <div class="stat-value" id="allCount">0</div>
-  </div>
-
-  <div class="stat">
-    <div class="stat-label">طلبات معلقة</div>
-    <div class="stat-value" id="pendingCount">0</div>
-  </div>
-
-  <div class="stat">
-    <div class="stat-label">طلبات مقبولة</div>
-    <div class="stat-value" id="approvedCount">0</div>
-  </div>
-
-  <div class="stat">
-    <div class="stat-label">طلبات مرفوضة</div>
-    <div class="stat-value" id="rejectedCount">0</div>
-  </div>
-
-</section>
-
-
-<section class="panel">
-
-  <div class="panel-head">
-
-    <h2>الطلبات</h2>
-
-    <div class="tools">
-
-      <input
-        id="searchInput"
-        class="search"
-        type="search"
-        placeholder="ابحث بالاسم أو الكود..."
-      >
-
-      <select id="statusFilter" class="filter">
-        <option value="all">كل الحالات</option>
-        <option value="pending">معلقة</option>
-        <option value="approved">مقبولة</option>
-        <option value="rejected">مرفوضة</option>
-      </select>
+      <div class="admin-email" id="adminEmail">
+        ...
+      </div>
 
     </div>
 
-  </div>
+    <section class="stats">
 
+      <div class="stat">
+        <div class="stat-label">كل الطلبات</div>
+        <div class="stat-value" id="allCount">0</div>
+      </div>
 
-  <div class="table-wrap">
+      <div class="stat">
+        <div class="stat-label">طلبات معلقة</div>
+        <div class="stat-value" id="pendingCount">0</div>
+      </div>
 
-    <table>
+      <div class="stat">
+        <div class="stat-label">طلبات مقبولة</div>
+        <div class="stat-value" id="approvedCount">0</div>
+      </div>
 
-      <thead>
-        <tr>
-          <th>الطالب</th>
-          <th>الكود</th>
-          <th>النوع</th>
-          <th>المبلغ</th>
-          <th>الحالة</th>
-          <th>التاريخ</th>
-          <th>إجراء</th>
-        </tr>
-      </thead>
+      <div class="stat">
+        <div class="stat-label">طلبات مرفوضة</div>
+        <div class="stat-value" id="rejectedCount">0</div>
+      </div>
 
-      <tbody id="requestsTable">
+    </section>
 
-        <tr>
-          <td colspan="7" class="loading">
-            جاري تحميل الطلبات...
-          </td>
-        </tr>
+    <section class="panel">
 
-      </tbody>
+      <div class="panel-head">
 
-    </table>
+        <h2>الطلبات</h2>
 
-  </div>
+        <div class="tools">
 
-</section>
-```
+          <input
+            id="searchInput"
+            class="search"
+            type="search"
+            placeholder="ابحث بالاسم أو الكود..."
+          >
+
+          <select id="statusFilter" class="filter">
+            <option value="all">كل الحالات</option>
+            <option value="pending">معلقة</option>
+            <option value="approved">مقبولة</option>
+            <option value="rejected">مرفوضة</option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>الطالب</th>
+              <th>الكود</th>
+              <th>النوع</th>
+              <th>المبلغ</th>
+              <th>الحالة</th>
+              <th>التاريخ</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+
+          <tbody id="requestsTable">
+
+            <tr>
+              <td colspan="7" class="loading">
+                جاري تحميل الطلبات...
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
 
   </main>
 
@@ -669,37 +662,35 @@
 
   <div class="modal-box">
 
-```
-<div class="modal-head">
+    <div class="modal-head">
 
-  <h3>تفاصيل الطلب</h3>
+      <h3>تفاصيل الطلب</h3>
 
-  <button class="close" id="closeModal">
-    ×
-  </button>
+      <button class="close" id="closeModal">
+        ×
+      </button>
 
-</div>
+    </div>
 
-<div class="details" id="detailsContent"></div>
+    <div class="details" id="detailsContent"></div>
 
-<div class="modal-actions">
+    <div class="modal-actions">
 
-  <button
-    class="btn btn-green"
-    id="modalApprove"
-  >
-    قبول الطلب
-  </button>
+      <button
+        class="btn btn-green"
+        id="modalApprove"
+      >
+        قبول الطلب
+      </button>
 
-  <button
-    class="btn btn-red"
-    id="modalReject"
-  >
-    رفض الطلب
-  </button>
+      <button
+        class="btn btn-red"
+        id="modalReject"
+      >
+        رفض الطلب
+      </button>
 
-</div>
-```
+    </div>
 
   </div>
 
@@ -2087,18 +2078,6 @@ onAuthStateChanged(
 
       return;
     }
-
-
-    if (!user.emailVerified) {
-
-      await signOut(auth);
-
-      location.href =
-        "index.html";
-
-      return;
-    }
-
 
     if (
       String(user.email || "")
