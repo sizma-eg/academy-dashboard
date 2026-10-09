@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الطلاب | Mathix</title><link rel="stylesheet" href="./style.css"></head>
+<body>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="./dashboard.html">Math<span class="ix">ix</span></a><div class="account"><span id="adminEmail"></span><button class="btn btn-secondary" id="logoutBtn">خروج</button></div></div></header>
+<div class="layout">
+<aside class="sidebar"><div class="side-title">إدارة المنصة</div><a class="nav-btn" href="./dashboard.html">📊 الرئيسية</a><a class="nav-btn" href="./revisions.html">📚 الملخصات</a><a class="nav-btn" href="./wallet-requests.html">💳 طلبات الشحن</a><a class="nav-btn" href="./wallets.html">👛 المحافظ</a><a class="nav-btn" href="./purchases.html">🧾 المشتريات</a><a class="nav-btn active" href="./students.html">🎓 الطلاب</a><a class="nav-btn" href="./settings.html">⚙️ الإعدادات</a></aside>
+<main class="main">
+<section class="page-head"><div><h1>الطلاب</h1><p>عرض الحسابات المسجلة دون عرض كلمات المرور.</p></div><button class="btn btn-secondary" id="refreshBtn">تحديث</button></section>
+<section class="panel"><div class="toolbar"><input class="field" id="search" placeholder="ابحث بالاسم أو البريد أو الكود أو UID..."></div><div class="table-wrap"><table><thead><tr><th>الاسم</th><th>البريد</th><th>كود الطالب</th><th>UID</th><th>الرصيد</th></tr></thead><tbody id="rows"><tr><td colspan="5">جارٍ التحميل...</td></tr></tbody></table></div></section>
+<div class="notice" id="notice"></div>
+</main></div>
+<script type="module" src="./students-page.js"></script>
+</body></html>
