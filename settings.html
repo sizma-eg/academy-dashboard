@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الإعدادات | Mathix</title><link rel="stylesheet" href="./style.css"></head>
+<body>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="./dashboard.html">Math<span class="ix">ix</span></a><div class="account"><span id="adminEmail"></span><button class="btn btn-secondary" id="logoutBtn">خروج</button></div></div></header>
+<div class="layout">
+<aside class="sidebar"><div class="side-title">إدارة المنصة</div><a class="nav-btn" href="./dashboard.html">📊 الرئيسية</a><a class="nav-btn" href="./revisions.html">📚 الملخصات</a><a class="nav-btn" href="./wallet-requests.html">💳 طلبات الشحن</a><a class="nav-btn" href="./wallets.html">👛 المحافظ</a><a class="nav-btn" href="./purchases.html">🧾 المشتريات</a><a class="nav-btn" href="./students.html">🎓 الطلاب</a><a class="nav-btn active" href="./settings.html">⚙️ الإعدادات</a></aside>
+<main class="main">
+<section class="page-head"><div><h1>الإعدادات</h1><p>معلومات لوحة الإدارة.</p></div></section>
+<section class="panel"><h2>حساب الأدمن</h2><p class="muted">z1wae12008@gmail.com</p><p class="muted">تأكد من أن الحساب موجود في Firebase Authentication، وأن Firestore Rules تمنحه صلاحيات الإدارة.</p></section>
+<section class="panel"><h2>رقم Vodafone Cash</h2><input class="field" value="01037500636" readonly><p class="muted">هذا الرقم مرجعي في لوحة الإدارة. تغيير الرقم الظاهر في صفحة الطالب يحتاج تحديث إعدادات صفحة الطالب أيضًا.</p></section>
+<section class="panel"><h2>صفحات الإدارة</h2><div class="row-actions"><a class="btn btn-secondary" href="./dashboard.html">الرئيسية</a><a class="btn btn-secondary" href="./revisions.html">الملخصات</a><a class="btn btn-secondary" href="./wallet-requests.html">الشحن</a><a class="btn btn-secondary" href="./wallets.html">المحافظ</a><a class="btn btn-secondary" href="./purchases.html">المشتريات</a><a class="btn btn-secondary" href="./students.html">الطلاب</a></div></section>
+</main></div>
+<script type="module">
+import { startAdmin } from "./admin.js";
+await startAdmin();
+</script>
+</body></html>
